@@ -56,6 +56,7 @@ const App = () => {
         <Stack.Screen name='Home' component={Home} options={{title: 'Fern`s Counseling'}}/>
         <Stack.Screen name='ForumMain' component={ForumMain}/>
         <Stack.Screen name='About' component={About}/>
+        <Stack.Screen name='LoginForm' component={LoginForm}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { ToastAndroid, View, Text, Button } from 'react-native'
-import { TextInput } from 'react-native'
+import { ToastAndroid, View, Text, Button, TextInput, Input } from 'react-native'
 import userService from '../services/userService'
 
 const textStyle = {
@@ -136,7 +135,7 @@ const RegisterForm = () => {
   return (
     <View className='container' id='register-form'>
       <View style={formViewStyle}>
-        <Button style={registerButtonStyle} outline color='primary' onClick={toggle}>{'สมัครเลย'}</Button>
+        <Button style={registerButtonStyle} onPress={toggle} title='สมัครเลย'/>
         {/* <Modal autoFocus={true} isOpen={modal} toggle={toggle} modalTransition={{ timeout: 300 }} >
           <ModalBody>
             <Text style={textStyle}>สมัครเข้าใช้งาน</Text>

@@ -5,7 +5,7 @@ import loginService from '../services/loginService'
 import forumService from '../services/forumService'
 import RegisterForm from './RegisterForm'
 import {View, Text, Button, ToastAndroid} from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { TextInput } from 'react-native-gesture-handler'
 
 const textStyle = {
@@ -63,7 +63,7 @@ const LoginForm = (props) => {
     else {
       try {
         const user = await loginService.userlogin({ username, password })
-        AsyncStorage.setItem(
+        await AsyncStorage.setItem(
           'loggedForumUser', JSON.stringify(user)
         )
         forumService.setToken(user.token)

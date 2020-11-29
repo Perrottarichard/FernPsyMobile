@@ -3,9 +3,7 @@ import { Formik } from 'formik';
 // import { faEnvelopeSquare } from '@fortawesome/free-solid-svg-icons';
 // import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons'
 import contactService from '../services/contactService'
-import LoaderButton from './LoaderButton'
-import { View, ToastAndroid } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { View, ToastAndroid, Button, TextInput } from 'react-native';
 
 const textStyle = {
   textAlign: 'center',
@@ -138,7 +136,7 @@ const ContactForm = ({navigation}) => {
                     onBlur={handleBlur}
                     value={values.message}
                />
-                <LoaderButton style={contactButtonStyle} onPress={handleSubmit} >ส่งข้อความ</LoaderButton>
+                <Button style={contactButtonStyle} onPress={handleSubmit} >ส่งข้อความ</Button>
               </TextInput>
             </View>
           )}

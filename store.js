@@ -5,7 +5,7 @@ import forumReducer from './reducers/forumReducer'
 import activeUserReducer from './reducers/activeUserReducer'
 import contactReducer from './reducers/contactReducer'
 import userInfoForAdminReducer from './reducers/userInfoForAdminReducer'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const appReducer = combineReducers({

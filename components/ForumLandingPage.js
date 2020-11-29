@@ -1,26 +1,26 @@
 import React from 'react'
 import { Button, View } from 'react-native'
-import { Icon } from 'react-native-vector-icons/Icon'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import { useDispatch } from 'react-redux'
 // import { faQuestionCircle, faBusinessTime, faBrain, faHome, faSyringe, faHeartBroken, faVenusMars, faTransgender, faAngry, faFlushed, faGlassCheers, faTheaterMasks, faSadTear, faGlobe, faUsers, faCode, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { setTagFilter } from '../reducers/forumReducer'
 
 const tagOptions = [
-  { tag: 'ทั้งหมด', backgroundColor: '#8e2bff', icon: faGlobe },
-  { tag: 'เรื่องเพศ', backgroundColor: '#ff5c4d', icon: faVenusMars },
-  { tag: 'การออกเดท', backgroundColor: '#288046', icon: faGlassCheers },
-  { tag: 'ความรัก', backgroundColor: '#ffa64d', icon: faHeartBroken },
-  { tag: 'lgbt', backgroundColor: '#ff4da6', icon: faTransgender },
-  { tag: 'เพื่อน', backgroundColor: '#5050ff', icon: faUsers },
-  { tag: 'โรคซึมเศร้า', backgroundColor: '#343a40', icon: faSadTear },
-  { tag: 'ความวิตกกังวล', backgroundColor: '#5e320f', icon: faFlushed },
-  { tag: 'ไบโพลาร์', backgroundColor: '#f347ff', icon: faTheaterMasks },
-  { tag: 'การทำงาน', backgroundColor: '#8e2bff', icon: faBusinessTime },
-  { tag: 'สุขภาพจิต', backgroundColor: '#1e45a8', icon: faBrain },
-  { tag: 'การรังแก', backgroundColor: '#5e320f', icon: faAngry },
-  { tag: 'ครอบครัว', backgroundColor: '#ffa64d', icon: faHome },
-  { tag: 'อื่นๆ', backgroundColor: '#707571', icon: faQuestionCircle },
-  { tag: 'การเสพติด', backgroundColor: '#40073d', icon: faSyringe },
+  { tag: 'ทั้งหมด', backgroundColor: '#8e2bff', icon: 'globe' },
+  { tag: 'เรื่องเพศ', backgroundColor: '#ff5c4d', icon: 'venusmars' },
+  { tag: 'การออกเดท', backgroundColor: '#288046', icon: 'glasscheers' },
+  { tag: 'ความรัก', backgroundColor: '#ffa64d', icon: 'heartbroken' },
+  { tag: 'lgbt', backgroundColor: '#ff4da6', icon: 'transgender' },
+  { tag: 'เพื่อน', backgroundColor: '#5050ff', icon: 'users' },
+  { tag: 'โรคซึมเศร้า', backgroundColor: '#343a40', icon: 'sadtear' },
+  { tag: 'ความวิตกกังวล', backgroundColor: '#5e320f', icon: 'flushed' },
+  { tag: 'ไบโพลาร์', backgroundColor: '#f347ff', icon: 'theatermasks' },
+  { tag: 'การทำงาน', backgroundColor: '#8e2bff', icon: 'businesstime' },
+  { tag: 'สุขภาพจิต', backgroundColor: '#1e45a8', icon: 'brain' },
+  { tag: 'การรังแก', backgroundColor: '#5e320f', icon: 'angry' },
+  { tag: 'ครอบครัว', backgroundColor: '#ffa64d', icon: 'home' },
+  { tag: 'อื่นๆ', backgroundColor: '#707571', icon: 'questioncircle' },
+  { tag: 'การเสพติด', backgroundColor: '#40073d', icon: 'syringe' },
 
 ]
 const chooseTagColor = (passed) => {

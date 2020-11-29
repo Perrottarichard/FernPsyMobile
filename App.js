@@ -1,19 +1,21 @@
+import 'react-native-gesture-handler';
 import React from "react";
-import { View, Text, StyleSheet } from 'react-native';
-import Header from './components/Header'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Home from './components/Home';
+import ForumMain from './components/ForumMain';
+
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      <Header/>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Home'>
+        <Stack.Screen name='Home' component={Home} options={{title: 'Fern`s Counseling'}}/>
+        <Stack.Screen name='ForumMain' component={ForumMain}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
-
-const styles= StyleSheet.create({
-container: {
-  flex: 1,
-}
-})
 
 export default App;

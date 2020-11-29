@@ -1,0 +1,135 @@
+import React, { useEffect, useState } from 'react'
+import { Button, Text, View } from 'react-native'
+import { Badge, Card } from 'react-native-elements'
+import { useDispatch, useSelector } from 'react-redux'
+// import { faQuestionCircle, faHeart, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { initializeForumAnswered } from '../reducers/forumReducer'
+
+const tagColorOptions = [
+
+  { tag: 'ปัญหาเรื่องเพศ', backgroundColor: '#ff5c4d' },
+  { tag: 'การออกเดท', backgroundColor: '#288046' },
+  { tag: 'relationships', backgroundColor: '#ffa64d' },
+  { tag: 'lgbt', backgroundColor: '#ff4da6' },
+  { tag: 'เพื่อน', backgroundColor: '#5050ff' },
+  { tag: 'โรคซึมเศร้า', backgroundColor: '#343a40' },
+  { tag: 'ความวิตกกังวล', backgroundColor: '#5e320f' },
+  { tag: 'ไบโพลาร์', backgroundColor: '#f347ff' },
+  { tag: 'การทำงาน', backgroundColor: '#8e2bff' },
+  { tag: 'สุขภาพจิต', backgroundColor: '#1e45a8' },
+  { tag: 'bullying', backgroundColor: '#5e320f' },
+  { tag: 'ครอบครัว', backgroundColor: '#ffa64d' },
+  { tag: 'อื่นๆ', backgroundColor: '#707571' },
+  { tag: 'การเสพติด', backgroundColor: '#40073d' },
+
+]
+const chooseTagColor = (passed) => {
+  let color = tagColorOptions.find(t => t.tag === passed)
+  if (color) {
+    return {
+      backgroundColor: color.backgroundColor,
+      width: '90px',
+      verticalAlign: 'middle',
+      postition: 'relative'
+    }
+  } else {
+    return {
+      backgroundColor: 'magenta',
+      width: '80px'
+    }
+  }
+}
+const cardHeaderStyle = {
+  fontFamily: 'Kanit',
+  fontSize: '14px',
+  backgroundColor: '#343a40',
+  color: 'white',
+  marginTop: '10px',
+  paddingTop: '6px',
+  paddingBottom: '6px'
+}
+const cardBodyStyleQ = {
+  fontSize: '14px',
+  fontFamily: 'Kanit',
+  padding: '10px',
+  textAlign: 'left',
+  paddingLeft: '10px',
+  borderBottom: '1px solid gray',
+  backgroundColor: 'white' //super light green
+}
+const cardBodyStyleA = {
+  fontSize: '14px',
+  fontFamily: 'Kanit',
+  padding: '10px',
+  borderBottom: '1px solid gray',
+  backgroundColor: 'white' //super light pink
+}
+const smallStyle = {
+  float: 'right',
+  color: 'white'
+}
+const postButtonViewStyle = {
+  display: 'block',
+  textAlign: 'center',
+  marginTop: '50px',
+  marginBottom: '50px',
+  fontFamily: 'Kanit',
+  fontSize: '30px'
+}
+const postButtonStyle = {
+  width: '150px',
+  fontFamily: 'Kanit',
+}
+
+const ForumDisplayAll = (props) => {
+
+  const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(true)
+  const { forumAnswered } = props
+  const activeUser = useSelector(state => state.activeUser)
+
+  useEffect(() => {
+    dispatch(initializeForumAnswered())
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1500);
+  }, [dispatch])
+  if (isLoading) {
+    return (
+      <SpinningLoader />
+    )
+  }
+  return (
+    <View>
+      {forumAnswered.map(f =>
+        <View key={f._id}>
+          <Button href={`/post/${f._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Card >
+              <Card.Title style={cardHeaderStyle} tag="h5">{f.title}
+                {/* <FontAwesomeIcon icon={faHeart} style={{ fontSize: '10px', color: '#ff99ff', marginLeft: '30px', marginRight: '10px' }} /> */}
+                <small>{f.likes}</small>
+                <small className="text-muted" style={smallStyle}>ถามเมื่อ {f.date.slice(0, 10)}</small>
+              </Card.Title>
+              <Text style={cardBodyStyleQ}>
+                {/* <FontAwesomeIcon icon={faQuestionCircle} style={{ color: '#e8ba4f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
+                {f.question}
+              </Text>
+              <Text style={cardBodyStyleA}>
+                {/* <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#55d13f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
+                {f.answer.answer}
+              </Text>
+              <View style={{ display: 'block' }}>
+                {f.tags.map(t => <Badge key={t} style={chooseTagColor(t)} >{t}</Badge>)}
+              </View>
+            </Card>
+          </Button>
+        </View>)}
+      <View style={postButtonViewStyle}>
+        ตั้งกระทู้ถาม
+        {/* <Link to={activeUser === null ? '/login' : '/addpost'} onClick={() => activeUser === null ? toast.warn('คุณต้องเข้าสู่ระบบเพื่อโพสต์คำถาม') : null}> */}
+          <Button color='primary' style={postButtonStyle}>ส่งคำถาม</Button>
+      </View>
+    </View>
+  )
+}
+export default ForumDisplayAll

@@ -11,6 +11,10 @@ const Home = ({navigation}) => {
       title='Go to Forum'
       onPress={() => navigation.navigate('ForumMain')}
       />
+      <Button
+      title='About Fern'
+      onPress={() => navigation.navigate('About')}
+      />
     </View>
   );
 };

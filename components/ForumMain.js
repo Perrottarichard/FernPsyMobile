@@ -7,10 +7,7 @@ const ForumMain = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text>Forum here</Text>
-      {/* <Button
-      title='Go to Forum'
-      onPress={() => navigation.navigate('ForumMain')}
-      /> */}
+    
     </View>
   );
 };

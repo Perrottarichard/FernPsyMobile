@@ -1,47 +1,19 @@
 import React, { useState } from 'react'
-import { ToastAndroid, View, Text, Button, TextInput, Input } from 'react-native'
+import { ToastAndroid, View, Text, Button, TextInput, Modal, StyleSheet, TouchableHighlight} from 'react-native'
 import userService from '../services/userService'
-
-const textStyle = {
-  textAlign: 'center',
-  fontFamily: 'Kanit'
-}
-const registerButtonStyle = {
-  display: 'inline-block',
-  fontFamily: 'Kanit',
-  float: 'center',
-  width: '100px',
-
-}
-const formViewStyle = {
-  display: 'block',
-  textAlign: 'center',
-  fontFamily: 'Kanit'
-}
-const labelStyle = {
-  float: 'left',
-  marginBottom: '0px',
-  padding: '0px',
-  fontFamily: 'Kanit'
-}
-const genderSelectStyle = {
-  marginRight: '20px',
-  float: 'left',
-  fontFamily: 'Kanit'
-}
+import {Picker} from '@react-native-picker/picker';
 
 const RegisterForm = () => {
 
   const [modal, setModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
   // eslint-disable-next-line no-unused-vars
-  const [isVerified, setIsVerified] = useState(false)
   const [name, setName] = useState('')
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [selectedGender, setSelectedGender] = useState('')
+  const [selectedGender, setSelectedGender] = useState({value: ''})
   const [dateOfBirth, setDateOfBirth] = useState('')
 
 
@@ -54,8 +26,6 @@ const RegisterForm = () => {
   }, [isLoading])
 
   const toggle = () => setModal(!modal);
-
-
 
   const genderOptions = [
     { value: 'ชาย', label: 'ชาย' },
@@ -80,9 +50,6 @@ const RegisterForm = () => {
   const handleChangeConfirmPassword = (event) => {
     setConfirmPassword(event.target.value)
   }
-  const handleChangeGender = (selectedGender) => {
-    setSelectedGender(selectedGender)
-  }
   const handleChangeDateOfBirth = (event) => {
     setDateOfBirth(event.target.value)
   }
@@ -105,9 +72,6 @@ const RegisterForm = () => {
     }
     else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
       ToastAndroid.show('กรุณากรอก Email ให้ถูกต้อง')
-    }
-    else if (!isVerified) {
-      ToastAndroid.show('Confirm reCaptcha')
     }
     else {
       setIsLoading(true)
@@ -133,33 +97,64 @@ const RegisterForm = () => {
   }
 
   return (
-    <View className='container' id='register-form'>
-      <View style={formViewStyle}>
-        <Button style={registerButtonStyle} onPress={toggle} title='สมัครเลย'/>
-        {/* <Modal autoFocus={true} isOpen={modal} toggle={toggle} modalTransition={{ timeout: 300 }} >
-          <ModalBody>
-            <Text style={textStyle}>สมัครเข้าใช้งาน</Text>
-            <TextInput>
-                <Label style={labelStyle}>ชื่อ:</Label>
-                <Input onChange={handleChangeName} value={name}></Input><br />
-                <Label style={labelStyle}>Username (ภาษาอังกฤษ ขั้นต่ำ 5 ตัวอักษร)</Label>
-                <Input onChange={handleChangeUsername} value={username}></Input><br />
-                <Label style={labelStyle}>Password (ภาษาอังกฤษ 8-20 ตัวอักษร)</Label> <Input id='password' type="password" onChange={handleChangePassword} value={password}></Input><br />
-                <Label style={labelStyle}>ยืนยัน Password:</Label>
-                <Input onChange={handleChangeConfirmPassword} type='password' value={confirmPassword}></Input><br />
-                <Label style={labelStyle}>Email:</Label> <Input id='email' type="text" onChange={handleChangeEmail} value={email}></Input><br />
-                <Label style={genderSelectStyle}>เพศ:</Label><Select options={genderOptions} value={selectedGender} onChange={handleChangeGender}></Select><br />
-                <Label style={labelStyle}>วันเกิด:</Label> <Input id='dateOfBirth' type="date" onChange={handleChangeDateOfBirth} value={dateOfBirth}></Input><br />
-            </TextInput>
-          </ModalBody>
-          <ModalFooter>
-            <Button color='primary' style={{ fontFamily: 'Kanit' }} type='submit' onClick={submitRegister}>สมัครเลย</Button>
-            <Button style={{ fontFamily: 'Kanit' }} onClick={toggle}>ยกเลิก</Button>
-          </ModalFooter>
-        </Modal> */}
-        </View>
+    <View>
+        <Button style={styles.openButton} onPress={toggle} title='สมัครเลย'></Button>
+        <Modal animationType='slide' visible={modal}>
+          <View style={styles.modalView}>
+            <Text>สมัครเข้าใช้งาน</Text>
+                <TextInput style={styles.modalText}onChangeText={handleChangeName} placeholder='ชื่อ'value={name}></TextInput>
+
+                <TextInput onChangeText={handleChangeUsername} autoCompleteType='username'placeholder='Username (ภาษาอังกฤษ ขั้นต่ำ 5 ตัวอักษร)'value={username}></TextInput>
+
+                <TextInput placeholder='Password (ภาษาอังกฤษ 8-20 ตัวอักษร)'autoCompleteType="password" onChangeText={handleChangePassword} value={password}></TextInput>
+
+                <TextInput onChangeText={handleChangeConfirmPassword} type='password' placeholder='ยืนยัน Password' value={confirmPassword}></TextInput>
+
+                <TextInput placeholder='email' onChangeText={handleChangeEmail} value={email}></TextInput>
+                <Picker style={{height: 50, width: 160}} mode='dropdown' selectedValue={selectedGender.value} onValueChange={(itemValue) => setSelectedGender({value: itemValue})}>
+                {genderOptions.map(t => <Picker.Item key={t.value} label={t.label} value={t.value}></Picker.Item>)}  
+                </Picker>
+
+                <TextInput placeholder='วันเกิด'onChangeText={handleChangeDateOfBirth} value={dateOfBirth}></TextInput>
+
+            <Button onPress={submitRegister} title='สมัครเลย'></Button>
+            <Button onPress={toggle} title='ยกเลิก'></Button>
+            </View>
+        </Modal>
     </View >
   )
 }
+const styles = StyleSheet.create({
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  openButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
+});
 
 export default RegisterForm

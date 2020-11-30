@@ -9,7 +9,7 @@ const Home = ({navigation}) => {
       <Text>Home</Text>
       <Button
       title='Go to Forum'
-      onPress={() => navigation.navigate('ForumMain')}
+      onPress={() => navigation.navigate('ForumLandingPage')}
       />
       <Button
       title='About Fern'

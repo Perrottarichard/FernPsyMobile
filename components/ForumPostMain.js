@@ -131,17 +131,16 @@ const ForumPostMain = (props) => {
           placeholder='พิมพ์รายละเอียดคำถามของคุณ'
           onChange={handleContentChange}
           value={question}
-          style={{ fontFamily: 'Kanit' }}
+          
         />
         <Picker
           onValueChange={(itemValue, itemIndex) => handleTagChange(itemValue, itemIndex)}
-          style={{ fontFamily: 'Kanit' }}>
-          // defaultValue={chosenFilter !== undefined ? tagOptions[0] : null}
+          >
           {tagOptions.map(t => <Picker.Item label={t.label} value={t.value}></Picker.Item>)}
         </Picker>
-        <View style={{ display: 'block', textAlign: 'center' }}>
-          <Text style={{ fontFamily: 'Kanit' }}>ชื่อที่คุณใช้ล็อคอินจะไม่ปรากฏในคำถามของคุณ</Text>
-          <Button style={buttonStyle} onPress={handleEditorSubmit}>ส่งคำถาม</Button>
+        <View>
+          <Text>ชื่อที่คุณใช้ล็อคอินจะไม่ปรากฏในคำถามของคุณ</Text>
+          <Button onPress={handleEditorSubmit}>ส่งคำถาม</Button>
         </View>
       </View>
     </View >

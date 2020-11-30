@@ -61,13 +61,13 @@ const LoginForm = (props) => {
     <View>
       <Text>เข้าสู่ระบบ</Text>
       <View >
-            <TextInput onChange={handleChangeUser} value={username} placeholder='username'></TextInput>
-            <TextInput autoCompleteType='password' onChange={handleChangePass} value={password} placeholder='password'></TextInput>
+            <TextInput autoCompleteType='username'onChangeText={handleChangeUser} value={username} placeholder='username'></TextInput>
+            <TextInput autoCompleteType='password' onChangeText={handleChangePass} value={password} placeholder='password'></TextInput>
             <Button onPress={submitLogin} title='เข้าสู่ระบบ'></Button>
       </View>
       <View >
-        <Text>ยังไม่มีแอคเคาท์ คลิกที่นี่</Text>
-        {/* <RegisterForm /> */}
+        <Text>ยังไม่มีแอคเคาท์ คลิกที่นี่'</Text>
+        <RegisterForm />
       </View>
     </View>
   )

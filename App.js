@@ -54,7 +54,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Home'>
         <Stack.Screen name='Home' component={Home} options={{title: 'Fern`s Counseling'}}/>
-        <Stack.Screen name='ForumMain' component={ForumMain}/>
+        <Stack.Screen name='ForumLandingPage' component={ForumLandingPage}/>
         <Stack.Screen name='About' component={About}/>
         <Stack.Screen name='LoginForm' component={LoginForm}/>
       </Stack.Navigator>

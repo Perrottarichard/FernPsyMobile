@@ -40,9 +40,9 @@ const ForumLandingPage = ({navigation}) => {
   const clickTag = (t) => {
     dispatch(setTagFilter(t.tag))
     if (t.tag === 'ทั้งหมด') {
-      navigation.navigate(`AllQuestions`)
+      navigation.navigate(`ForumDisplayAll`)
     } else {
-     navigation.navigate(`Forum${t.tag}`)
+     navigation.navigate('SingleTagDisplay', {tag: t.tag})
     }
   }
   return (

@@ -24,70 +24,16 @@ const tagColorOptions = [
 ]
 const chooseTagColor = (passed) => {
   let color = tagColorOptions.find(t => t.tag === passed)
-  if (color) {
-    return {
-      backgroundColor: color.backgroundColor,
-      width: '90px',
-      verticalAlign: 'middle',
-      postition: 'relative'
-    }
-  } else {
-    return {
-      backgroundColor: 'magenta',
-      width: '80px'
-    }
-  }
-}
-const cardHeaderStyle = {
-  fontFamily: 'Kanit',
-  fontSize: '14px',
-  backgroundColor: '#343a40',
-  color: 'white',
-  marginTop: '10px',
-  paddingTop: '6px',
-  paddingBottom: '6px'
-}
-const cardBodyStyleQ = {
-  fontSize: '14px',
-  fontFamily: 'Kanit',
-  padding: '10px',
-  textAlign: 'left',
-  paddingLeft: '10px',
-  borderBottom: '1px solid gray',
-  backgroundColor: 'white' //super light green
-}
-const cardBodyStyleA = {
-  fontSize: '14px',
-  fontFamily: 'Kanit',
-  padding: '10px',
-  borderBottom: '1px solid gray',
-  backgroundColor: 'white' //super light pink
+    return color.backgroundColor
 }
 
-const TextStyle = {
-  float: 'right',
-  color: 'white'
-}
-const postButtonViewStyle = {
-  display: 'block',
-  textAlign: 'center',
-  marginTop: '50px',
-  marginBottom: '50px',
-  fontFamily: 'Kanit',
-  fontSize: '30px'
-}
-const postButtonStyle = {
-  width: '150px',
-  fontFamily: 'Kanit',
-}
-
-
-const SingleTagDisplay = () => {
+const SingleTagDisplay = ({route, navigation}) => {
+  const {tag} = route.params
+  console.log(tag)
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(true)
   let tagged = useSelector(state => state.forum.answered.map(post => post.tags.includes(state.forum.tagFilter) ? post : null)).filter(t => t !== null)
   const activeUser = useSelector(state => state.activeUser)
-
 
   useEffect(() => {
     dispatch(initializeForumAnswered())
@@ -110,33 +56,31 @@ const SingleTagDisplay = () => {
       <View>
         {tagged.sort((a, b) => new Date(b.date) - new Date(a.date)).map(f =>
           <View key={f._id}>
-            <Button href={`/post/${f._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Card >
-                <Card.Title style={cardHeaderStyle} tag="h5">{f.title}
+              <Card>
+                <Card.Title>{f.title}
                   {/* <FontAwesomeIcon icon={faHeart} style={{ fontSize: '10px', color: '#ff99ff', marginLeft: '30px', marginRight: '10px' }} /> */}
                   <Text>{f.likes}</Text>
-                  <Text className="text-muted" style={TextStyle}>{f.date ? f.date.slice(0, 10) : 'unknown'}</Text>
+                  <Text>{f.date ? f.date.slice(0, 10) : 'unknown'}</Text>
                 </Card.Title>
-                <Text style={cardBodyStyleQ}>
+                <Text>
 
                   {/* <FontAwesomeIcon icon={faQuestionCircle} style={{ color: '#e8ba4f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
                   {f.question}
                 </Text>
-                <Text style={cardBodyStyleA}>
+                <Text>
                   {/* <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#55d13f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
                   {f.answer.answer}
 
                 </Text>
 
-                <View style={{ display: 'block' }}>
-                  {f.tags.map(t => <Badge key={t} style={chooseTagColor(t)} >{t}</Badge>)}
+                <View>
+                  {f.tags.map(t => <Badge key={t} style={{backgroundColor: chooseTagColor(t)}}>{t}</Badge>)}
                 </View>
               </Card>
-            </Button>
           </View>)}
-        <View style={postButtonViewStyle}>
-          ตั้งกระทู้ถาม<br />
-          <Button color='primary' style={postButtonStyle}>ส่งคำถาม</Button>
+        <View>
+          <Text>ตั้งกระทู้ถาม</Text>
+          <Button title='ส่งคำถาม'></Button>
         </View>
       </View>
     )

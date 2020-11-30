@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Text, View } from 'react-native'
+import { Button, Text, View, ScrollView } from 'react-native'
 import { Badge, Card } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
 // import { faQuestionCircle, faHeart, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -27,65 +27,20 @@ const chooseTagColor = (passed) => {
   let color = tagColorOptions.find(t => t.tag === passed)
   if (color) {
     return {
-      backgroundColor: color.backgroundColor,
-      width: '90px',
-      verticalAlign: 'middle',
-      postition: 'relative'
+      backgroundColor: color.backgroundColor
     }
   } else {
     return {
-      backgroundColor: 'magenta',
-      width: '80px'
+      backgroundColor: 'magenta'
     }
   }
-}
-const cardHeaderStyle = {
-  fontFamily: 'Kanit',
-  fontSize: '14px',
-  backgroundColor: '#343a40',
-  color: 'white',
-  marginTop: '10px',
-  paddingTop: '6px',
-  paddingBottom: '6px'
-}
-const cardBodyStyleQ = {
-  fontSize: '14px',
-  fontFamily: 'Kanit',
-  padding: '10px',
-  textAlign: 'left',
-  paddingLeft: '10px',
-  borderBottom: '1px solid gray',
-  backgroundColor: 'white' //super light green
-}
-const cardBodyStyleA = {
-  fontSize: '14px',
-  fontFamily: 'Kanit',
-  padding: '10px',
-  borderBottom: '1px solid gray',
-  backgroundColor: 'white' //super light pink
-}
-const smallStyle = {
-  float: 'right',
-  color: 'white'
-}
-const postButtonViewStyle = {
-  display: 'block',
-  textAlign: 'center',
-  marginTop: '50px',
-  marginBottom: '50px',
-  fontFamily: 'Kanit',
-  fontSize: '30px'
-}
-const postButtonStyle = {
-  width: '150px',
-  fontFamily: 'Kanit',
 }
 
 const ForumDisplayAll = (props) => {
 
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(true)
-  const { forumAnswered } = props
+  const forumAnswered = useSelector(state => state.forum.answered)
   const activeUser = useSelector(state => state.activeUser)
 
   useEffect(() => {
@@ -96,40 +51,41 @@ const ForumDisplayAll = (props) => {
   }, [dispatch])
   if (isLoading) {
     return (
-      <SpinningLoader />
+      <Text>Loading</Text>
     )
   }
+  if(!forumAnswered){
+    setIsLoading(true)
+  }
   return (
-    <View>
-      {forumAnswered.map(f =>
+    <ScrollView>
+      {forumAnswered && forumAnswered.map(f =>
         <View key={f._id}>
-          <Button href={`/post/${f._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Card >
-              <Card.Title style={cardHeaderStyle} tag="h5">{f.title}
+              <Card.Title>{f.title}
                 {/* <FontAwesomeIcon icon={faHeart} style={{ fontSize: '10px', color: '#ff99ff', marginLeft: '30px', marginRight: '10px' }} /> */}
-                <small>{f.likes}</small>
-                <small className="text-muted" style={smallStyle}>ถามเมื่อ {f.date.slice(0, 10)}</small>
+                <Text>{f.likes}</Text>
+                <Text >ถามเมื่อ {f.date.slice(0, 10)}</Text>
               </Card.Title>
-              <Text style={cardBodyStyleQ}>
+              <Text>
                 {/* <FontAwesomeIcon icon={faQuestionCircle} style={{ color: '#e8ba4f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
                 {f.question}
               </Text>
-              <Text style={cardBodyStyleA}>
+              <Text>
                 {/* <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#55d13f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
                 {f.answer.answer}
               </Text>
-              <View style={{ display: 'block' }}>
-                {f.tags.map(t => <Badge key={t} style={chooseTagColor(t)} >{t}</Badge>)}
+              <View>
+                {f.tags.map(t => <Badge key={t} style={{backgroundColor: chooseTagColor(t)}}>{t}</Badge>)}
               </View>
             </Card>
-          </Button>
         </View>)}
-      <View style={postButtonViewStyle}>
-        ตั้งกระทู้ถาม
+      <View>
+        <Text>ตั้งกระทู้ถาม</Text>
         {/* <Link to={activeUser === null ? '/login' : '/addpost'} onClick={() => activeUser === null ? toast.warn('คุณต้องเข้าสู่ระบบเพื่อโพสต์คำถาม') : null}> */}
-          <Button color='primary' style={postButtonStyle}>ส่งคำถาม</Button>
+          <Button title='ส่งคำถาม'></Button>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 export default ForumDisplayAll

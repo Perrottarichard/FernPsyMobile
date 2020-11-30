@@ -38,17 +38,11 @@ const App = () => {
       forumService.setToken(user.token)
   }
 }
-
   useEffect(() => {
     if(!activeUser){
       getLoggedUser()
     }
   }, [dispatch])
-
-  useEffect(() => {
-    dispatch(initializeForumAnswered())
-  }, [dispatch])
-
   
   return (
     <NavigationContainer>
@@ -57,6 +51,8 @@ const App = () => {
         <Stack.Screen name='ForumLandingPage' component={ForumLandingPage}/>
         <Stack.Screen name='About' component={About}/>
         <Stack.Screen name='LoginForm' component={LoginForm}/>
+        <Stack.Screen name='SingleTagDisplay' component={SingleTagDisplay}/>
+        <Stack.Screen name='ForumDisplayAll' component={ForumDisplayAll}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Text, View, ScrollView } from 'react-native'
+import { Button, Text, View, ScrollView, StyleSheet } from 'react-native'
 import { Badge, Card } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
 // import { faQuestionCircle, faHeart, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -26,14 +26,10 @@ const tagColorOptions = [
 const chooseTagColor = (passed) => {
   let color = tagColorOptions.find(t => t.tag === passed)
   if (color) {
-    return {
-      backgroundColor: color.backgroundColor
-    }
+    return color.backgroundColor
   } else {
-    return {
-      backgroundColor: 'magenta'
+    return 'magenta'
     }
-  }
 }
 
 const ForumDisplayAll = (props) => {
@@ -61,11 +57,12 @@ const ForumDisplayAll = (props) => {
     <ScrollView>
       {forumAnswered && forumAnswered.map(f =>
         <View key={f._id}>
-            <Card >
+            <Card style={styles.cardStyle} >
               <Card.Title>{f.title}
                 {/* <FontAwesomeIcon icon={faHeart} style={{ fontSize: '10px', color: '#ff99ff', marginLeft: '30px', marginRight: '10px' }} /> */}
-                <Text>{f.likes}</Text>
+                {"\n"}
                 <Text >ถามเมื่อ {f.date.slice(0, 10)}</Text>
+                {"\n"}
               </Card.Title>
               <Text>
                 {/* <FontAwesomeIcon icon={faQuestionCircle} style={{ color: '#e8ba4f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
@@ -75,8 +72,9 @@ const ForumDisplayAll = (props) => {
                 {/* <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#55d13f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
                 {f.answer.answer}
               </Text>
-              <View>
-                {f.tags.map(t => <Badge key={t} style={{backgroundColor: chooseTagColor(t)}}>{t}</Badge>)}
+              <View style={styles.bottomTags}>
+                {f.tags.map(t => <Badge key={t} badgeStyle={{backgroundColor: chooseTagColor(t)}} value={t}/>)}
+                <Badge value={`${f.likes} likes`} badgeStyle={{backgroundColor: 'deeppink'}}/>
               </View>
             </Card>
         </View>)}
@@ -88,4 +86,15 @@ const ForumDisplayAll = (props) => {
     </ScrollView>
   )
 }
+
+const styles= StyleSheet.create({
+  cardStyle: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  bottomTags: {
+    flexDirection: 'row'
+  }
+  })
 export default ForumDisplayAll

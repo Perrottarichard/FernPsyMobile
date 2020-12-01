@@ -48,11 +48,11 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Home'>
         <Stack.Screen name='Home' component={Home} options={{title: 'Fern`s Counseling'}}/>
-        <Stack.Screen name='ForumLandingPage' component={ForumLandingPage}/>
+        <Stack.Screen name='ForumLandingPage' component={ForumLandingPage} options={{title: 'Choose a Topic'}}/>
         <Stack.Screen name='About' component={About}/>
-        <Stack.Screen name='LoginForm' component={LoginForm}/>
-        <Stack.Screen name='SingleTagDisplay' component={SingleTagDisplay}/>
-        <Stack.Screen name='ForumDisplayAll' component={ForumDisplayAll}/>
+        <Stack.Screen name='LoginForm' component={LoginForm} options={{title: 'Login'}}/>
+        <Stack.Screen name='SingleTagDisplay' component={SingleTagDisplay} options={{title: '[show tag topic]'}}/>
+        <Stack.Screen name='ForumDisplayAll' component={ForumDisplayAll} options={{title: 'All Posts'}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

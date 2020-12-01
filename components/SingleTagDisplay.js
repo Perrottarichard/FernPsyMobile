@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // import { faQuestionCircle, faHeart, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import NoPostsYet from './NoPostsYet';
 import { initializeForumAnswered } from '../reducers/forumReducer'
-import { Button, Text, View } from 'react-native';
+import { Button, Text, View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Badge, Card } from 'react-native-elements';
 
 const tagColorOptions = [
@@ -29,7 +29,6 @@ const chooseTagColor = (passed) => {
 
 const SingleTagDisplay = ({route, navigation}) => {
   const {tag} = route.params
-  console.log(tag)
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(true)
   let tagged = useSelector(state => state.forum.answered.map(post => post.tags.includes(state.forum.tagFilter) ? post : null)).filter(t => t !== null)
@@ -44,7 +43,9 @@ const SingleTagDisplay = ({route, navigation}) => {
 
   if (isLoading) {
     return (
-      <Text>Loading</Text>
+      <View style={styles.container}>
+      <ActivityIndicator size='large' color='blue'/>
+      </View>
     )
   }
   else if (tagged.length === 0) {
@@ -85,4 +86,13 @@ const SingleTagDisplay = ({route, navigation}) => {
       </View>
     )
 }
+
+const styles= StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
+
 export default SingleTagDisplay

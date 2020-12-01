@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Text, View, ScrollView, StyleSheet } from 'react-native'
+import { Button, Text, View, ScrollView, StyleSheet, ActivityIndicator } from 'react-native'
 import { Badge, Card } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
 // import { faQuestionCircle, faHeart, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -45,13 +45,17 @@ const ForumDisplayAll = (props) => {
       setIsLoading(false)
     }, 1500);
   }, [dispatch])
-  if (isLoading) {
-    return (
-      <Text>Loading</Text>
-    )
-  }
+
   if(!forumAnswered){
     setIsLoading(true)
+  }
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+      <ActivityIndicator size='large' color='blue'/>
+      </View>
+    )
   }
   return (
     <ScrollView>
@@ -88,6 +92,11 @@ const ForumDisplayAll = (props) => {
 }
 
 const styles= StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   cardStyle: {
     flex: 1,
     alignItems: 'center',

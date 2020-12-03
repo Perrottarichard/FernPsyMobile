@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Text, View, ScrollView, StyleSheet, ActivityIndicator } from 'react-native'
+import { Button, Text, View, ScrollView, StyleSheet, ActivityIndicator, Pressable } from 'react-native'
 import { Badge, Card } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/Ionicons'
 import { useDispatch, useSelector } from 'react-redux'
 // import { faQuestionCircle, faHeart, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { initializeForumAnswered } from '../reducers/forumReducer'
@@ -32,7 +33,7 @@ const chooseTagColor = (passed) => {
     }
 }
 
-const ForumDisplayAll = (props) => {
+const ForumDisplayAll = ({navigation}) => {
 
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(true)
@@ -60,7 +61,12 @@ const ForumDisplayAll = (props) => {
   return (
     <ScrollView>
       {forumAnswered && forumAnswered.map(f =>
-        <View key={f._id}>
+        <Pressable key={f._id} onPress={() => {
+          navigation.navigate('SinglePostDisplay', {
+            postId: f._id,
+            postTitle: f.title
+          })
+        }}>
             <Card style={styles.cardStyle} >
               <Card.Title>{f.title}
                 {/* <FontAwesomeIcon icon={faHeart} style={{ fontSize: '10px', color: '#ff99ff', marginLeft: '30px', marginRight: '10px' }} /> */}
@@ -68,6 +74,13 @@ const ForumDisplayAll = (props) => {
                 <Text >ถามเมื่อ {f.date.slice(0, 10)}</Text>
                 {"\n"}
               </Card.Title>
+              <Icon
+                name='ios-heart-sharp' 
+                color='deeppink' 
+                size={26} 
+                style={{position: 'absolute', left: 0}}>
+                </Icon>
+                <Text style={{position: 'absolute', left: 10, fontSize: 10, paddingTop: 6, color: 'white', fontWeight: 'bold'}}>{f.likes}</Text>
               <Text>
                 {/* <FontAwesomeIcon icon={faQuestionCircle} style={{ color: '#e8ba4f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
                 {f.question}
@@ -78,10 +91,9 @@ const ForumDisplayAll = (props) => {
               </Text>
               <View style={styles.bottomTags}>
                 {f.tags.map(t => <Badge key={t} badgeStyle={{backgroundColor: chooseTagColor(t)}} value={t}/>)}
-                <Badge value={`${f.likes} likes`} badgeStyle={{backgroundColor: 'deeppink'}}/>
               </View>
             </Card>
-        </View>)}
+        </Pressable>)}
       <View>
         <Text>ตั้งกระทู้ถาม</Text>
         {/* <Link to={activeUser === null ? '/login' : '/addpost'} onClick={() => activeUser === null ? toast.warn('คุณต้องเข้าสู่ระบบเพื่อโพสต์คำถาม') : null}> */}
@@ -103,7 +115,7 @@ const styles= StyleSheet.create({
     justifyContent: 'center'
   },
   bottomTags: {
-    flexDirection: 'row'
+    flexDirection: 'row-reverse'
   }
   })
 export default ForumDisplayAll

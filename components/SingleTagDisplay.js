@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 // import { faQuestionCircle, faHeart, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import NoPostsYet from './NoPostsYet';
 import { initializeForumAnswered } from '../reducers/forumReducer'
-import { Button, Text, View, ActivityIndicator, StyleSheet } from 'react-native';
+import { Button, Text, View, ActivityIndicator, StyleSheet, Pressable } from 'react-native';
 import { Badge, Card } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const tagColorOptions = [
   { tag: 'เรื่องเพศ', backgroundColor: '#ff5c4d' },
@@ -56,13 +57,26 @@ const SingleTagDisplay = ({route, navigation}) => {
     return (
       <View>
         {tagged.sort((a, b) => new Date(b.date) - new Date(a.date)).map(f =>
-          <View key={f._id}>
+          <Pressable key={f._id} onPress={() => {
+            navigation.navigate('SinglePostDisplay', {
+              postId: f._id,
+              postTitle: f.title
+            })
+          }}>
               <Card>
-                <Card.Title>{f.title}
+                <Card.Title style={{textAlign: 'center'}}>{f.title}
+                {"\n"}
                   {/* <FontAwesomeIcon icon={faHeart} style={{ fontSize: '10px', color: '#ff99ff', marginLeft: '30px', marginRight: '10px' }} /> */}
-                  <Text>{f.likes}</Text>
                   <Text>{f.date ? f.date.slice(0, 10) : 'unknown'}</Text>
+                  {"\n"}
                 </Card.Title>
+                <Icon
+                name='ios-heart-sharp' 
+                color='deeppink' 
+                size={26} 
+                style={{position: 'absolute', left: 0}}>
+                </Icon>
+                <Text style={{position: 'absolute', left: 10, fontSize: 10, paddingTop: 6, color: 'white', fontWeight: 'bold'}}>{f.likes}</Text>
                 <Text>
 
                   {/* <FontAwesomeIcon icon={faQuestionCircle} style={{ color: '#e8ba4f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
@@ -78,7 +92,7 @@ const SingleTagDisplay = ({route, navigation}) => {
                   {f.tags.map(t => <Badge key={t} style={{backgroundColor: chooseTagColor(t)}}>{t}</Badge>)}
                 </View>
               </Card>
-          </View>)}
+          </Pressable>)}
         <View>
           <Text>ตั้งกระทู้ถาม</Text>
           <Button title='ส่งคำถาม'></Button>

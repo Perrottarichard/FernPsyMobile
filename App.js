@@ -51,8 +51,9 @@ const App = () => {
         <Stack.Screen name='ForumLandingPage' component={ForumLandingPage} options={{title: 'Choose a Topic'}}/>
         <Stack.Screen name='About' component={About}/>
         <Stack.Screen name='LoginForm' component={LoginForm} options={{title: 'Login'}}/>
-        <Stack.Screen name='SingleTagDisplay' component={SingleTagDisplay} options={{title: '[show tag topic]'}}/>
-        <Stack.Screen name='ForumDisplayAll' component={ForumDisplayAll} options={{title: 'All Posts'}}/>
+        <Stack.Screen name='SingleTagDisplay' component={SingleTagDisplay} options={({ route }) => ({ title: route.params.tag })}/>
+        <Stack.Screen name='ForumDisplayAll' component={ForumDisplayAll} options={({ route }) => ({ title: route.params.tag })}/>
+        <Stack.Screen name='SinglePostDisplay' component={SinglePostDisplay} options={({ route }) => ({ title: route.params.postTitle })}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

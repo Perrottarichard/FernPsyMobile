@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { View, Text, StyleSheet} from 'react-native';
 import {Button} from 'react-native-elements'
+import Logout from "./Logout";
 
 const Home = ({navigation}) => {
   const [openMenu, setOpenMenu] = useState(false)
@@ -19,6 +20,7 @@ const Home = ({navigation}) => {
       title='Login'
       onPress={() => navigation.navigate('LoginForm')}
       />
+      <Logout/>
     </View>
   );
 };

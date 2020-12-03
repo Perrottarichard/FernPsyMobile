@@ -2,22 +2,19 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Button, View, ToastAndroid } from 'react-native'
 import { clearUser } from '../reducers/activeUserReducer'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const Logout = (props) => {
-  const { setLoggedIn, navigation } = props
+const Logout = () => {
 
   const dispatch = useDispatch()
   const logout = () => {
     AsyncStorage.clear()
-    setLoggedIn(false)
-    ToastAndroid.show('ออกจากระบบสำเร็จแล้ว')
+    ToastAndroid.show('ออกจากระบบสำเร็จแล้ว', ToastAndroid.SHORT)
     dispatch(clearUser())
-    navigation.navigate('Home')
   }
   return (
-    <View id='nav-logout-button'>
-      <Button onClick={logout}>ออกจากระบบ</Button>
+    <View>
+      <Button onPress={logout} title='ออกจากระบบ'></Button>
     </View>
   )
 }

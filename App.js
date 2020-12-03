@@ -20,11 +20,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from './components/Home';
 import ForumMain from './components/ForumMain';
 
-
 const Stack = createStackNavigator();
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(false)
+
   const activeUser = useSelector(state => state.activeUser)
   const dispatch = useDispatch()
   const forumAnswered = useSelector(state => state.forum.answered)
@@ -34,7 +33,6 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       dispatch(setUser(user))
-      setLoggedIn(true)
       forumService.setToken(user.token)
   }
 }
@@ -43,6 +41,8 @@ const App = () => {
       getLoggedUser()
     }
   }, [dispatch])
+
+  console.log(activeUser)
   
   return (
     <NavigationContainer>

@@ -8,7 +8,7 @@ import {View, Text, Button, ToastAndroid, TextInput} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginForm = (props) => {
-  const { setLoggedIn, navigation } = props
+  const { navigation } = props
   const [isLoading, setIsLoading] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -22,16 +22,10 @@ const LoginForm = (props) => {
     }
   }, [isLoading])
 
-  const handleChangeUser = (event) => {
-    setUsername(event.target.value)
-  }
-  const handleChangePass = (event) => {
-    setPassword(event.target.value)
-  }
-  const submitLogin = async event => {
-    event.preventDefault()
+  const submitLogin = async () => {
     if (!username || !password) {
-      ToastAndroid.show('กรุณาใส่ username และ password')
+      console.log('here')
+      ToastAndroid.show('กรุณาใส่ username และ password', ToastAndroid.SHORT)
     }
     else {
       try {
@@ -41,8 +35,7 @@ const LoginForm = (props) => {
         )
         forumService.setToken(user.token)
         dispatch(setUser(user))
-        ToastAndroid.show(`ยินดีต้อนรับ คุณ ${user.username}`)
-        setLoggedIn(true)
+        ToastAndroid.show(`ยินดีต้อนรับ คุณ ${user.username}`, ToastAndroid.SHORT)
         setUsername('')
         setPassword('')
         navigation.navigate('Home')
@@ -61,8 +54,8 @@ const LoginForm = (props) => {
     <View>
       <Text>เข้าสู่ระบบ</Text>
       <View >
-            <TextInput autoCompleteType='username'onChangeText={handleChangeUser} value={username} placeholder='username'></TextInput>
-            <TextInput autoCompleteType='password' onChangeText={handleChangePass} value={password} placeholder='password'></TextInput>
+            <TextInput autoCompleteType='username'onChangeText={text => setUsername(text)} value={username} placeholder='username'></TextInput>
+            <TextInput autoCompleteType='password' onChangeText={text => setPassword(text)} value={password} placeholder='password' secureTextEntry={true}></TextInput>
             <Button onPress={submitLogin} title='เข้าสู่ระบบ'></Button>
       </View>
       <View >

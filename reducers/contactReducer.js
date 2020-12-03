@@ -29,7 +29,7 @@ export const setContactHidden = (contact) => {
       type: 'SET_CONTACT_HIDDEN',
       data: hiddenContact
     })
-    ToastAndroid.show('Contact hidden. Contact the IT department to restore')
+    ToastAndroid.show('Contact hidden. Contact the IT department to restore', ToastAndroid.SHORT)
   }
 }
 

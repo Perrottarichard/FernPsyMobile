@@ -47,7 +47,7 @@ const ForumDisplayAll = ({navigation}) => {
     }, 1500);
   }, [dispatch])
 
-  if(!forumAnswered){
+  if(forumAnswered.length === 0){
     setIsLoading(true)
   }
 

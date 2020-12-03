@@ -69,9 +69,9 @@ export const answerQuestion = (answer) => {
         type: 'POST_ANSWER',
         data: answer
       })
-      ToastAndroid.show('You answered a question!')
+      ToastAndroid.show('You answered a question!', ToastAndroid.SHORT)
     } catch (error) {
-      ToastAndroid.show('Something went wrong')
+      ToastAndroid.show('Something went wrong', ToastAndroid.SHORT)
     }
   }
 }
@@ -100,7 +100,7 @@ export const addComment = (comment, postToModify) => {
 
     } catch (error) {
       console.log(error)
-      ToastAndroid.show('กรุณาลองใหม่')
+      ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT)
     }
   }
 }
@@ -112,9 +112,9 @@ export const addQuestion = data => {
         type: 'NEW_QUESTION',
         data: newQuestion
       })
-      ToastAndroid.show('คำถามของคุณถูกส่งเรียบร้อยแล้ว อดใจรอสักนิด โพสของคุณจะปรากฏหลังได้รับการยืนยันจากแอดมินค่ะ', { autoClose: false })
+      ToastAndroid.show('คำถามของคุณถูกส่งเรียบร้อยแล้ว อดใจรอสักนิด โพสของคุณจะปรากฏหลังได้รับการยืนยันจากแอดมินค่ะ', ToastAndroid.SHORT)
     } catch (error) {
-      ToastAndroid.show('กรุณาลองใหม่')
+      ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT)
     }
   }
 }
@@ -125,7 +125,7 @@ export const deleteQuestion = _id => {
       type: 'DELETE_QUESTION',
       data: _id
     })
-    ToastAndroid.show('Question deleted')
+    ToastAndroid.show('Question deleted', ToastAndroid.SHORT)
   }
 }
 export const deleteComment = _id => {
@@ -186,7 +186,7 @@ export const setFlaggedComment = (comment) => {
       type: 'FLAG_COMMENT',
       data: flaggedPost
     })
-    ToastAndroid.show('ขอบคุณที่ช่วยรายงานปัญหาให้แอดมินทราบค่ะ')
+    ToastAndroid.show('ขอบคุณที่ช่วยรายงานปัญหาให้แอดมินทราบค่ะ', ToastAndroid.SHORT)
   }
 }
 

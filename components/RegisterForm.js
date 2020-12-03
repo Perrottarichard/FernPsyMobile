@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import { ToastAndroid, View, Text, Button, TextInput, Modal, StyleSheet, TouchableHighlight} from 'react-native'
+import { ToastAndroid, View, Text, Modal, StyleSheet, Pressable} from 'react-native'
+import {Input} from 'react-native-elements'
 import userService from '../services/userService'
+import Graphic from '../undraw_mobile_login_ikmv.svg'
 
 const RegisterForm = () => {
 
@@ -62,25 +64,44 @@ const RegisterForm = () => {
 
   return (
     <View>
-        <Button style={styles.openButton} onPress={toggle} title='สมัครเลย'></Button>
+        <Pressable style={styles.openButton} onPress={toggle}>
+          <Text style={styles.openRegModalText}>
+          สมัครเลย
+          </Text>
+        </Pressable>
         <Modal animationType='slide' visible={modal}>
+        <View style={styles.graphicView}>
+        <Graphic width={280} height={280}/>
+      </View>
           <View style={styles.modalView}>
             <Text>สมัครเข้าใช้งาน</Text>
 
-            <TextInput placeholder='email' onChangeText={email => setEmail(email)} value={email}></TextInput>
+            <Input placeholder='email' onChangeText={email => setEmail(email)} value={email}></Input>
 
-            <TextInput placeholder='Password'autoCompleteType="password" secureTextEntry={true}onChangeText={pass => setPassword(pass)} value={password}></TextInput>
+            <Input placeholder='Password'autoCompleteType="password" secureTextEntry={true}onChangeText={pass => setPassword(pass)} value={password}></Input>
 
-            <TextInput onChangeText={cpass => setConfirmPassword(cpass)} type='password' placeholder='ยืนยัน Password' value={confirmPassword} secureTextEntry={true}></TextInput>
+            <Input onChangeText={cpass => setConfirmPassword(cpass)} type='password' placeholder='ยืนยัน Password' value={confirmPassword} secureTextEntry={true}></Input>
 
-            <Button onPress={submitRegister} title='สมัครเลย'></Button>
-            <Button onPress={toggle} title='ยกเลิก'></Button>
+            <Pressable onPress={submitRegister} style={styles.submitRegister}>
+              <Text style={styles.submitRegisterText}>
+              สมัครเลย
+              </Text>
+            </Pressable>
+            <Pressable onPress={toggle} style={styles.cancelRegister}>
+              <Text style={styles.cancelRegisterText}>
+              ยกเลิก
+              </Text>
+            </Pressable>
             </View>
         </Modal>
     </View >
   )
 }
 const styles = StyleSheet.create({
+  graphicView: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   modalView: {
     margin: 20,
     backgroundColor: "white",
@@ -97,10 +118,17 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   openButton: {
-    backgroundColor: "#F194FF",
+    backgroundColor: 'lightgray',
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
+    width: 300,
+    margin: 8,
+    alignSelf: 'center'
+  },
+  openRegModalText: {
+    color: '#d896ac',
+    alignSelf: 'center'
   },
   textStyle: {
     color: "white",
@@ -110,6 +138,30 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
+  },
+  submitRegister: {
+    backgroundColor: '#252626',
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: 300,
+    margin: 8
+  },
+  cancelRegister: {
+    backgroundColor: 'lightgray',
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: 300,
+    margin: 8
+  },
+  submitRegisterText: {
+    color: '#d896ac',
+    alignSelf: 'center'
+  },
+  cancelRegisterText: {
+    color: '#d896ac',
+    alignSelf: 'center'
   }
 });
 

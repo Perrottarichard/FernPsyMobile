@@ -4,7 +4,8 @@ import { setUser } from '../reducers/activeUserReducer'
 import loginService from '../services/loginService'
 import forumService from '../services/forumService'
 import RegisterForm from './RegisterForm'
-import {View, Text, Button, ToastAndroid, TextInput} from 'react-native'
+import {View, Text, Button, ToastAndroid, Pressable, StyleSheet} from 'react-native'
+import {Input} from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginForm = (props) => {
@@ -51,11 +52,14 @@ const LoginForm = (props) => {
   }
   return (
     <View>
-      <Text>เข้าสู่ระบบ</Text>
       <View >
-            <TextInput autoCompleteType='username'onChangeText={text => setEmail(text)} value={email} placeholder='Email'></TextInput>
-            <TextInput autoCompleteType='password' onChangeText={text => setPassword(text)} value={password} placeholder='Password' secureTextEntry={true}></TextInput>
-            <Button onPress={submitLogin} title='เข้าสู่ระบบ'></Button>
+            <Input autoCompleteType='username'onChangeText={text => setEmail(text)} value={email} placeholder='Email' leftIcon={{ type: 'material-community-icons', name: 'email', color: 'gray' }}></Input>
+            <Input autoCompleteType='password' onChangeText={text => setPassword(text)} value={password} placeholder='Password' secureTextEntry={true} leftIcon={{ type: 'material-community-icons', name: 'lock-outline', color: 'gray' }} ></Input>
+            <Pressable onPress={submitLogin} style={styles.loginButton}>
+              <Text style={styles.loginButtonText}>
+              เข้าสู่ระบบ
+              </Text>
+            </Pressable>
       </View>
       <View >
         <Text>ยังไม่มีแอคเคาท์ คลิกที่นี่'</Text>
@@ -64,5 +68,21 @@ const LoginForm = (props) => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  loginButton: {
+    backgroundColor: '#252626',
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: 300,
+    margin: 8,
+    alignSelf: 'center'
+  },
+  loginButtonText: {
+    color: '#d896ac',
+    alignSelf: 'center'
+  }
+})
 
 export default LoginForm;

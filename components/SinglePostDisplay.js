@@ -55,32 +55,32 @@ const SinglePostDisplay = (props) => {
     }
   }, [isLoading])
 
-  const submitComment = async (event) => {
-    event.preventDefault()
+  const submitComment = async () => {
+
     let postToModifyId = post
     if (activeUser === null) {
-      ToastAndroid.show('คุณต้องลงชื่อเพื่อแสดงความคิดเห็น')
+      ToastAndroid.show('คุณต้องลงชื่อเพื่อแสดงความคิดเห็น', ToastAndroid.SHORT)
       navigation.navigate('Login')
     } else if (comment === '') {
-      ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น')
+      ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT)
     } else {
       try {
         setIsLoading(true)
         dispatch(addComment(comment, postToModifyId))
         setComment('')
       } catch (error) {
-        console.log('thisistheerrror', error)
-        ToastAndroid.show('กรุณาลองใหม่')
+        console.log(error)
+        ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT)
       }
     }
   }
   const submitHeart = async () => {
     let postToModify = post
     if (activeUser === null) {
-      ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ')
+      ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT)
       navigation.navigate('Login')
     } else if (sentHeart !== null) {
-      ToastAndroid.show('คุณได้ส่งหัวใจสำหรับโพสต์นี้แล้ว')
+      ToastAndroid.show('คุณได้ส่งหัวใจสำหรับโพสต์นี้แล้ว', ToastAndroid.SHORT)
     } else {
       try {
         setPulseHeart('heart-icon')
@@ -91,16 +91,13 @@ const SinglePostDisplay = (props) => {
         }, 2000);
       } catch (error) {
         console.log(error)
-        ToastAndroid.show('กรุณาลองใหม่')
+        ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT)
       }
     }
   }
-  const handleCommentChange = (event) => {
-    setComment(event.target.value)
-  }
   const flag = (comment) => {
     if (comment.isFlagged) {
-      return ToastAndroid.show('ความคิดเห็นนี้มีผู้รายงานให้แอดมินทราบปัญหาเรียบร้อยแล้ว')
+      return ToastAndroid.show('ความคิดเห็นนี้มีผู้รายงานให้แอดมินทราบปัญหาเรียบร้อยแล้ว', ToastAndroid.SHORT)
     }
     // if (window.confirm('คุณแน่ใจหรือไม่ว่าคุณต้องการรายงานความคิดเห็นนี้ให้แอดมินทราบ'))
     else{
@@ -150,7 +147,7 @@ const SinglePostDisplay = (props) => {
         </Card>
       </View>
       <View>
-        <TextInput onChange={handleCommentChange} placeholder='แสดงความคิดเห็น' value={comment}>
+        <TextInput onChange={comment => setComment(comment)} placeholder='แสดงความคิดเห็น' value={comment}>
         </TextInput>
           <Button onPress={submitComment} title='ส่งความคิดเห็น'></Button>
       </View>

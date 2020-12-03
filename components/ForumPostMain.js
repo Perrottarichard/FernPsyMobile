@@ -1,10 +1,12 @@
 /* eslint-disable no-multi-str */
 import React, { useState } from 'react'
 import { Button, Text, ToastAndroid, View, TextInput } from 'react-native'
+import {Input} from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useDispatch, useSelector } from 'react-redux'
 import { addQuestion } from '../reducers/forumReducer'
 import MultiSelect from 'react-native-multiple-select';
+import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
 const ForumPostMain = (props) => {
@@ -31,7 +33,6 @@ const ForumPostMain = (props) => {
   const handleTagChange = (selected) => {
     setSelectedTags(selected)
   }
-
   const handleEditorSubmit = async () => {
 
     if (!title || !question) {
@@ -84,7 +85,7 @@ const ForumPostMain = (props) => {
         <Icon name='question'/>
       </View>
       <View>
-        <TextInput
+        <Input
           placeholder='พิมพ์หัวข้อที่นี่'
           onChange={t => setTitle(t)}
           value={title}
@@ -92,7 +93,7 @@ const ForumPostMain = (props) => {
       </View>
 
       <View>
-        <TextInput
+        <Input
           placeholder='พิมพ์รายละเอียดคำถามของคุณ'
           onChange={q => setQuestion(q)}
           value={question}
@@ -101,6 +102,7 @@ const ForumPostMain = (props) => {
           onSelectedItemsChange={(value) => handleTagChange(value)}
           selectedItems={selectedTags}
           uniqueKey='name'
+          selectText='Add some tags'
           items={[
             { name: 'ปัญหาเรื่องเพศ', value: 'ปัญหาเรื่องเพศ', key: 'a' },  //sex
             { name: 'การออกเดท', value: 'การออกเดท', key: 'b' }, //dating

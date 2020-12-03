@@ -16,12 +16,11 @@ import SingleTagDisplay from './components/SingleTagDisplay';
 import SinglePostDisplay from './components/SinglePostDisplay';
 import MyQuestions from './components/MyQuestions'
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import Home from './components/TabNav';
 import ForumMain from './components/ForumMain';
 import TabNav from './components/TabNav';
 
-const Stack = createStackNavigator();
+
 
 const App = () => {
 
@@ -42,20 +41,9 @@ const App = () => {
       getLoggedUser()
     }
   }, [dispatch])
-
-  console.log(activeUser)
   
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator initialRouteName='Home'>
-        <Stack.Screen name='Home' component={Home} options={{title: 'Fern`s Counseling'}}/>
-        <Stack.Screen name='ForumLandingPage' component={ForumLandingPage} options={{title: 'Choose a Topic'}}/>
-        <Stack.Screen name='About' component={About}/>
-        <Stack.Screen name='LoginForm' component={LoginForm} options={{title: 'Login'}}/>
-        <Stack.Screen name='SingleTagDisplay' component={SingleTagDisplay} options={({ route }) => ({ title: route.params.tag })}/>
-        <Stack.Screen name='ForumDisplayAll' component={ForumDisplayAll} options={({ route }) => ({ title: route.params.tag })}/>
-        <Stack.Screen name='SinglePostDisplay' component={SinglePostDisplay} options={({ route }) => ({ title: route.params.postTitle })}/>
-      </Stack.Navigator> */}
       <TabNav/>
     </NavigationContainer>
   );

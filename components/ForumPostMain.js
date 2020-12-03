@@ -1,28 +1,18 @@
 /* eslint-disable no-multi-str */
 import React, { useState } from 'react'
-import { Button, Text, ToastAndroid, View } from 'react-native'
-import { Input } from 'react-native-elements'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { Button, Text, ToastAndroid, View, TextInput } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useDispatch, useSelector } from 'react-redux'
 import { addQuestion } from '../reducers/forumReducer'
-import {Picker} from '@react-native-picker/picker';
+import MultiSelect from 'react-native-multiple-select';
 // import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
-
-const buttonStyle = {
-  marginTop: '20px',
-  width: '150px',
-  borderColor: '#343a40',
-  borderWidth: '3px',
-  borderStyle: 'solid',
-  backgroundColor: '#288046',
-  fontFamily: 'Kanit',
-}
 
 const ForumPostMain = (props) => {
   const { activeUser, navigation } = props
   const [isLoading, setIsLoading] = useState(false)
   const [question, setQuestion] = useState('')
   const [title, setTitle] = useState('')
+  const [selectedTags, setSelectedTags] = useState([])
   const dispatch = useDispatch()
 
   React.useEffect(() => {
@@ -37,55 +27,31 @@ const ForumPostMain = (props) => {
   if (chosenFilter === 'รวมทุกหัวข้อ' || chosenFilter === '') {
     chosenFilter = undefined
   }
-  const [selectedTags, setSelectedTags] = useState([])
-  const tagOptions = [
-    { value: chosenFilter, label: chosenFilter },
-    { value: 'ปัญหาเรื่องเพศ', label: 'ปัญหาเรื่องเพศ' },  //sex
-    { value: 'การออกเดท', label: 'การออกเดท' }, //dating
-    { value: 'การเสพติด', label: 'การเสพติด' }, //addiction
-    { value: 'เพื่อน', label: 'เพื่อน' }, //friendship
-    { value: 'lgbt', label: 'LGBT' },
-    { value: 'โรคซึมเศร้า', label: 'โรคซึมเศร้า' }, //depression
-    { value: 'ความวิตกกังวล', label: 'ความวิตกกังวล' }, //anxiety
-    { value: 'ไบโพลาร์', label: 'ไบโพลาร์' }, //bipolar
-    { value: 'relationships', label: 'Relationships' },
-    { value: 'การทำงาน', label: 'การทำงาน' }, //career
-    { value: 'สุขภาพจิต', label: 'สุขภาพจิต' }, //mental health
-    { value: 'bullying', label: 'Bullying' },
-    { value: 'ครอบครัว', label: 'ครอบครัว' }, //family
-    { value: 'อื่นๆ', label: 'อื่นๆ' } //other
-  ]
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value)
-  }
-  const handleContentChange = (event) => {
-    setQuestion(event.target.value)
-  }
   const handleTagChange = (selected) => {
     setSelectedTags(selected)
   }
 
-  const handleEditorSubmit = async (event) => {
-    event.preventDefault()
+  const handleEditorSubmit = async () => {
+
     if (!title || !question) {
-      ToastAndroid.show('กรุณาใส่หัวข้อคำถาม คำถามของคุณ และโปรดเลือกแท็กสองหัวข้อ' )
+      ToastAndroid.show('กรุณาใส่หัวข้อคำถาม คำถามของคุณ และโปรดเลือกแท็กสองหัวข้อ', ToastAndroid.SHORT )
       //'Please make sure you have a title, a question, and two tags'
       // กรุณาใส่หัวข้อคำถาม คำถามของคุณ และโปรดเลือกแท็กสองหัวข้อ
     }
     else if ((selectedTags.length === 0 && !chosenFilter) || selectedTags.length > 3) {
-      ToastAndroid.show('You should have 1-3 tags')
+      ToastAndroid.show('You should have 1-3 tags', ToastAndroid.SHORT)
       //กรุณาเลือกแท็กสองหัวข้อค่ะ
       //'Please select 2 tags'
     }
     else if (!activeUser) {
-      ToastAndroid.show('กรุณาล็อคอินก่อนโพสคำถามค่ะ')
+      ToastAndroid.show('กรุณาล็อคอินก่อนโพสคำถามค่ะ', ToastAndroid.SHORT)
       //กรุณาล็อคอินก่อนโพสคำถามค่ะ
       //'You must be logged in to post to the forum'
-      history.push('/login')
+      navigation.navigate('Login')
     }
     else if (activeUser.username === 'Fern-Admin' || activeUser.username === 'Richard-Admin') {
-      ToastAndroid.show('Why are you trying to ask yourself a question?')
+      ToastAndroid.show('Why are you trying to ask yourself a question?', ToastAndroid.SHORT)
 
     } else {
       const postToAdd = {
@@ -104,7 +70,7 @@ const ForumPostMain = (props) => {
         setSelectedTags([])
         navigation.navigate('Home')
       } catch (error) {
-        ToastAndroid.show('กรุณาล็อคอินก่อนโพสคำถามค่ะ')
+        ToastAndroid.show('กรุณาล็อคอินก่อนโพสคำถามค่ะ', ToastAndroid.SHORT)
         //กรุณาล็อคอินก่อนโพสคำถามค่ะ
         console.log(error)
 
@@ -114,33 +80,48 @@ const ForumPostMain = (props) => {
   }
   return (
     <View>
-      <View style={{ display: 'block', textAlign: 'center', fontSize: '100px', color: '#343a40', marginBottom: '0px' }}>
-        <Icon name='questioncircle' type='fontawesome'/>
+      <View>
+        <Icon name='question'/>
       </View>
-      <View id='forum-title-View'>
-        <Input
+      <View>
+        <TextInput
           placeholder='พิมพ์หัวข้อที่นี่'
-          onChange={handleTitleChange}
+          onChange={t => setTitle(t)}
           value={title}
-          style={{ marginBottom: '20px', fontFamily: 'Kanit' }}
         />
       </View>
 
-      <View id='forum-question-View'>
-        <Input
+      <View>
+        <TextInput
           placeholder='พิมพ์รายละเอียดคำถามของคุณ'
-          onChange={handleContentChange}
+          onChange={q => setQuestion(q)}
           value={question}
-          
         />
-        <Picker
-          onValueChange={(itemValue, itemIndex) => handleTagChange(itemValue, itemIndex)}
+        <MultiSelect
+          onSelectedItemsChange={(value) => handleTagChange(value)}
+          selectedItems={selectedTags}
+          uniqueKey='name'
+          items={[
+            { name: 'ปัญหาเรื่องเพศ', value: 'ปัญหาเรื่องเพศ', key: 'a' },  //sex
+            { name: 'การออกเดท', value: 'การออกเดท', key: 'b' }, //dating
+            { name: 'การเสพติด', value: 'การเสพติด', key: 'c' }, //addiction
+            { name: 'เพื่อน', value: 'เพื่อน', key: 'd' }, //friendship
+            { name: 'lgbt', value: 'LGBT', key: 'e' },
+            { name: 'โรคซึมเศร้า', value: 'โรคซึมเศร้า', key: 'f' }, //depression
+            { name: 'ความวิตกกังวล', value: 'ความวิตกกังวล', key: 'g' }, //anxiety
+            { name: 'ไบโพลาร์', value: 'ไบโพลาร์', key: 'h' }, //bipolar
+            { name: 'relationships', value: 'Relationships', key: 'i' },
+            { name: 'การทำงาน', value: 'การทำงาน', key: 'j' }, //career
+            { name: 'สุขภาพจิต', value: 'สุขภาพจิต', key: 'k' }, //mental health
+            { name: 'bullying', value: 'Bullying', key: 'l' },
+            { name: 'ครอบครัว', value: 'ครอบครัว', key: 'm' }, //family
+            { name: 'อื่นๆ', value: 'อื่นๆ', key: 'n' } //other
+            ]}
           >
-          {tagOptions.map(t => <Picker.Item label={t.label} value={t.value}></Picker.Item>)}
-        </Picker>
+        </MultiSelect>
         <View>
           <Text>ชื่อที่คุณใช้ล็อคอินจะไม่ปรากฏในคำถามของคุณ</Text>
-          <Button onPress={handleEditorSubmit}>ส่งคำถาม</Button>
+          <Button onPress={handleEditorSubmit} title={'ส่งคำถาม'}></Button>
         </View>
       </View>
     </View >

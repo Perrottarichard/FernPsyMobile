@@ -1,21 +1,14 @@
 import React, { useState } from 'react'
 import { ToastAndroid, View, Text, Button, TextInput, Modal, StyleSheet, TouchableHighlight} from 'react-native'
 import userService from '../services/userService'
-import {Picker} from '@react-native-picker/picker';
 
 const RegisterForm = () => {
 
   const [modal, setModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
-  // eslint-disable-next-line no-unused-vars
-  const [name, setName] = useState('')
-  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [selectedGender, setSelectedGender] = useState({value: ''})
-  const [dateOfBirth, setDateOfBirth] = useState('')
-
 
   React.useEffect(() => {
     if (isLoading) {
@@ -27,45 +20,20 @@ const RegisterForm = () => {
 
   const toggle = () => setModal(!modal);
 
-  const genderOptions = [
-    { value: 'ชาย', label: 'ชาย' },
-    { value: 'หญิง', label: 'หญิง' },
-    { value: 'ชายรักชาย', label: 'ชายรักชาย' },
-    { value: 'หญิงรักหญิง', label: 'หญิงรักหญิง' },
-    { value: 'อื่นๆ', label: 'อื่นๆ' }
-  ]
+  // --not in use--
+  // const genderOptions = [
+  //   { value: 'ชาย', label: 'ชาย' },
+  //   { value: 'หญิง', label: 'หญิง' },
+  //   { value: 'ชายรักชาย', label: 'ชายรักชาย' },
+  //   { value: 'หญิงรักหญิง', label: 'หญิงรักหญิง' },
+  //   { value: 'อื่นๆ', label: 'อื่นๆ' }
+  // ]
 
-  const handleChangeName = (event) => {
-    setName(event.target.value)
-  }
-  const handleChangeUsername = (event) => {
-    setUsername(event.target.value)
-  }
-  const handleChangeEmail = (event) => {
-    setEmail(event.target.value)
-  }
-  const handleChangePassword = (event) => {
-    setPassword(event.target.value)
-  }
-  const handleChangeConfirmPassword = (event) => {
-    setConfirmPassword(event.target.value)
-  }
-  const handleChangeDateOfBirth = (event) => {
-    setDateOfBirth(event.target.value)
-  }
-
-  const variations = ['fern', 'Fern', 'admin', 'Admin', 'administrator', 'Administrator', 'nilubon', 'Nilubon', 'Fern-Admin', 'Fern-admin', 'fern-admin', 'fern-Admin', 'Fern Admin', 'fern Admin', 'Fern admin', 'fern admin', 'FernAdmin', 'fernAdmin', 'fern_admin', 'Fern_Admin']
-
-  const submitRegister = async event => {
-    event.preventDefault()
-    if (variations.includes(username) || variations.map(v => v.toLowerCase).includes(username)) {
-      ToastAndroid.show('ขออภัยค่ะ ชื่อนี้มีผู้ใช้งานแล้ว')
-    }
-    else if (!name || !username || !selectedGender || !dateOfBirth || !password) {
-      ToastAndroid.show('กรุณากรอกข้อมูลให้ครบถ้วน')
-    }
-    else if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/i.test(password)) {
-      ToastAndroid.show('Password ต้องเป็นภาษาอังกฤษ ความยาวอย่างน้อย 8-20 ตัวอักษร และไม่ใช้อักขระพิเศษ')
+  const submitRegister = async () => {
+   // /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/i.test(password)
+   //8-20 char, number, upper, lower password checker -- not in use
+    if (!password) {
+      ToastAndroid.show('You must have a password')
     }
     else if (password !== confirmPassword) {
       ToastAndroid.show('กรุณายืนยัน password ให้ถูกต้อง')
@@ -79,15 +47,11 @@ const RegisterForm = () => {
         toggle()
       }, 1500);
       try {
-        await userService.registerUser({ name, username, password, email, selectedGender, dateOfBirth })
+        await userService.registerUser({ password, email})
         ToastAndroid.show('สำเร็จแล้ว คุณสามารถล็อคอินและตั้งกระทู้ถามได้เลยค่ะ')
-        setUsername('')
         setPassword('')
         setConfirmPassword('')
-        setName('')
-        setSelectedGender('')
         setEmail('')
-        setDateOfBirth('')
       }
       catch (error) {
         console.log(error)
@@ -102,20 +66,12 @@ const RegisterForm = () => {
         <Modal animationType='slide' visible={modal}>
           <View style={styles.modalView}>
             <Text>สมัครเข้าใช้งาน</Text>
-                <TextInput style={styles.modalText}onChangeText={handleChangeName} placeholder='ชื่อ'value={name}></TextInput>
 
-                <TextInput onChangeText={handleChangeUsername} autoCompleteType='username'placeholder='Username (ภาษาอังกฤษ ขั้นต่ำ 5 ตัวอักษร)'value={username}></TextInput>
+            <TextInput placeholder='email' onChangeText={email => setEmail(email)} value={email}></TextInput>
 
-                <TextInput placeholder='Password (ภาษาอังกฤษ 8-20 ตัวอักษร)'autoCompleteType="password" onChangeText={handleChangePassword} value={password}></TextInput>
+            <TextInput placeholder='Password'autoCompleteType="password" secureTextEntry={true}onChangeText={pass => setPassword(pass)} value={password}></TextInput>
 
-                <TextInput onChangeText={handleChangeConfirmPassword} type='password' placeholder='ยืนยัน Password' value={confirmPassword}></TextInput>
-
-                <TextInput placeholder='email' onChangeText={handleChangeEmail} value={email}></TextInput>
-                <Picker style={{height: 50, width: 160}} mode='dropdown' selectedValue={selectedGender.value} onValueChange={(itemValue) => setSelectedGender({value: itemValue})}>
-                {genderOptions.map(t => <Picker.Item key={t.value} label={t.label} value={t.value}></Picker.Item>)}  
-                </Picker>
-
-                <TextInput placeholder='วันเกิด'onChangeText={handleChangeDateOfBirth} value={dateOfBirth}></TextInput>
+            <TextInput onChangeText={cpass => setConfirmPassword(cpass)} type='password' placeholder='ยืนยัน Password' value={confirmPassword} secureTextEntry={true}></TextInput>
 
             <Button onPress={submitRegister} title='สมัครเลย'></Button>
             <Button onPress={toggle} title='ยกเลิก'></Button>

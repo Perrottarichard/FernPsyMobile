@@ -1,17 +1,23 @@
 import React from 'react'
-import { Text, View, Image, StyleSheet, Dimensions } from 'react-native'
-import WelcomeCats from '../undraw_welcome_cats_thqn.svg'
-import LoginForm from './LoginForm'
+import {useSelector} from 'react-redux'
+import { View, StyleSheet, Text} from 'react-native'
+import LoginNavigate from './LoginNavigate'
+import Logout from './Logout'
 
 const Home = () => {
+  const user = useSelector(state => state.activeUser)
+  
+  if(user && user.token) {
+    return(
+      <View>
+        <Text>{user.email}</Text>
+        <Logout/>
+      </View>
+    )
+  }
   return(
     <View style={styles.container}>
-      <View style={styles.cats}>
-      <WelcomeCats width={280} height={220}/>
-      </View>
-      <View>
-      <LoginForm/>
-      </View>
+      <LoginNavigate/>
     </View>
   )
 }
@@ -24,9 +30,5 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20
   },
-  cats: {
-    paddingTop: 30,
-    alignSelf: 'center'
-  }
 })
 export default Home

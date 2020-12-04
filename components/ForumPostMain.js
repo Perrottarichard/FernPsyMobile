@@ -1,13 +1,10 @@
 /* eslint-disable no-multi-str */
 import React, { useState } from 'react'
-import { Button, Text, ToastAndroid, View, TextInput } from 'react-native'
-import {Input} from 'react-native-elements'
-import Icon from 'react-native-vector-icons/FontAwesome5'
+import { Keyboard, Text, ToastAndroid, View, Pressable, StyleSheet, TextInput} from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { addQuestion } from '../reducers/forumReducer'
 import MultiSelect from 'react-native-multiple-select';
-import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
-// import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import PostGraphic from '../undraw_add_post_64nu.svg'
 
 const ForumPostMain = (props) => {
   const { activeUser, navigation } = props
@@ -29,11 +26,11 @@ const ForumPostMain = (props) => {
   if (chosenFilter === 'รวมทุกหัวข้อ' || chosenFilter === '') {
     chosenFilter = undefined
   }
-
   const handleTagChange = (selected) => {
     setSelectedTags(selected)
   }
   const handleEditorSubmit = async () => {
+    console.log(question)
 
     if (!title || !question) {
       ToastAndroid.show('กรุณาใส่หัวข้อคำถาม คำถามของคุณ และโปรดเลือกแท็กสองหัวข้อ', ToastAndroid.SHORT )
@@ -81,24 +78,38 @@ const ForumPostMain = (props) => {
   }
   return (
     <View>
-      <View>
-        <Icon name='question'/>
+      <View style={styles.graphicContainer}>
+        <PostGraphic width={300} height={200}/>
       </View>
-      <View>
-        <Input
-          placeholder='พิมพ์หัวข้อที่นี่'
-          onChange={t => setTitle(t)}
-          value={title}
+      <View style={styles.textAreaContainerTitle}>
+        <TextInput
+        style={styles.textAreaTitle}
+        multiline={false}
+        numberOfLines={1}
+        placeholder='พิมพ์หัวข้อที่นี่'
+        onChangeText={t => setTitle(t)}
+        keyboardType="default"
+        returnKeyType="done"
+        onSubmitEditing={()=>{Keyboard.dismiss()}}
         />
       </View>
 
-      <View>
-        <Input
-          placeholder='พิมพ์รายละเอียดคำถามของคุณ'
-          onChange={q => setQuestion(q)}
-          value={question}
+      <View style={styles.textAreaContainerQuestion}>
+        <TextInput
+        style={styles.textAreaQuestion}
+        multiline={true}
+        numberOfLines={4}
+        placeholder='พิมพ์รายละเอียดคำถามของคุณ'
+        onChangeText={q => setQuestion(q)}
+        keyboardType="default"
+        returnKeyType="done"
+        onSubmitEditing={()=>{Keyboard.dismiss()}}
+        blurOnSubmit={true}
         />
+        </View>
+        <View>
         <MultiSelect
+          styleMainWrapper={styles.picker}
           onSelectedItemsChange={(value) => handleTagChange(value)}
           selectedItems={selectedTags}
           uniqueKey='name'
@@ -121,12 +132,73 @@ const ForumPostMain = (props) => {
             ]}
           >
         </MultiSelect>
-        <View>
-          <Text>ชื่อที่คุณใช้ล็อคอินจะไม่ปรากฏในคำถามของคุณ</Text>
-          <Button onPress={handleEditorSubmit} title={'ส่งคำถาม'}></Button>
+        <View style={styles.afterForm}>
+          <Text style={styles.afterFormText}>ชื่อที่คุณใช้ล็อคอินจะไม่ปรากฏในคำถามของคุณ</Text>
+          <Pressable onPress={handleEditorSubmit} style={styles.submitPostButton}>
+            <Text style={styles.submitPostText}>
+            ส่งคำถาม
+            </Text>
+          </Pressable>
         </View>
       </View>
     </View >
   )
 }
+
+const styles = StyleSheet.create({
+  graphicContainer: {
+    marginTop: 30,
+    marginBottom: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  textAreaContainerTitle: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    padding: 5
+  },
+  textAreaContainerQuestion: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    padding: 5
+  },
+  textAreaTitle: {
+    height: 50,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: 'white',
+    justifyContent: "flex-start"
+  },
+  textAreaQuestion: {
+    height: 100,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: 'white',
+    justifyContent: "flex-start"
+  },
+  picker: {
+    marginTop: 10,
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  submitPostButton: {
+    backgroundColor: '#252626',
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: 300,
+    margin: 8,
+    alignSelf: 'center'
+  },
+  submitPostText: {
+    color: '#d896ac',
+    alignSelf: 'center'
+  },
+  afterForm: {
+    marginTop: 50
+  },
+  afterFormText: {
+    alignSelf: 'center'
+  }
+})
 export default ForumPostMain

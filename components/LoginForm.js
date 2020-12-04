@@ -3,10 +3,11 @@ import { useDispatch } from 'react-redux'
 import { setUser } from '../reducers/activeUserReducer'
 import loginService from '../services/loginService'
 import forumService from '../services/forumService'
-import RegisterForm from './RegisterForm'
-import {View, Text, Button, ToastAndroid, Pressable, StyleSheet} from 'react-native'
+import {View, Text, ToastAndroid, Pressable, StyleSheet} from 'react-native'
 import {Input} from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import WelcomeCats from '../undraw_welcome_cats_thqn.svg'
+
 
 const LoginForm = (props) => {
   const { navigation } = props
@@ -35,7 +36,7 @@ const LoginForm = (props) => {
         )
         forumService.setToken(user.token)
         dispatch(setUser(user))
-        ToastAndroid.show(`ยินดีต้อนรับ คุณ ${user.username}`, ToastAndroid.SHORT)
+        ToastAndroid.show(`ยินดีต้อนรับ คุณ ${user.email}`, ToastAndroid.SHORT)
         setEmail('')
         setPassword('')
         navigation.navigate('Home')
@@ -52,9 +53,14 @@ const LoginForm = (props) => {
   }
   return (
     <View>
-      <View >
-            <Input autoCompleteType='username'onChangeText={text => setEmail(text)} value={email} placeholder='Email' leftIcon={{ type: 'material-community-icons', name: 'email', color: 'gray' }}></Input>
-            <Input autoCompleteType='password' onChangeText={text => setPassword(text)} value={password} placeholder='Password' secureTextEntry={true} leftIcon={{ type: 'material-community-icons', name: 'lock-outline', color: 'gray' }} ></Input>
+      <View style={styles.cats}>
+      <WelcomeCats width={280} height={220}/>
+      </View>
+      <View>
+            <Input autoCompleteType='username'onChangeText={text => setEmail(text)}placeholder='Email' leftIcon={{ type: 'material-community-icons', name: 'email', color: 'gray' }}></Input>
+
+            <Input autoCompleteType='password' onChangeText={text => setPassword(text)}  placeholder='Password' secureTextEntry={true} leftIcon={{ type: 'material-community-icons', name: 'lock-outline', color: 'gray' }} ></Input>
+
             <Pressable onPress={submitLogin} style={styles.loginButton}>
               <Text style={styles.loginButtonText}>
               เข้าสู่ระบบ
@@ -63,7 +69,11 @@ const LoginForm = (props) => {
       </View>
       <View >
         <Text>ยังไม่มีแอคเคาท์ คลิกที่นี่'</Text>
-        <RegisterForm />
+        <Pressable style={styles.goToRegisterButton} onPress={() => navigation.navigate('RegisterForm')}>
+          <Text style={styles.openRegText}>
+          สมัครเลย
+          </Text>
+        </Pressable>
       </View>
     </View>
   )
@@ -77,12 +87,34 @@ const styles = StyleSheet.create({
     elevation: 2,
     width: 300,
     margin: 8,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop: 30
   },
   loginButtonText: {
     color: '#d896ac',
     alignSelf: 'center'
+  },
+  openRegText: {
+    color: '#d896ac',
+    alignSelf: 'center'
+  },
+  goToRegisterButton: {
+    backgroundColor: 'lightgray',
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: 300,
+    margin: 8,
+    alignSelf: 'center'
+  },
+  cats: {
+    paddingTop: 120,
+    alignSelf: 'center'
+  },
+  input: {
+    marginBottom: 20
   }
+
 })
 
 export default LoginForm;

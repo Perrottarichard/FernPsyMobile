@@ -3,7 +3,6 @@ import { Button, Text, View, ScrollView, StyleSheet, ActivityIndicator, Pressabl
 import { Badge, Card } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useDispatch, useSelector } from 'react-redux'
-// import { faQuestionCircle, faHeart, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { initializeForumAnswered } from '../reducers/forumReducer'
 
 const tagColorOptions = [
@@ -38,18 +37,17 @@ const ForumDisplayAll = ({navigation}) => {
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(true)
   const forumAnswered = useSelector(state => state.forum.answered)
-  const activeUser = useSelector(state => state.activeUser)
 
   useEffect(() => {
-    dispatch(initializeForumAnswered())
-    setTimeout(() => {
+    if(!forumAnswered){
+      setIsLoading(true)
+      dispatch(initializeForumAnswered())
+    }else{
       setIsLoading(false)
-    }, 1500);
-  }, [dispatch])
+    }
+  }, [dispatch, forumAnswered, isLoading])
 
-  if(forumAnswered.length === 0){
-    setIsLoading(true)
-  }
+  
 
   if (isLoading) {
     return (

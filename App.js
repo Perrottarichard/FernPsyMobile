@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import React, { useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector } from 'react-redux';
 import { setUser } from './reducers/activeUserReducer'
 import { initializeForumAnswered } from './reducers/forumReducer'
@@ -26,8 +26,6 @@ const App = () => {
 
   const activeUser = useSelector(state => state.activeUser)
   const dispatch = useDispatch()
-  const forumAnswered = useSelector(state => state.forum.answered)
-
   const getLoggedUser = async () => {
     let loggedUserJSON = await AsyncStorage.getItem('loggedForumUser')
     if (loggedUserJSON) {
@@ -41,7 +39,10 @@ const App = () => {
       getLoggedUser()
     }
   }, [dispatch])
-  
+
+  useEffect(() => {
+      dispatch(initializeForumAnswered())
+  }, [])
   return (
     <NavigationContainer>
       <TabNav/>

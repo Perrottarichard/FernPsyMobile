@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button, View, Text} from 'react-native'
-import {Card, ListItem} from 'react-native-elements'
+import { View, Text} from 'react-native'
+import {Card} from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useDispatch } from 'react-redux'
@@ -50,13 +50,13 @@ const ForumLandingPage = ({navigation}) => {
       <ScrollView>
         {tagOptions.map(t =>
           <View key={t.tag} style={{alignItems: 'center'}}>
-            <Card>
+            <Card containerStyle={{borderRadius: 10}}>
                   <Icon.Button 
                   onPress={() => clickTag(t)}
                   name={chooseTagIcon(t.tag)}
                   size={40}
                   color={chooseTagColor(t.tag)}
-                  style={{backgroundColor: 'white', width: 240}}>
+                  style={{backgroundColor: 'white', width: 240, height: 100}}>
                   <Text style={{fontSize: 30, color: chooseTagColor(t.tag)}}>{t.tag}</Text>
                   </Icon.Button>
             </Card>

@@ -38,7 +38,7 @@ const ForumPostMain = (props) => {
       // กรุณาใส่หัวข้อคำถาม คำถามของคุณ และโปรดเลือกแท็กสองหัวข้อ
     }
     else if ((selectedTags.length === 0 && !chosenFilter) || selectedTags.length > 3) {
-      ToastAndroid.show('You should have 1-3 tags', ToastAndroid.SHORT)
+      ToastAndroid.show('กรุณาเลือก 1-3 tags ค่ะ', ToastAndroid.SHORT)
       //กรุณาเลือกแท็กสองหัวข้อค่ะ
       //'Please select 2 tags'
     }
@@ -97,7 +97,8 @@ const ForumPostMain = (props) => {
       <View style={styles.textAreaContainerQuestion}>
         <TextInput
         style={styles.textAreaQuestion}
-        multiline={true}
+        multiline
+        textAlignVertical={'top'}
         numberOfLines={4}
         placeholder='พิมพ์รายละเอียดคำถามของคุณ'
         onChangeText={q => setQuestion(q)}
@@ -109,7 +110,14 @@ const ForumPostMain = (props) => {
         </View>
         <View>
         <MultiSelect
+          hideDropdown={true}
+          styleListContainer={{height: 120}}
           styleMainWrapper={styles.picker}
+          submitButtonText='Submit Tags'
+          tagContainerStyle={{height: 30}}
+          tagTextColor='black'
+          tagRemoveIconColor='gray'
+          tagBorderColor='#d896ac'
           onSelectedItemsChange={(value) => handleTagChange(value)}
           selectedItems={selectedTags}
           uniqueKey='name'

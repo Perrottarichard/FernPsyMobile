@@ -8,9 +8,9 @@ import { useDispatch } from 'react-redux'
 import { setTagFilter } from '../reducers/forumReducer'
 
 const tagOptions = [
-  { tag: 'ทั้งหมด', backgroundColor: '#8e2bff', icon: 'globe' },
+  { tag: 'ทั้งหมด', backgroundColor: '#957bb3', icon: 'globe' },
   { tag: 'เรื่องเพศ', backgroundColor: '#ff5c4d', icon: 'venus-mars' },
-  { tag: 'การออกเดท', backgroundColor: '#288046', icon: 'glass-cheers' },
+  { tag: 'การออกเดท', backgroundColor: '#63ba90', icon: 'glass-cheers' },
   { tag: 'ความรัก', backgroundColor: '#ffa64d', icon: 'heart-broken' },
   { tag: 'lgbt', backgroundColor: '#ff4da6', icon: 'transgender' },
   { tag: 'เพื่อน', backgroundColor: '#5050ff', icon: 'users' },
@@ -46,7 +46,7 @@ const ForumLandingPage = ({navigation}) => {
     }
   }
   return (
-    <View>
+    <View style={{backgroundColor: '#d896ac'}}>
       <ScrollView>
         {tagOptions.map(t =>
           <View key={t.tag} style={{alignItems: 'center'}}>
@@ -54,10 +54,10 @@ const ForumLandingPage = ({navigation}) => {
                   <Icon.Button 
                   onPress={() => clickTag(t)}
                   name={chooseTagIcon(t.tag)}
-                  size={40}
+                  size={30}
                   color={chooseTagColor(t.tag)}
-                  style={{backgroundColor: 'white', width: 240, height: 100}}>
-                  <Text style={{fontSize: 30, color: chooseTagColor(t.tag)}}>{t.tag}</Text>
+                  style={{backgroundColor: 'white', width: 280, height: 50, justifyContent: 'flex-start'}}>
+                  <Text style={{fontSize: 20, color: chooseTagColor(t.tag)}}>{t.tag}</Text>
                   </Icon.Button>
             </Card>
           </View>

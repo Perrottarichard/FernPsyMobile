@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ToastAndroid, View, Text, Modal, StyleSheet, Pressable} from 'react-native'
+import { ToastAndroid, View, Text, Modal, StyleSheet, Pressable, ScrollView} from 'react-native'
 import {Input} from 'react-native-elements'
 import userService from '../services/userService'
 import Graphic from '../undraw_mobile_login_ikmv.svg'
@@ -59,9 +59,9 @@ const RegisterForm = ({navigation}) => {
   }
 
   return (
-    <View>        
+    <ScrollView>        
         <View style={styles.graphicView}>
-        <Graphic width={280} height={280}/>
+        <Graphic width={200} height={200}/>
       </View>
           <View style={styles.formView}>
 
@@ -84,14 +84,14 @@ const RegisterForm = ({navigation}) => {
               </Text>
             </Pressable>
             </View>
-    </View >
+    </ScrollView >
   )
 }
 const styles = StyleSheet.create({
   graphicView: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 40
+    paddingTop: 20
   },
   formView: {
     justifyContent: 'center',

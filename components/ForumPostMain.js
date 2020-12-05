@@ -1,6 +1,6 @@
 /* eslint-disable no-multi-str */
 import React, { useState } from 'react'
-import { Keyboard, Text, ToastAndroid, View, Pressable, StyleSheet, TextInput} from 'react-native'
+import { Keyboard, Text, ToastAndroid, View, Pressable, StyleSheet, TextInput, ScrollView} from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { addQuestion } from '../reducers/forumReducer'
 import MultiSelect from 'react-native-multiple-select';
@@ -77,9 +77,9 @@ const ForumPostMain = (props) => {
     }
   }
   return (
-    <View>
+    <ScrollView>
       <View style={styles.graphicContainer}>
-        <PostGraphic width={300} height={200}/>
+        <PostGraphic width={200} height={160}/>
       </View>
       <View style={styles.textAreaContainerTitle}>
         <TextInput
@@ -111,6 +111,7 @@ const ForumPostMain = (props) => {
         <View>
         <MultiSelect
           hideDropdown={true}
+          styleTextDropdown={{paddingLeft: 10, color: 'gray'}}
           styleListContainer={{height: 120}}
           styleMainWrapper={styles.picker}
           submitButtonText='Submit Tags'
@@ -121,7 +122,7 @@ const ForumPostMain = (props) => {
           onSelectedItemsChange={(value) => handleTagChange(value)}
           selectedItems={selectedTags}
           uniqueKey='name'
-          selectText='Add some tags'
+          selectText='เลือก tags'
           items={[
             { name: 'ปัญหาเรื่องเพศ', value: 'ปัญหาเรื่องเพศ', key: 'a' },  //sex
             { name: 'การออกเดท', value: 'การออกเดท', key: 'b' }, //dating
@@ -149,7 +150,7 @@ const ForumPostMain = (props) => {
           </Pressable>
         </View>
       </View>
-    </View >
+    </ScrollView >
   )
 }
 
@@ -206,7 +207,8 @@ const styles = StyleSheet.create({
     marginTop: 50
   },
   afterFormText: {
-    alignSelf: 'center'
+    alignSelf: 'center',
+    fontSize: 10
   }
 })
 export default ForumPostMain

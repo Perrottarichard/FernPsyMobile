@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { setUser } from '../reducers/activeUserReducer'
 import loginService from '../services/loginService'
 import forumService from '../services/forumService'
-import {View, Text, ToastAndroid, Pressable, StyleSheet} from 'react-native'
+import {View, Text, ToastAndroid, Pressable, StyleSheet, ScrollView} from 'react-native'
 import {Input} from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import WelcomeCats from '../undraw_welcome_cats_thqn.svg'
@@ -50,7 +50,7 @@ const LoginForm = (props) => {
     }
   }
   return (
-    <View>
+    <ScrollView>
       <View style={styles.cats}>
       <WelcomeCats width={280} height={220}/>
       </View>
@@ -66,14 +66,14 @@ const LoginForm = (props) => {
             </Pressable>
       </View>
       <View >
-        <Text>ยังไม่มีแอคเคาท์ คลิกที่นี่'</Text>
+        <Text style={{fontSize: 10, alignSelf: 'center'}}>ยังไม่มีแอคเคาท์ คลิกที่นี่'</Text>
         <Pressable style={styles.goToRegisterButton} onPress={() => navigation.navigate('RegisterForm')}>
           <Text style={styles.openRegText}>
           สมัครเลย
           </Text>
         </Pressable>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   cats: {
-    paddingTop: 120,
+    paddingTop: 60,
     alignSelf: 'center'
   },
   input: {

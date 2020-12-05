@@ -43,6 +43,7 @@ const App = () => {
   useEffect(() => {
       dispatch(initializeForumAnswered())
   }, [])
+  
   return (
     <NavigationContainer>
       <TabNav/>

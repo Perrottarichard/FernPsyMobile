@@ -1,38 +1,38 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import Fern1 from '../fernanimal.jpg'
-import Fern2 from '../fernhippie500.jpg'
-import Fern3 from '../fernjapan.jpg'
+import React, { useState } from 'react';
+import { Text, View, ActivityIndicator, StyleSheet} from 'react-native';
+import {Switch} from 'react-native-switch'
+import {Image} from 'react-native-elements'
 
 const About = () => {
+  const [isEng, setIsEng] = useState(false)
 
-  const items = [
-    {
-      src: `${Fern2}`,
-      altText: 'Slide 1',
-      key: '1',
-      caption: ''
-    },
-    {
-      src: `${Fern1}`,
-      altText: 'Slide 2',
-      key: '2',
-      caption: ''
-    },
-    {
-      src: `${Fern3}`,
-      altText: 'Slide 3',
-      key: '3',
-      caption: ''
-    }
-  ];
+  const toggleLanguage = () => setIsEng(prev => !prev)
+
+
 
   return (
     <View>
-      <View>
+      
+      <View style={styles.titleTextContainer}>
         <Text>Nilubon Sukawanich</Text>
         <Text id='title'>Counselor</Text>
       </View>
+      <View style={styles.imageContainer}>
+      <Image source={{uri: 'http://fern-counseling.herokuapp.com/static/media/fernanimal.80cfbc49.jpg'}} style={styles.image} PlaceholderContent={<ActivityIndicator />} resizeMode='cover'/>
+      </View>
+      <View style={{alignItems: 'flex-end', marginRight: 20}}>
+      <Switch 
+       onValueChange={toggleLanguage}
+       value={isEng}
+       activeText={'En'}
+       inActiveText={'Th'}
+       barHeight={20}
+       circleSize={20}
+       switchLeftPx={5}
+       switchRightPx={5}
+      />
+      </View>
+      {!isEng ?
       <View style={{ textAlign: 'left' }}>
         <Text>
           สวัสดีค่ะ
@@ -80,9 +80,29 @@ const About = () => {
           Bachelor of Science in Psychology (2001 - 2004)
           </Text>
       </View>
+      : 
+      <View>
+        <Text>
+          English Version
+        </Text>
+      </View>
+      }
     </View>
 
   );
 }
+
+const styles = StyleSheet.create({
+  titleTextContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  imageContainer: {
+    justifyContent: 'center', alignItems: 'center'
+  },
+  image: {
+    height: 200, width: 200, borderRadius: 50
+  }
+})
 
 export default About;

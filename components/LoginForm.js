@@ -37,16 +37,14 @@ const LoginForm = (props) => {
         forumService.setToken(user.token)
         dispatch(setUser(user))
         ToastAndroid.show(`ยินดีต้อนรับ คุณ ${user.email}`, ToastAndroid.SHORT)
-        setEmail('')
-        setPassword('')
-        navigation.navigate('Home')
+        // navigation.navigate('Home')
       }
       catch (error) {
         console.log(error.message)
         if (error.message.includes('401')) {
-          ToastAndroid.show('กรุณาตรวจสอบความถูกต้องของ username และ password')
+          ToastAndroid.show('กรุณาตรวจสอบความถูกต้องของ email และ password', ToastAndroid.SHORT)
         } else {
-          ToastAndroid.show('มีข้อผิดพลาด')
+          ToastAndroid.show('มีข้อผิดพลาด', ToastAndroid.SHORT)
         }
       }
     }

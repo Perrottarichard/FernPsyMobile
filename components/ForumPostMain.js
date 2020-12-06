@@ -1,20 +1,25 @@
 /* eslint-disable no-multi-str */
-import React, { useState } from 'react'
-import { Keyboard, Text, ToastAndroid, View, Pressable, StyleSheet, TextInput, ScrollView} from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Keyboard, Text, ToastAndroid, View, Pressable, StyleSheet, TextInput, ScrollView, LogBox, TouchableHighlight} from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { addQuestion } from '../reducers/forumReducer'
 import MultiSelect from 'react-native-multiple-select';
 import PostGraphic from '../undraw_add_post_64nu.svg'
 
 const ForumPostMain = (props) => {
-  const { activeUser, navigation } = props
+  const { navigation } = props
+  const activeUser = useSelector(state => state.activeUser)
   const [isLoading, setIsLoading] = useState(false)
   const [question, setQuestion] = useState('')
   const [title, setTitle] = useState('')
   const [selectedTags, setSelectedTags] = useState([])
   const dispatch = useDispatch()
 
-  React.useEffect(() => {
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+}, [])
+
+  useEffect(() => {
     if (isLoading) {
       setTimeout(() => {
         setIsLoading(false);
@@ -46,7 +51,7 @@ const ForumPostMain = (props) => {
       ToastAndroid.show('กรุณาล็อคอินก่อนโพสคำถามค่ะ', ToastAndroid.SHORT)
       //กรุณาล็อคอินก่อนโพสคำถามค่ะ
       //'You must be logged in to post to the forum'
-      navigation.navigate('Login')
+      navigation.navigate('LoginForm')
     }
     else if (activeUser.username === 'Fern-Admin' || activeUser.username === 'Richard-Admin') {
       ToastAndroid.show('Why are you trying to ask yourself a question?', ToastAndroid.SHORT)
@@ -66,6 +71,7 @@ const ForumPostMain = (props) => {
         setTitle('')
         setQuestion('')
         setSelectedTags([])
+        ToastAndroid.show('Posted successfully', ToastAndroid.SHORT)
         navigation.navigate('Home')
       } catch (error) {
         ToastAndroid.show('กรุณาล็อคอินก่อนโพสคำถามค่ะ', ToastAndroid.SHORT)
@@ -91,6 +97,7 @@ const ForumPostMain = (props) => {
         keyboardType="default"
         returnKeyType="done"
         onSubmitEditing={()=>{Keyboard.dismiss()}}
+        value={title}
         />
       </View>
 
@@ -106,6 +113,7 @@ const ForumPostMain = (props) => {
         returnKeyType="done"
         onSubmitEditing={()=>{Keyboard.dismiss()}}
         blurOnSubmit={true}
+        value={question}
         />
         </View>
         <View>
@@ -114,6 +122,7 @@ const ForumPostMain = (props) => {
           styleTextDropdown={{paddingLeft: 10, color: 'gray'}}
           styleListContainer={{height: 120}}
           styleMainWrapper={styles.picker}
+          selectedItemTextColor={'#d896ac'}
           submitButtonText='Submit Tags'
           tagContainerStyle={{height: 30}}
           tagTextColor='black'
@@ -143,11 +152,11 @@ const ForumPostMain = (props) => {
         </MultiSelect>
         <View style={styles.afterForm}>
           <Text style={styles.afterFormText}>ชื่อที่คุณใช้ล็อคอินจะไม่ปรากฏในคำถามของคุณ</Text>
-          <Pressable onPress={handleEditorSubmit} style={styles.submitPostButton}>
+          <TouchableHighlight onPress={handleEditorSubmit} style={styles.submitPostButton}>
             <Text style={styles.submitPostText}>
             ส่งคำถาม
             </Text>
-          </Pressable>
+          </TouchableHighlight>
         </View>
       </View>
     </ScrollView >

@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux'
 import { View, StyleSheet, Text} from 'react-native'
 import LoginNavigate from './LoginNavigate'
 import Logout from './Logout'
+import MyQuestions from './MyQuestions'
 
 const Home = () => {
   const user = useSelector(state => state.activeUser)
@@ -10,8 +11,8 @@ const Home = () => {
   if(user && user.token) {
     return(
       <View>
-        <Text>{user.email}</Text>
         <Logout/>
+        <MyQuestions/>
       </View>
     )
   }

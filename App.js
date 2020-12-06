@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+import {LogBox} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector } from 'react-redux';
@@ -34,6 +35,10 @@ const App = () => {
       forumService.setToken(user.token)
   }
 }
+  useEffect(() => {
+  LogBox.ignoreLogs(['Require cycle: node_modules/react-native-paper']);
+  }, [])
+  
   useEffect(() => {
     if(!activeUser){
       getLoggedUser()

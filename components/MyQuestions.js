@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { View, Card, Pressable,Text} from 'react-native';
+import { View, Card, Pressable,Text, TouchableHighlight} from 'react-native';
 import {Badge} from 'react-native-elements'
 import { initializeForumPending, initializeForumAnswered } from '../reducers/forumReducer'
 
@@ -33,17 +33,17 @@ const MyQuestions = () => {
   const [togglePending, setTogglePending] = useState(false)
 
   const user = useSelector(state => state.activeUser)
-  const id = user.id
+  const id = user._id
   const myAnsweredPosts = useSelector(state => state.forum.answered.filter(p => p.user === id))
   const myPendingPosts = useSelector(state => state.forum.pending.filter(p => p.user.id === id))
 
   useEffect(() => {
     dispatch(initializeForumAnswered())
-  }, [dispatch])
+  }, [])
 
   useEffect(() => {
     dispatch(initializeForumPending())
-  }, [dispatch])
+  }, [])
 
   const toggle = (type) => {
     switch (type) {
@@ -60,8 +60,14 @@ const MyQuestions = () => {
         <Text>ยินดีต้อนรับกลับสู่ {user.email}</Text>
         <Text>...คุณยังไม่ได้ถามคำถามใด ๆ</Text>
         <View>
+          <Text>
           ตั้งกระทู้ถาม
-          <Pressable>ส่งคำถาม</Pressable>
+          </Text>
+          <TouchableHighlight>
+            <Text>
+            ส่งคำถาม
+            </Text>
+          </TouchableHighlight>
         </View>
       </View>
     )
@@ -71,8 +77,16 @@ const MyQuestions = () => {
       <View>
         <Text>ยินดีต้อนรับคุณ {user.email}</Text>
         <View>
-          <Pressable onPress={() => toggle('answered')}>ตอบแล้ว {`(${myAnsweredPosts.length})`}</Pressable>
-          <Pressable onPress={() => toggle('pending')}>รอคำตอบ {`(${myPendingPosts.length})`}</Pressable>
+          <TouchableHighlight onPress={() => toggle('answered')}>
+            <Text>
+            ตอบแล้ว {`(${myAnsweredPosts.length})`}
+            </Text>
+            </TouchableHighlight>
+          <TouchableHighlight onPress={() => toggle('pending')}>
+            <Text>
+            รอคำตอบ {`(${myPendingPosts.length})`}
+            </Text>
+            </TouchableHighlight>
         </View>
         {myAnsweredPosts && toggleAnswered ?
           myAnsweredPosts.sort((a, b) => new Date(b.date) - new Date(a.date)).map(f =>
@@ -118,7 +132,7 @@ const MyQuestions = () => {
               </Text>
 
               <Text>
-                <Text>คำถามของคุณอยู่ระหว่างดำเนินการ</Text>
+                คำถามของคุณอยู่ระหว่างดำเนินการ
               </Text>
               <View>
                 {f.tags.map(t => <Badge key={t} style={{backgroundColor: chooseTagColor(t)}} >{t}</Badge>)}
@@ -129,7 +143,11 @@ const MyQuestions = () => {
           <Text>
           ต้องการถาม คลิก
           </Text>
-          <Pressable>ส่งคำถาม</Pressable>
+          <TouchableHighlight>
+            <Text>
+            ส่งคำถาม
+            </Text>
+            </TouchableHighlight>
         </View>
       </View>
     </View >

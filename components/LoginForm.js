@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { setUser } from '../reducers/activeUserReducer'
 import loginService from '../services/loginService'
 import forumService from '../services/forumService'
-import {View, Text, ToastAndroid, Pressable, StyleSheet, ScrollView} from 'react-native'
+import {View, Text, ToastAndroid, Pressable, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlight} from 'react-native'
 import {Input} from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import WelcomeCats from '../undraw_welcome_cats_thqn.svg'
@@ -25,8 +25,10 @@ const LoginForm = (props) => {
   }, [isLoading])
 
   const submitLogin = async () => {
+    setIsLoading(true)
     if (!email || !password) {
       ToastAndroid.show('กรุณาใส่ username และ password', ToastAndroid.SHORT)
+      setIsLoading(false)
     }
     else {
       try {
@@ -42,36 +44,41 @@ const LoginForm = (props) => {
       catch (error) {
         console.log(error.message)
         if (error.message.includes('401')) {
+          setIsLoading(false)
           ToastAndroid.show('กรุณาตรวจสอบความถูกต้องของ email และ password', ToastAndroid.SHORT)
         } else {
+          setIsLoading(false)
           ToastAndroid.show('มีข้อผิดพลาด', ToastAndroid.SHORT)
         }
       }
     }
   }
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.cats}>
-      <WelcomeCats width={280} height={220}/>
+      <WelcomeCats width={200} height={200}/>
       </View>
       <View>
-            <Input autoCompleteType='username'onChangeText={text => setEmail(text)}placeholder='Email' leftIcon={{ type: 'material-community-icons', name: 'email', color: 'gray' }}></Input>
+            <Input keyboardType='email-address' autoCompleteType='username'onChangeText={text => setEmail(text)}placeholder='Email' leftIcon={{ type: 'material-community-icons', name: 'email', color: 'gray' }}></Input>
 
             <Input autoCompleteType='password' onChangeText={text => setPassword(text)}  placeholder='Password' secureTextEntry={true} leftIcon={{ type: 'material-community-icons', name: 'lock-outline', color: 'gray' }} ></Input>
 
-            <Pressable onPress={submitLogin} style={styles.loginButton}>
-              <Text style={styles.loginButtonText}>
+            <TouchableHighlight onPress={submitLogin} style={styles.loginButton}>
+            {isLoading ? <ActivityIndicator size='small' color='white'/>
+              : <Text style={styles.loginButtonText}>
               เข้าสู่ระบบ
               </Text>
-            </Pressable>
+}
+            </TouchableHighlight>
       </View>
       <View >
-        <Text style={{fontSize: 10, alignSelf: 'center'}}>ยังไม่มีแอคเคาท์ คลิกที่นี่'</Text>
-        <Pressable style={styles.goToRegisterButton} onPress={() => navigation.navigate('RegisterForm')}>
+        
+        <TouchableHighlight underlayColor='white' style={styles.goToRegisterButton} onPress={() => navigation.navigate('RegisterForm')}>
           <Text style={styles.openRegText}>
+          ยังไม่มีแอคเคาท์ คลิกที่นี่
           สมัครเลย
           </Text>
-        </Pressable>
+        </TouchableHighlight>
       </View>
     </ScrollView>
   )
@@ -86,7 +93,7 @@ const styles = StyleSheet.create({
     width: 300,
     margin: 8,
     alignSelf: 'center',
-    marginTop: 30
+    marginTop: 20
   },
   loginButtonText: {
     color: '#d896ac',
@@ -97,7 +104,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   goToRegisterButton: {
-    backgroundColor: 'lightgray',
+    backgroundColor: 'transparent',
     borderRadius: 20,
     padding: 10,
     elevation: 2,
@@ -106,11 +113,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   cats: {
-    paddingTop: 60,
+    paddingTop: 20,
     alignSelf: 'center'
   },
   input: {
-    marginBottom: 20
+    marginBottom: 10
   }
 
 })

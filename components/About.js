@@ -40,6 +40,7 @@ const About = () => {
        circleSize={20}
        switchLeftPx={5}
        switchRightPx={5}
+       switchWidthMultiplier={2.5}
       />
       </View>
       <View style={styles.imageContainer}>

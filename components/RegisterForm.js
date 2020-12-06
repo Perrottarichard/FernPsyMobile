@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ToastAndroid, View, Text, Modal, StyleSheet, Pressable, ScrollView} from 'react-native'
+import { ToastAndroid, View, Text, Modal, StyleSheet, Pressable, ScrollView, TouchableHighlight} from 'react-native'
 import {Input} from 'react-native-elements'
 import userService from '../services/userService'
 import Graphic from '../undraw_mobile_login_ikmv.svg'
@@ -41,9 +41,6 @@ const RegisterForm = ({navigation}) => {
     }
     else {
       setIsLoading(true)
-      setTimeout(() => {
-        toggle()
-      }, 1500);
       try {
         await userService.registerUser({ password, email})
         ToastAndroid.show('สำเร็จแล้ว คุณสามารถล็อคอินและตั้งกระทู้ถามได้เลยค่ะ', ToastAndroid.SHORT)
@@ -59,30 +56,27 @@ const RegisterForm = ({navigation}) => {
   }
 
   return (
-    <ScrollView>        
+    <ScrollView showsVerticalScrollIndicator={false}>        
         <View style={styles.graphicView}>
         <Graphic width={200} height={200}/>
       </View>
           <View style={styles.formView}>
+            <Input keyboardType='email-address' placeholder='email' onChangeText={email => setEmail(email)} style={{padding: 0}}></Input>
 
-            <Text>สมัครเข้าใช้งาน</Text>
+            <Input placeholder='Password'autoCompleteType="password" secureTextEntry={true}onChangeText={pass => setPassword(pass)} style={{padding: 0}}></Input>
 
-            <Input placeholder='email' onChangeText={email => setEmail(email)} ></Input>
+            <Input onChangeText={cpass => setConfirmPassword(cpass)} type='password' placeholder='ยืนยัน Password'secureTextEntry={true} style={{padding: 0}}></Input>
 
-            <Input placeholder='Password'autoCompleteType="password" secureTextEntry={true}onChangeText={pass => setPassword(pass)}></Input>
-
-            <Input onChangeText={cpass => setConfirmPassword(cpass)} type='password' placeholder='ยืนยัน Password'secureTextEntry={true}></Input>
-
-            <Pressable onPress={submitRegister} style={styles.submitRegister}>
+            <TouchableHighlight onPress={submitRegister} style={styles.submitRegister}>
               <Text style={styles.submitRegisterText}>
-              สมัครเลย
+              สมัครเข้าใช้งาน
               </Text>
-            </Pressable>
-            <Pressable onPress={() => navigation.navigate('LoginForm')} style={styles.cancelRegister}>
+            </TouchableHighlight>
+            <TouchableHighlight underlayColor='white' onPress={() => navigation.navigate('LoginForm')} style={styles.cancelRegister}>
               <Text style={styles.cancelRegisterText}>
               ยกเลิก
               </Text>
-            </Pressable>
+            </TouchableHighlight>
             </View>
     </ScrollView >
   )
@@ -91,7 +85,6 @@ const styles = StyleSheet.create({
   graphicView: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 20
   },
   formView: {
     justifyContent: 'center',
@@ -115,7 +108,7 @@ const styles = StyleSheet.create({
     margin: 8
   },
   cancelRegister: {
-    backgroundColor: 'lightgray',
+    backgroundColor: 'transparent',
     borderRadius: 20,
     padding: 10,
     elevation: 2,

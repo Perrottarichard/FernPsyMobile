@@ -71,7 +71,6 @@ const ForumPostMain = (props) => {
         setTitle('')
         setQuestion('')
         setSelectedTags([])
-        ToastAndroid.show('Posted successfully', ToastAndroid.SHORT)
         navigation.navigate('Home')
       } catch (error) {
         ToastAndroid.show('กรุณาล็อคอินก่อนโพสคำถามค่ะ', ToastAndroid.SHORT)

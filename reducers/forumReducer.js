@@ -114,7 +114,7 @@ export const addQuestion = data => {
       })
       ToastAndroid.show('คำถามของคุณถูกส่งเรียบร้อยแล้ว อดใจรอสักนิด โพสของคุณจะปรากฏหลังได้รับการยืนยันจากแอดมินค่ะ', ToastAndroid.LONG)
     } catch (error) {
-      ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT)
+      ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.LONG)
     }
   }
 }

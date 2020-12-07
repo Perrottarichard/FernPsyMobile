@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { View, Card, Pressable,Text, TouchableHighlight} from 'react-native';
+import { View, Card, Pressable,Text, TouchableHighlight, ScrollView, RefreshControl} from 'react-native';
 import {Badge} from 'react-native-elements'
 import { initializeForumPending, initializeForumAnswered } from '../reducers/forumReducer'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const tagColorOptions = [
@@ -26,16 +27,35 @@ const chooseTagColor = (passed) => {
     return color.backgroundColor
 }
 
+const wait = (timeout) => {
+  return new Promise(resolve => {
+    setTimeout(resolve, timeout);
+  });
+}
+
+export const getUserObject = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('loggedForumUser')
+    return jsonValue != null ? JSON.parse(jsonValue) : null
+  } catch(e) {
+    console.log(e)
+  }
+}
+
 const MyQuestions = () => {
   
   const dispatch = useDispatch()
   const [toggleAnswered, setToggleAnswered] = useState(false)
   const [togglePending, setTogglePending] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
 
   const user = useSelector(state => state.activeUser)
   const id = user._id
-  const myAnsweredPosts = useSelector(state => state.forum.answered.filter(p => p.user === id))
-  const myPendingPosts = useSelector(state => state.forum.pending.filter(p => p.user.id === id))
+  const answered = useSelector(state => state.forum.answered)
+  const pending = useSelector(state => state.forum.pending)
+  const myAnsweredPosts = answered.filter(p => p.user === id)
+  const myPendingPosts = pending.filter(p => p.user.id === id)
+
 
   useEffect(() => {
     dispatch(initializeForumAnswered())
@@ -44,6 +64,13 @@ const MyQuestions = () => {
   useEffect(() => {
     dispatch(initializeForumPending())
   }, [])
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
+
 
   const toggle = (type) => {
     switch (type) {
@@ -73,7 +100,7 @@ const MyQuestions = () => {
     )
   }
   return (
-    <View>
+    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
       <View>
         <Text>ยินดีต้อนรับคุณ {user.email}</Text>
         <View>
@@ -150,7 +177,7 @@ const MyQuestions = () => {
             </TouchableHighlight>
         </View>
       </View>
-    </View >
+    </ScrollView >
   )
 }
 export default MyQuestions

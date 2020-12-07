@@ -31,8 +31,11 @@ const App = () => {
     let loggedUserJSON = await AsyncStorage.getItem('loggedForumUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      console.log(user)
       dispatch(setUser(user))
       forumService.setToken(user.token)
+  }else{
+    console.log('no user')
   }
 }
   useEffect(() => {
@@ -41,13 +44,18 @@ const App = () => {
   
   useEffect(() => {
     if(!activeUser){
+      console.log('!activeUser')
       getLoggedUser()
+    }else{
+      forumService.setToken(activeUser.token)
     }
   }, [dispatch])
 
   useEffect(() => {
       dispatch(initializeForumAnswered())
   }, [])
+
+  console.log(activeUser)
   
   return (
     <NavigationContainer>

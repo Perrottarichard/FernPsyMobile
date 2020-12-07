@@ -1,6 +1,9 @@
 import axios from 'axios'
+import {getUserObject} from '../components/MyQuestions'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 const baseUrl = 'https://fern-counseling.herokuapp.com/api/forum'
 
+console.log(getUserObject())
 let token = null
 const setToken = newToken => {
   token = `bearer ${newToken}`
@@ -26,6 +29,7 @@ const create = async newObject => {
   const config = {
     headers: { Authorization: token },
   }
+  console.log(config.headers.Authorization)
   const response = await axios.post(baseUrl, newObject, config)
   return response.data
 }

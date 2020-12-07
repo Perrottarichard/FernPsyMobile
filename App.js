@@ -54,8 +54,6 @@ const App = () => {
   useEffect(() => {
       dispatch(initializeForumAnswered())
   }, [])
-
-  console.log(activeUser)
   
   return (
     <NavigationContainer>

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { View, Card, Pressable,Text, TouchableHighlight, ScrollView, RefreshControl} from 'react-native';
 import {Badge} from 'react-native-elements'
 import { initializeForumPending, initializeForumAnswered } from '../reducers/forumReducer'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const tagColorOptions = [
@@ -33,15 +32,6 @@ const wait = (timeout) => {
   });
 }
 
-export const getUserObject = async () => {
-  try {
-    const jsonValue = await AsyncStorage.getItem('loggedForumUser')
-    return jsonValue != null ? JSON.parse(jsonValue) : null
-  } catch(e) {
-    console.log(e)
-  }
-}
-
 const MyQuestions = () => {
   
   const dispatch = useDispatch()
@@ -67,6 +57,8 @@ const MyQuestions = () => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true)
+    dispatch(initializeForumAnswered())
+    dispatch(initializeForumPending())
     wait(2000).then(() => setRefreshing(false));
   }, []);
 

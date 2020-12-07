@@ -1,9 +1,6 @@
 import axios from 'axios'
-import {getUserObject} from '../components/MyQuestions'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 const baseUrl = 'https://fern-counseling.herokuapp.com/api/forum'
 
-console.log(getUserObject())
 let token = null
 const setToken = newToken => {
   token = `bearer ${newToken}`

@@ -69,12 +69,45 @@ const About = () => {
         Fern-counseling เป็นแอปพลิเคชัน ที่ให้บริการปรึกษาผ่านการตั้งกระทู้ถามตอบ โดยผู้ใช้งานสามารถเข้ามาอ่านกระทู้ทั้งหมดได้ แต่ในการจะตั้งกระทู้ถามผู้ใช้งานจะต้องทำการ log in ก่อนตั้งกระทู้ เพื่อป้องกันผู้ก่อกวนหรือสร้างความไม่สงบให้แก่ผู้ใช้งานคนอื่นๆ โดยที่ username ในการ log in จะไม่ถูกเปิดเผยต่อสาธารณะ ซึ่งเป็นวัตถุประสงค์ของการสร้างแอปพลิเคชันนี้ขึ้นมาก็คือการทำให้ผู้ใช้งานรู้สึกสบายใจที่จะถาม เพราะไม่มีการเปิดเผยตัวตนให้ผู้ใช้งานคนอื่นๆ ทราบ
         </Text>
         </Card>
+        </View>
+        
+        : 
+        
+<View style={{ textAlign: 'left' }}>
+        <Card containerStyle={{borderRadius: 20}}>
+        <Text style={styles.titleText}>
+        About Fern
+        </Text>
+        <Text style={styles.bodyText}>
+        Nilubon Sukawanich, nicknamed Fern, works as a counseling psychologist at Rajamangala University of Technology Lanna.  She graduated from Chiang Mai University with a Bachelor's degree in Clinical Psychology in 2005, then completed her Master's degree in Counseling Psychology from the same institution in 2016.  She has been working as a counselor since 2005. 
+        </Text>
+        
+        </Card>
+       
+       <Card containerStyle={{borderRadius: 20}}>
+        <Text style={styles.titleText}>
+        About the App
+        </Text>
+
+        <Text style={styles.bodyText}>
+        AskFern provides a platform where people can ask questions and receive answers from an experienced psychologist.  All users can access and read the forum, but in order to prevent spam and harassment, users must register in order to post their own questions, as well as comment on the posts of others.  The forum is anonymous; no user details will be displayed, and users should avoid including identifying information in their posts and comments.  Our intention is to create a safe space for people to talk freely about the issues which concern them.
+        </Text>
+        </Card>
+        </View>
+      }
         <View style={styles.contactContainer}>
         <View style={{height: 20}}></View>
 <Image source={{uri: 'http://fern-counseling.herokuapp.com/static/media/fernhippie500.8ec92f3a.jpg'}} style={styles.image} PlaceholderContent={<ActivityIndicator />} resizeMode='cover'/>
+
+{isEng ?
+  <Text style={styles.contactText}>
+        Contact Fern
+        </Text>
+:
         <Text style={styles.contactText}>
         ติดต่อ Fern
         </Text>
+}
 
 <Icon.Button
 onPress={() => Linking.openURL('https://line.me/R/ti/p/@791pxbkv')}
@@ -94,14 +127,6 @@ style={{ backgroundColor: '#3b5998', alignSelf: 'center', width: 150}}>
 </Icon.Button>
 
       </View>
-      </View>
-      : 
-      <View>
-        <Text>
-          English Version
-        </Text>
-      </View>
-      }
     </ScrollView>
 
   );

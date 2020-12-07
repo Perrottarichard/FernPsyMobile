@@ -8,9 +8,10 @@ import { Badge, Card } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const tagColorOptions = [
-  { tag: 'เรื่องเพศ', backgroundColor: '#ff5c4d' },
+
+  { tag: 'ปัญหาเรื่องเพศ', backgroundColor: '#ff5c4d' },
   { tag: 'การออกเดท', backgroundColor: '#288046' },
-  { tag: 'ความรัก', backgroundColor: '#ffa64d' },
+  { tag: 'relationships', backgroundColor: '#ffa64d' },
   { tag: 'lgbt', backgroundColor: '#ff4da6' },
   { tag: 'เพื่อน', backgroundColor: '#5050ff' },
   { tag: 'โรคซึมเศร้า', backgroundColor: '#343a40' },
@@ -18,14 +19,19 @@ const tagColorOptions = [
   { tag: 'ไบโพลาร์', backgroundColor: '#f347ff' },
   { tag: 'การทำงาน', backgroundColor: '#8e2bff' },
   { tag: 'สุขภาพจิต', backgroundColor: '#1e45a8' },
-  { tag: 'การรังแก', backgroundColor: '#5e320f' },
+  { tag: 'bullying', backgroundColor: '#5e320f' },
   { tag: 'ครอบครัว', backgroundColor: '#ffa64d' },
   { tag: 'อื่นๆ', backgroundColor: '#707571' },
   { tag: 'การเสพติด', backgroundColor: '#40073d' },
+
 ]
 const chooseTagColor = (passed) => {
   let color = tagColorOptions.find(t => t.tag === passed)
+  if (color) {
     return color.backgroundColor
+  } else {
+    return 'magenta'
+    }
 }
 
 const SingleTagDisplay = ({route, navigation}) => {
@@ -63,7 +69,7 @@ const SingleTagDisplay = ({route, navigation}) => {
               postTitle: f.title
             })
           }}>
-              <Card>
+              <Card style={styles.cardStyle}>
                 <Card.Title style={{textAlign: 'center'}}>{f.title}
                 {"\n"}
                   {/* <FontAwesomeIcon icon={faHeart} style={{ fontSize: '10px', color: '#ff99ff', marginLeft: '30px', marginRight: '10px' }} /> */}
@@ -88,8 +94,8 @@ const SingleTagDisplay = ({route, navigation}) => {
 
                 </Text>
 
-                <View>
-                  {f.tags.map(t => <Badge key={t} style={{backgroundColor: chooseTagColor(t)}}>{t}</Badge>)}
+                <View style={styles.bottomTags}>
+                  {f.tags.map(t => <Badge key={t} badgeStyle={{backgroundColor: chooseTagColor(t)}} value={t}/>)}
                 </View>
               </Card>
           </Pressable>)}
@@ -106,6 +112,14 @@ const styles= StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  cardStyle: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  bottomTags: {
+    flexDirection: 'row-reverse'
   }
 })
 

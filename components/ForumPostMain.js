@@ -34,6 +34,8 @@ const ForumPostMain = (props) => {
   const handleTagChange = (selected) => {
     setSelectedTags(selected)
   }
+
+  console.log(selectedTags)
   const handleEditorSubmit = async () => {
     console.log(question)
 
@@ -62,7 +64,7 @@ const ForumPostMain = (props) => {
         question: question,
         answer: '',
         isAnswered: false,
-        tags: chosenFilter === undefined ? selectedTags.map(t => t.value) : chosenFilter.concat(selectedTags.map(t => t)),
+        tags: selectedTags,
         likes: 0
       }
       try {

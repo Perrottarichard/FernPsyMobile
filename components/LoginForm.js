@@ -32,12 +32,12 @@ const LoginForm = (props) => {
     }
     else {
       try {
-        const user = await loginService.userlogin({ email, password })
+        const user = await loginService.userlogin({ email: email.toLowerCase(), password })
         await AsyncStorage.setItem(
           'loggedForumUser', JSON.stringify(user)
         )
-        forumService.setToken(user.token)
         dispatch(setUser(user))
+        forumService.setToken(user.token)
         ToastAndroid.show(`ยินดีต้อนรับ คุณ ${user.email}`, ToastAndroid.SHORT)
         // navigation.navigate('Home')
       }

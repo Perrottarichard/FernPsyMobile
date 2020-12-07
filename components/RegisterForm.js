@@ -42,11 +42,12 @@ const RegisterForm = ({navigation}) => {
     else {
       setIsLoading(true)
       try {
-        await userService.registerUser({ password, email})
+        await userService.registerUser({ password, email: email.toLowerCase()})
         ToastAndroid.show('สำเร็จแล้ว คุณสามารถล็อคอินและตั้งกระทู้ถามได้เลยค่ะ', ToastAndroid.SHORT)
         setPassword('')
         setConfirmPassword('')
         setEmail('')
+        navigation.navigate('LoginForm')
       }
       catch (error) {
         console.log(error)

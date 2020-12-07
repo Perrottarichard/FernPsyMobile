@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { View, Card, Pressable,Text, TouchableHighlight, ScrollView, RefreshControl} from 'react-native';
-import {Badge} from 'react-native-elements'
+import { View, Pressable,Text, TouchableHighlight, ScrollView, RefreshControl, StyleSheet} from 'react-native';
+import {Badge, Card} from 'react-native-elements'
 import { initializeForumPending, initializeForumAnswered } from '../reducers/forumReducer'
 
 
+
 const tagColorOptions = [
+
   { tag: 'ปัญหาเรื่องเพศ', backgroundColor: '#ff5c4d' },
   { tag: 'การออกเดท', backgroundColor: '#288046' },
   { tag: 'relationships', backgroundColor: '#ffa64d' },
@@ -20,12 +22,16 @@ const tagColorOptions = [
   { tag: 'ครอบครัว', backgroundColor: '#ffa64d' },
   { tag: 'อื่นๆ', backgroundColor: '#707571' },
   { tag: 'การเสพติด', backgroundColor: '#40073d' },
+
 ]
 const chooseTagColor = (passed) => {
   let color = tagColorOptions.find(t => t.tag === passed)
+  if (color) {
     return color.backgroundColor
+  } else {
+    return 'magenta'
+    }
 }
-
 const wait = (timeout) => {
   return new Promise(resolve => {
     setTimeout(resolve, timeout);
@@ -45,7 +51,6 @@ const MyQuestions = () => {
   const pending = useSelector(state => state.forum.pending)
   const myAnsweredPosts = answered.filter(p => p.user === id)
   const myPendingPosts = pending.filter(p => p.user.id === id)
-
 
   useEffect(() => {
     dispatch(initializeForumAnswered())
@@ -75,7 +80,7 @@ const MyQuestions = () => {
   }
   if (myAnsweredPosts.length === 0 && myPendingPosts.length === 0) {
     return (
-      <View>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
         <Text>ยินดีต้อนรับกลับสู่ {user.email}</Text>
         <Text>...คุณยังไม่ได้ถามคำถามใด ๆ</Text>
         <View>
@@ -88,21 +93,21 @@ const MyQuestions = () => {
             </Text>
           </TouchableHighlight>
         </View>
-      </View>
+      </ScrollView>
     )
   }
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-      <View>
+      <View >
         <Text>ยินดีต้อนรับคุณ {user.email}</Text>
-        <View>
-          <TouchableHighlight onPress={() => toggle('answered')}>
-            <Text>
+        <View style={styles.buttonContainer}>
+          <TouchableHighlight onPress={() => toggle('answered')} style={styles.showAnsweredButton}>
+            <Text style={styles.showAnsweredText}>
             ตอบแล้ว {`(${myAnsweredPosts.length})`}
             </Text>
             </TouchableHighlight>
-          <TouchableHighlight onPress={() => toggle('pending')}>
-            <Text>
+          <TouchableHighlight onPress={() => toggle('pending')} style={styles.showPendingButton}>
+            <Text style={styles.showPendingText}>
             รอคำตอบ {`(${myPendingPosts.length})`}
             </Text>
             </TouchableHighlight>
@@ -126,10 +131,10 @@ const MyQuestions = () => {
                     {f.question}
                   </Text>
                   <Text>
-                    {f.answer}
+                    {f.answer.answer}
                   </Text>
                   <View>
-                    {f.tags.map(t => <Badge key={t} style={{backgroundColor: chooseTagColor(t)}} >{t}</Badge>)}
+                    {f.tags.map(t => <Badge key={t} badgeStyle={{backgroundColor: chooseTagColor(t)}} value={t}></Badge>)}
                   </View>
                 </Card>
               </Pressable>
@@ -154,7 +159,7 @@ const MyQuestions = () => {
                 คำถามของคุณอยู่ระหว่างดำเนินการ
               </Text>
               <View>
-                {f.tags.map(t => <Badge key={t} style={{backgroundColor: chooseTagColor(t)}} >{t}</Badge>)}
+                {f.tags.map(t => <Badge key={t} badgeStyle={{backgroundColor: chooseTagColor(t)}} value={t}></Badge>)}
               </View>
             </Card>
           </View>) : null}
@@ -172,4 +177,30 @@ const MyQuestions = () => {
     </ScrollView >
   )
 }
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    flex: 1,
+  },
+  showAnsweredButton: {
+    alignSelf: 'center',
+    backgroundColor: 'pink',
+    borderRadius: 20,
+    padding: 5,
+    width: 200
+  },
+  showPendingButton: {
+    alignSelf: 'center',
+    backgroundColor: 'purple',
+    borderRadius: 20,
+    padding: 5,
+    width: 200
+  },
+  showAnsweredText: {
+    color: 'white'
+  },
+  showPendingText: {
+    color: 'white'
+  }
+})
 export default MyQuestions

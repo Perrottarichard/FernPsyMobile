@@ -1,14 +1,12 @@
-import React from 'react'
-import { Text, View } from 'react-native'
- 
-const Articles = () => {
-  return(
-    <View>
-      <Text>
-        Articles here
-      </Text>
-    </View>
-  )
-}
+import React from 'react';
+import { Text, View } from 'react-native';
 
-export default Articles
+const Articles = () => (
+  <View>
+    <Text>
+      Articles here
+    </Text>
+  </View>
+);
+
+export default Articles;

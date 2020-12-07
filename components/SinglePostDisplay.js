@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { Button, Text, ToastAndroid, View } from 'react-native'
-import { Badge, Card } from 'react-native-elements'
-import { TextInput } from 'react-native-gesture-handler'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState, useEffect } from 'react';
+import {
+  Button, Text, ToastAndroid, View,
+} from 'react-native';
+import { Badge, Card } from 'react-native-elements';
+import { TextInput } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
 // import { faQuestionCircle, faHeart, faFlag, faCheckCircle, faCommentDots } from '@fortawesome/free-solid-svg-icons';
-import { addComment, heart } from '../reducers/forumReducer'
-import { initializeForumAnswered, setFlaggedComment } from '../reducers/forumReducer'
+import { addComment, heart } from '../reducers/forumReducer';
+import { initializeForumAnswered, setFlaggedComment } from '../reducers/forumReducer';
 
 const tagColorOptions = [
   { tag: 'ปัญหาเรื่องเพศ', backgroundColor: '#ff5c4d' },
@@ -22,30 +24,28 @@ const tagColorOptions = [
   { tag: 'ครอบครัว', backgroundColor: '#ffa64d' },
   { tag: 'อื่นๆ', backgroundColor: '#707571' },
   { tag: 'การเสพติด', backgroundColor: '#40073d' },
-]
+];
 const chooseTagColor = (passed) => {
-  let color = tagColorOptions.find(t => t.tag === passed)
+  const color = tagColorOptions.find((t) => t.tag === passed);
   if (color) {
-    return color.backgroundColor
-  } else {
-    return 'magenta'
-    }
-}
+    return color.backgroundColor;
+  }
+  return 'magenta';
+};
 
 const SinglePostDisplay = (props) => {
-  const { activeUser, navigation, route } = props
-  let { postId, postTitle } = route.params
-  const [isLoading, setIsLoading] = useState(false)
-  const [comment, setComment] = useState('')
-  const dispatch = useDispatch()
-  const post = useSelector(state => state.forum.answered.find(p => p._id === postId))
-  const [sentHeart, setSentHeart] = useState(null)
-  const [pulseHeart, setPulseHeart] = useState('')
-
+  const { activeUser, navigation, route } = props;
+  const { postId, postTitle } = route.params;
+  const [isLoading, setIsLoading] = useState(false);
+  const [comment, setComment] = useState('');
+  const dispatch = useDispatch();
+  const post = useSelector((state) => state.forum.answered.find((p) => p._id === postId));
+  const [sentHeart, setSentHeart] = useState(null);
+  const [pulseHeart, setPulseHeart] = useState('');
 
   useEffect(() => {
-    dispatch(initializeForumAnswered())
-  }, [dispatch])
+    dispatch(initializeForumAnswered());
+  }, [dispatch]);
 
   React.useEffect(() => {
     if (isLoading) {
@@ -53,105 +53,99 @@ const SinglePostDisplay = (props) => {
         setIsLoading(false);
       }, 1500);
     }
-  }, [isLoading])
+  }, [isLoading]);
 
   const submitComment = async () => {
-
-    let postToModifyId = post
+    const postToModifyId = post;
     if (activeUser === null) {
-      ToastAndroid.show('คุณต้องลงชื่อเพื่อแสดงความคิดเห็น', ToastAndroid.SHORT)
-      navigation.navigate('Login')
+      ToastAndroid.show('คุณต้องลงชื่อเพื่อแสดงความคิดเห็น', ToastAndroid.SHORT);
+      navigation.navigate('Login');
     } else if (comment === '') {
-      ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT)
+      ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT);
     } else {
       try {
-        setIsLoading(true)
-        dispatch(addComment(comment, postToModifyId))
-        setComment('')
+        setIsLoading(true);
+        dispatch(addComment(comment, postToModifyId));
+        setComment('');
       } catch (error) {
-        console.log(error)
-        ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT)
+        console.log(error);
+        ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
       }
     }
-  }
+  };
   const submitHeart = async () => {
-    let postToModify = post
+    const postToModify = post;
     if (activeUser === null) {
-      ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT)
-      navigation.navigate('Login')
+      ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
+      navigation.navigate('Login');
     } else if (sentHeart !== null) {
-      ToastAndroid.show('คุณได้ส่งหัวใจสำหรับโพสต์นี้แล้ว', ToastAndroid.SHORT)
+      ToastAndroid.show('คุณได้ส่งหัวใจสำหรับโพสต์นี้แล้ว', ToastAndroid.SHORT);
     } else {
       try {
-        setPulseHeart('heart-icon')
+        setPulseHeart('heart-icon');
         setTimeout(() => {
-          setSentHeart(post._id)
-          dispatch(heart(postToModify))
-          setPulseHeart('')
+          setSentHeart(post._id);
+          dispatch(heart(postToModify));
+          setPulseHeart('');
         }, 2000);
       } catch (error) {
-        console.log(error)
-        ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT)
+        console.log(error);
+        ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
       }
     }
-  }
+  };
   const flag = (comment) => {
     if (comment.isFlagged) {
-      return ToastAndroid.show('ความคิดเห็นนี้มีผู้รายงานให้แอดมินทราบปัญหาเรียบร้อยแล้ว', ToastAndroid.SHORT)
+      return ToastAndroid.show('ความคิดเห็นนี้มีผู้รายงานให้แอดมินทราบปัญหาเรียบร้อยแล้ว', ToastAndroid.SHORT);
     }
-    // if (window.confirm('คุณแน่ใจหรือไม่ว่าคุณต้องการรายงานความคิดเห็นนี้ให้แอดมินทราบ'))
-    else{
-      dispatch(setFlaggedComment(comment))
-    }
-  }
+    dispatch(setFlaggedComment(comment));
+  };
 
   return (
     <View>
       <View>
         <Card>
           <Text key={Math.random()}>
-            {/* <FontAwesomeIcon className={pulseHeart} icon={faHeart} style={{ fontSize: '50px', color: 'pink' }} /> */}
           </Text>
-          <Button onPress={() => submitHeart()} title='ส่งหัวใจเพื่อให้กำลังใจเจ้าของกระทู้ คลิก'></Button>
+          <Button onPress={() => submitHeart()} title="ส่งหัวใจเพื่อให้กำลังใจเจ้าของกระทู้ คลิก" />
         </Card>
       </View>
       <View key={post._id}>
-        <Card >
-          <Card.Title>{post.title}
+        <Card>
+          <Card.Title>
+            {post.title}
             <Text>{post.likes}</Text>
             <Text>{post.date.slice(0, 10)}</Text>
           </Card.Title>
           <Text>
-            {/* <FontAwesomeIcon icon={faQuestionCircle} style={{ color: '#e8ba4f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
             {post.question}
           </Text>
           <Text>
-            {/* <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#55d13f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
             {post.answer.answer}
           </Text>
-          {(post.comments.length > 0) ? post.comments.sort((a, b) => new Date(b.date) - new Date(a.date)).map(c =>
+          {(post.comments.length > 0) ? post.comments.sort((a, b) => new Date(b.date) - new Date(a.date)).map((c) => (
             <Text key={(c._id) ? c._id : Math.random()}>
               <Text>
-                {c.user ? c.user.username : 'You'}: {" "}
-                {/* <FontAwesomeIcon icon={faCommentDots} style={{ color: '#b9babd', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
+                {c.user ? c.user.username : 'You'}
+                :
+                {' '}
                 {c.content}
               </Text>
-              <Text>{(c.date) ? c.date.slice(0, 10) : 'just now'} 
-              {/* <FontAwesomeIcon icon={faFlag} onClick={() => flag(c)} /> */}
+              <Text>
+                {(c.date) ? c.date.slice(0, 10) : 'just now'}
               </Text>
-
-            </Text>) : null}
+            </Text>
+          )) : null}
           <View>
-            {post.tags.map(t => <Badge key={t} style={chooseTagColor(t)} >{t}</Badge>)}
+            {post.tags.map((t) => <Badge key={t} style={chooseTagColor(t)}>{t}</Badge>)}
           </View>
         </Card>
       </View>
       <View>
-        <TextInput onChange={comment => setComment(comment)} placeholder='แสดงความคิดเห็น' value={comment}>
-        </TextInput>
-          <Button onPress={submitComment} title='ส่งความคิดเห็น'></Button>
+        <TextInput onChange={(comment) => setComment(comment)} placeholder="แสดงความคิดเห็น" value={comment} />
+        <Button onPress={submitComment} title="ส่งความคิดเห็น" />
       </View>
     </View>
-  )
-}
-export default SinglePostDisplay
+  );
+};
+export default SinglePostDisplay;

@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { View, Pressable,Text, TouchableHighlight, ScrollView, RefreshControl, StyleSheet} from 'react-native';
-import {Badge, Card} from 'react-native-elements'
-import { initializeForumPending, initializeForumAnswered } from '../reducers/forumReducer'
-
-
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  View, Pressable, Text, TouchableHighlight, ScrollView, RefreshControl, StyleSheet,
+} from 'react-native';
+import { Badge, Card } from 'react-native-elements';
+import { initializeForumPending, initializeForumAnswered } from '../reducers/forumReducer';
 
 const tagColorOptions = [
 
@@ -23,110 +23,117 @@ const tagColorOptions = [
   { tag: 'อื่นๆ', backgroundColor: '#707571' },
   { tag: 'การเสพติด', backgroundColor: '#40073d' },
 
-]
+];
+
 const chooseTagColor = (passed) => {
-  let color = tagColorOptions.find(t => t.tag === passed)
+  const color = tagColorOptions.find((t) => t.tag === passed);
   if (color) {
-    return color.backgroundColor
-  } else {
-    return 'magenta'
-    }
-}
-const wait = (timeout) => {
-  return new Promise(resolve => {
-    setTimeout(resolve, timeout);
-  });
-}
+    return color.backgroundColor;
+  }
+  return 'magenta';
+};
+
+const wait = (timeout) => new Promise((resolve) => {
+  setTimeout(resolve, timeout);
+});
 
 const MyQuestions = () => {
-  
-  const dispatch = useDispatch()
-  const [toggleAnswered, setToggleAnswered] = useState(false)
-  const [togglePending, setTogglePending] = useState(false)
-  const [refreshing, setRefreshing] = useState(false)
+  const dispatch = useDispatch();
+  const [toggleAnswered, setToggleAnswered] = useState(false);
+  const [togglePending, setTogglePending] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const user = useSelector(state => state.activeUser)
-  const id = user._id
-  const answered = useSelector(state => state.forum.answered)
-  const pending = useSelector(state => state.forum.pending)
-  const myAnsweredPosts = answered.filter(p => p.user === id)
-  const myPendingPosts = pending.filter(p => p.user.id === id)
-
-  useEffect(() => {
-    dispatch(initializeForumAnswered())
-  }, [])
+  const user = useSelector((state) => state.activeUser);
+  const id = user._id;
+  const answered = useSelector((state) => state.forum.answered);
+  const pending = useSelector((state) => state.forum.pending);
+  const myAnsweredPosts = answered.filter((p) => p.user === id);
+  const myPendingPosts = pending.filter((p) => p.user.id === id);
 
   useEffect(() => {
-    dispatch(initializeForumPending())
-  }, [])
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true)
-    dispatch(initializeForumAnswered())
-    dispatch(initializeForumPending())
-    wait(2000).then(() => setRefreshing(false));
+    dispatch(initializeForumAnswered());
   }, []);
 
+  useEffect(() => {
+    dispatch(initializeForumPending());
+  }, []);
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    dispatch(initializeForumAnswered());
+    dispatch(initializeForumPending());
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   const toggle = (type) => {
     switch (type) {
       case 'pending':
-        return setTogglePending(!togglePending)
+        return setTogglePending(!togglePending);
       case 'answered':
-        return setToggleAnswered(!toggleAnswered)
-      default: return null
+        return setToggleAnswered(!toggleAnswered);
+      default: return null;
     }
-  }
+  };
   if (myAnsweredPosts.length === 0 && myPendingPosts.length === 0) {
     return (
-      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-        <Text>ยินดีต้อนรับกลับสู่ {user.email}</Text>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+        <Text>
+          ยินดีต้อนรับกลับสู่
+          {user.email}
+        </Text>
         <Text>...คุณยังไม่ได้ถามคำถามใด ๆ</Text>
         <View>
           <Text>
-          ตั้งกระทู้ถาม
+            ตั้งกระทู้ถาม
           </Text>
           <TouchableHighlight>
             <Text>
-            ส่งคำถาม
+              ส่งคำถาม
             </Text>
           </TouchableHighlight>
         </View>
       </ScrollView>
-    )
+    );
   }
   return (
-    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-      <View >
-        <Text>ยินดีต้อนรับคุณ {user.email}</Text>
+    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+      <View>
+        <Text>
+          ยินดีต้อนรับคุณ
+          {user.email}
+        </Text>
         <View style={styles.buttonContainer}>
           <TouchableHighlight onPress={() => toggle('answered')} style={styles.showAnsweredButton}>
             <Text style={styles.showAnsweredText}>
-            ตอบแล้ว {`(${myAnsweredPosts.length})`}
+              ตอบแล้ว
+              {' '}
+              {`(${myAnsweredPosts.length})`}
             </Text>
-            </TouchableHighlight>
+          </TouchableHighlight>
           <TouchableHighlight onPress={() => toggle('pending')} style={styles.showPendingButton}>
             <Text style={styles.showPendingText}>
-            รอคำตอบ {`(${myPendingPosts.length})`}
+              รอคำตอบ
+              {' '}
+              {`(${myPendingPosts.length})`}
             </Text>
-            </TouchableHighlight>
+          </TouchableHighlight>
         </View>
-        {myAnsweredPosts && toggleAnswered ?
-          myAnsweredPosts.sort((a, b) => new Date(b.date) - new Date(a.date)).map(f =>
+        {myAnsweredPosts && toggleAnswered
+          ? myAnsweredPosts.sort((a, b) => new Date(b.date) - new Date(a.date)).map((f) => (
             <View key={f._id}>
               <Pressable onPress={() => {
-            navigation.navigate('SinglePostDisplay', {
-              postId: f._id,
-              postTitle: f.title
-            })
-          }}>
-                <Card >
-                  <Card.Title>{f.title}
+                navigation.navigate('SinglePostDisplay', {
+                  postId: f._id,
+                  postTitle: f.title,
+                });
+              }}
+              >
+                <Card>
+                  <Card.Title>
+                    {f.title}
                     <Text>{f.likes}</Text>
                     <Text>{f.date ? f.date.slice(0, 10) : 'unknown'}</Text>
                   </Card.Title>
-
                   <Text>
                     {f.question}
                   </Text>
@@ -134,49 +141,49 @@ const MyQuestions = () => {
                     {f.answer.answer}
                   </Text>
                   <View>
-                    {f.tags.map(t => <Badge key={t} badgeStyle={{backgroundColor: chooseTagColor(t)}} value={t}></Badge>)}
+                    {f.tags.map((t) => <Badge key={t} badgeStyle={{ backgroundColor: chooseTagColor(t) }} value={t} />)}
                   </View>
                 </Card>
               </Pressable>
-            </View>)
-          : null
-        }
+            </View>
+          ))
+          : null}
       </View>
       <View>
-        {myPendingPosts && togglePending ? myPendingPosts.sort((a, b) => new Date(b.date) - new Date(a.date)).map(f =>
+        {myPendingPosts && togglePending ? myPendingPosts.sort((a, b) => new Date(b.date) - new Date(a.date)).map((f) => (
           <View key={f._id}>
-            <Card >
-              <Card.Title>{f.title}
+            <Card>
+              <Card.Title>
+                {f.title}
                 <Text>{f.likes}</Text>
                 <Text>{f.date ? f.date.slice(0, 10) : 'unknown'}</Text>
               </Card.Title>
-
               <Text>
                 {f.question}
               </Text>
-
               <Text>
                 คำถามของคุณอยู่ระหว่างดำเนินการ
               </Text>
               <View>
-                {f.tags.map(t => <Badge key={t} badgeStyle={{backgroundColor: chooseTagColor(t)}} value={t}></Badge>)}
+                {f.tags.map((t) => <Badge key={t} badgeStyle={{ backgroundColor: chooseTagColor(t) }} value={t} />)}
               </View>
             </Card>
-          </View>) : null}
+          </View>
+        )) : null}
         <View>
           <Text>
-          ต้องการถาม คลิก
+            ต้องการถาม คลิก
           </Text>
           <TouchableHighlight>
             <Text>
-            ส่งคำถาม
+              ส่งคำถาม
             </Text>
-            </TouchableHighlight>
+          </TouchableHighlight>
         </View>
       </View>
-    </ScrollView >
-  )
-}
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -187,20 +194,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'pink',
     borderRadius: 20,
     padding: 5,
-    width: 200
+    width: 200,
   },
   showPendingButton: {
     alignSelf: 'center',
     backgroundColor: 'purple',
     borderRadius: 20,
     padding: 5,
-    width: 200
+    width: 200,
   },
   showAnsweredText: {
-    color: 'white'
+    color: 'white',
   },
   showPendingText: {
-    color: 'white'
-  }
-})
-export default MyQuestions
+    color: 'white',
+  },
+});
+export default MyQuestions;

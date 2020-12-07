@@ -1,27 +1,27 @@
-import React from 'react'
-import {useSelector} from 'react-redux'
-import { View, StyleSheet, Text} from 'react-native'
-import LoginNavigate from './LoginNavigate'
-import Logout from './Logout'
-import MyQuestions from './MyQuestions'
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { View, StyleSheet, Text } from 'react-native';
+import LoginNavigate from './LoginNavigate';
+import Logout from './Logout';
+import MyQuestions from './MyQuestions';
 
 const Home = () => {
-  const user = useSelector(state => state.activeUser)
-  
-  if(user && user.token) {
-    return(
+  const user = useSelector((state) => state.activeUser);
+
+  if (user && user.token) {
+    return (
       <View>
-        <Logout/>
-        <MyQuestions/>
+        <Logout />
+        <MyQuestions />
       </View>
-    )
+    );
   }
-  return(
+  return (
     <View style={styles.container}>
-      <LoginNavigate/>
+      <LoginNavigate />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch',
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
   },
-})
-export default Home
+});
+export default Home;

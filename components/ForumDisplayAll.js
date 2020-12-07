@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Text, View, ScrollView, StyleSheet, ActivityIndicator, Pressable } from 'react-native'
-import { Badge, Card } from 'react-native-elements'
-import Icon from 'react-native-vector-icons/Ionicons'
-import { useDispatch, useSelector } from 'react-redux'
-import { initializeForumAnswered } from '../reducers/forumReducer'
+import React, { useEffect, useState } from 'react';
+import {
+  Button, Text, View, ScrollView, StyleSheet, ActivityIndicator, Pressable,
+} from 'react-native';
+import { Badge, Card } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from 'react-redux';
+import { initializeForumAnswered } from '../reducers/forumReducer';
 
 const tagColorOptions = [
 
@@ -22,98 +24,112 @@ const tagColorOptions = [
   { tag: 'อื่นๆ', backgroundColor: '#707571' },
   { tag: 'การเสพติด', backgroundColor: '#40073d' },
 
-]
+];
 const chooseTagColor = (passed) => {
-  let color = tagColorOptions.find(t => t.tag === passed)
+  const color = tagColorOptions.find((t) => t.tag === passed);
   if (color) {
-    return color.backgroundColor
-  } else {
-    return 'magenta'
-    }
-}
+    return color.backgroundColor;
+  }
+  return 'magenta';
+};
 
-const ForumDisplayAll = ({navigation}) => {
-
-  const dispatch = useDispatch()
-  const [isLoading, setIsLoading] = useState(true)
-  const forumAnswered = useSelector(state => state.forum.answered)
+const ForumDisplayAll = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
+  const forumAnswered = useSelector((state) => state.forum.answered);
 
   useEffect(() => {
-    if(!forumAnswered){
-      setIsLoading(true)
-      dispatch(initializeForumAnswered())
-    }else{
-      setIsLoading(false)
+    if (!forumAnswered) {
+      setIsLoading(true);
+      dispatch(initializeForumAnswered());
+    } else {
+      setIsLoading(false);
     }
-  }, [dispatch, forumAnswered, isLoading])
-
-  
+  }, [dispatch, forumAnswered, isLoading]);
 
   if (isLoading) {
     return (
       <View style={styles.container}>
-      <ActivityIndicator size='large' color='blue'/>
+        <ActivityIndicator size="large" color="blue" />
       </View>
-    )
+    );
   }
   return (
     <ScrollView>
-      {forumAnswered && forumAnswered.map(f =>
-        <Pressable key={f._id} onPress={() => {
-          navigation.navigate('SinglePostDisplay', {
-            postId: f._id,
-            postTitle: f.title
-          })
-        }}>
-            <Card style={styles.cardStyle} >
-              <Card.Title>{f.title}
-                {/* <FontAwesomeIcon icon={faHeart} style={{ fontSize: '10px', color: '#ff99ff', marginLeft: '30px', marginRight: '10px' }} /> */}
-                {"\n"}
-                <Text >ถามเมื่อ {f.date.slice(0, 10)}</Text>
-                {"\n"}
-              </Card.Title>
-              <Icon
-                name='ios-heart-sharp' 
-                color='deeppink' 
-                size={26} 
-                style={{position: 'absolute', left: 0}}>
-                </Icon>
-                <Text style={{position: 'absolute', left: 10, fontSize: 10, paddingTop: 6, color: 'white', fontWeight: 'bold'}}>{f.likes}</Text>
+      {forumAnswered && forumAnswered.map((f) => (
+        <Pressable
+          key={f._id}
+          onPress={() => {
+            navigation.navigate('SinglePostDisplay', {
+              postId: f._id,
+              postTitle: f.title,
+            });
+          }}
+        >
+          <Card style={styles.cardStyle}>
+            <Card.Title>
+              {f.title}
+              {'\n'}
               <Text>
-                {/* <FontAwesomeIcon icon={faQuestionCircle} style={{ color: '#e8ba4f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
-                {f.question}
+                ถามเมื่อ
+                {f.date.slice(0, 10)}
               </Text>
-              <Text>
-                {/* <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#55d13f', fontSize: '20px', float: 'left', position: 'relative', marginRight: '20px' }} /> */}
-                {f.answer.answer}
-              </Text>
-              <View style={styles.bottomTags}>
-                {f.tags.map(t => <Badge key={t} badgeStyle={{backgroundColor: chooseTagColor(t)}} value={t}/>)}
-              </View>
-            </Card>
-        </Pressable>)}
+              {'\n'}
+            </Card.Title>
+            <Icon
+              name="ios-heart-sharp"
+              color="deeppink"
+              size={26}
+              style={styles.heartIconStyle}
+            />
+            <Text style={styles.likeTextStyle}
+            >
+              {f.likes}
+            </Text>
+            <Text>
+              {f.question}
+            </Text>
+            <Text>
+              {f.answer.answer}
+            </Text>
+            <View style={styles.bottomTags}>
+              {f.tags.map((t) => <Badge key={t} badgeStyle={{ backgroundColor: chooseTagColor(t) }} value={t} />)}
+            </View>
+          </Card>
+        </Pressable>
+      ))}
       <View>
         <Text>ตั้งกระทู้ถาม</Text>
-        {/* <Link to={activeUser === null ? '/login' : '/addpost'} onClick={() => activeUser === null ? toast.warn('คุณต้องเข้าสู่ระบบเพื่อโพสต์คำถาม') : null}> */}
-          <Button title='ส่งคำถาม'></Button>
+        <Button title="ส่งคำถาม" />
       </View>
     </ScrollView>
-  )
-}
+  );
+};
 
-const styles= StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   cardStyle: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   bottomTags: {
-    flexDirection: 'row-reverse'
+    flexDirection: 'row-reverse',
+  },
+  heartIconStyle: {
+    position: 'absolute', left: 0
+  },
+  likeTextStyle: {
+    position: 'absolute', 
+    left: 10, 
+    fontSize: 10, 
+    paddingTop: 6, 
+    color: 'white', 
+    fontWeight: 'bold'
   }
-  })
-export default ForumDisplayAll
+});
+export default ForumDisplayAll;

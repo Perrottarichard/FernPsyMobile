@@ -1,33 +1,32 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { persistStore, persistReducer } from 'redux-persist'
-import {composeWithDevTools} from 'redux-devtools-extension'
-import thunk from 'redux-thunk'
-import forumReducer from './reducers/forumReducer'
-import activeUserReducer from './reducers/activeUserReducer'
-import contactReducer from './reducers/contactReducer'
-import userInfoForAdminReducer from './reducers/userInfoForAdminReducer'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import forumReducer from './reducers/forumReducer';
+import activeUserReducer from './reducers/activeUserReducer';
+import contactReducer from './reducers/contactReducer';
+import userInfoForAdminReducer from './reducers/userInfoForAdminReducer';
 
 const appReducer = combineReducers({
   forum: forumReducer,
   activeUser: activeUserReducer,
   contact: contactReducer,
-  userInfoForAdmin: userInfoForAdminReducer
-})
+  userInfoForAdmin: userInfoForAdminReducer,
+});
 const rootReducer = (state, action) => {
   if (action.type === 'USER_LOGOUT') {
-    state = undefined
+    state = undefined;
   }
-  return appReducer(state, action)
-}
+  return appReducer(state, action);
+};
 
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage
-}
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+  storage: AsyncStorage,
+};
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)))
+export const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)));
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);

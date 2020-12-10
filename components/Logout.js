@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, View, ToastAndroid } from 'react-native';
+import { TouchableHighlight, View, ToastAndroid, StyleSheet, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { clearUser } from '../reducers/activeUserReducer';
 
@@ -12,9 +12,20 @@ const Logout = () => {
     dispatch(clearUser());
   };
   return (
-    <View>
-      <Button onPress={logout} title="ออกจากระบบ" />
+    <View style={styles.view}>
+      <TouchableHighlight onPress={() => logout}>
+        <Text>
+          Sign Out
+        </Text>
+        </TouchableHighlight>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  view: {
+    height: 30,
+    width: 100
+  }
+})
 export default Logout;

@@ -100,10 +100,8 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   cancelRegister: {
-    backgroundColor: 'transparent',
     borderRadius: 20,
     padding: 10,
-    elevation: 2,
     width: 300,
     margin: 8,
   },

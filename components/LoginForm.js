@@ -100,10 +100,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   goToRegisterButton: {
-    backgroundColor: 'transparent',
     borderRadius: 20,
     padding: 10,
-    elevation: 2,
     width: 300,
     margin: 8,
     alignSelf: 'center',

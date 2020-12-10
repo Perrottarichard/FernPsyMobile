@@ -7,18 +7,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { setUser } from './reducers/activeUserReducer';
 import { initializeForumAnswered } from './reducers/forumReducer';
 import forumService from './services/forumService';
-import About from './components/About';
-import LoginForm from './components/LoginForm';
-import ForumPostMain from './components/ForumPostMain';
-import ForumDisplayAll from './components/ForumDisplayAll';
-import ForumLandingPage from './components/ForumLandingPage';
-import ContactForm from './components/ContactForm';
-import NoPage from './components/NoPage';
-import SingleTagDisplay from './components/SingleTagDisplay';
-import SinglePostDisplay from './components/SinglePostDisplay';
-import MyQuestions from './components/MyQuestions';
-import Home from './components/TabNav';
-import ForumMain from './components/ForumMain';
 import TabNav from './components/TabNav';
 
 const App = () => {

@@ -48,7 +48,7 @@ const About = () => {
       {!isEng
         ? (
           <View style={styles.cardView}>
-            <Card containerStyle={styles.bodySpacer}>
+            <Card containerStyle={styles.cardCard}>
               <Text style={styles.titleText}>
                 เกี่ยวกับ Fern
               </Text>
@@ -57,7 +57,7 @@ const About = () => {
                 การศึกษา จบจากมหาวิทยาลัยเชียงใหม่ สาขาจิตวิทยาการปรึกษา ระดับปริญญาโท พ.ศ. 2559 และ สาขาจิตวิทยา(คลินิก) ระดับปริญญาตรี พ.ศ. 2548
               </Text>
             </Card>
-            <Card containerStyle={styles.bodySpacer}>
+            <Card containerStyle={styles.cardCard}>
               <Text style={styles.titleText}>
                 เกี่ยวกับ App
               </Text>

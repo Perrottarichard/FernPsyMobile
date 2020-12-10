@@ -24,7 +24,6 @@ const App = () => {
   };
   useEffect(() => {
     if (!activeUser) {
-      console.log('!activeUser');
       getLoggedUser();
     } else {
       forumService.setToken(activeUser.token);

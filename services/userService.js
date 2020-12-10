@@ -10,4 +10,8 @@ const getAllUsers = async () => {
   const response = await axios.get(baseUrl);
   return response.data;
 };
-export default { registerUser, getAllUsers };
+const createAvatar = async (id, avatarProps, avatarName) => {
+  const response = await axios.post(`${baseUrl}/createAvatar`, {id, avatarProps, avatarName})
+  return response.data;
+}
+export default { registerUser, getAllUsers, createAvatar };

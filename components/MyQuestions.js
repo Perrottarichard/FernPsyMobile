@@ -59,7 +59,7 @@ const MyQuestions = ({navigation}) => {
     );
   }
   return(
-  <View style={styles.but}>
+  <View>
     <TouchableHighlight style={styles.showAnsweredButton} onPress={() => navigation.navigate("MyAnswered", {myAnsweredPosts: myAnsweredPosts})}>
       <Text style={styles.showAnsweredText}>
         Answered
@@ -71,6 +71,13 @@ const MyQuestions = ({navigation}) => {
       </Text>
     </TouchableHighlight>
     <Logout/>
+    <View>
+        <TouchableHighlight style={styles.showEditAvatarButton} onPress={() => navigation.navigate("EditAvatar")}>
+          <Text style={styles.showEditAvatarText}>
+            Edit Avatar
+          </Text>
+        </TouchableHighlight>
+        </View>
   </View>
 )
 };
@@ -81,14 +88,24 @@ const MyQuestions = ({navigation}) => {
       backgroundColor: 'pink',
       borderRadius: 20,
       padding: 5,
-      width: 200,
+      width: 300,
     },
     showPendingButton: {
       alignSelf: 'center',
       backgroundColor: 'purple',
       borderRadius: 20,
       padding: 5,
-      width: 200,
+      width: 300,
+    },
+    showEditAvatarButton: {
+      alignSelf: 'center',
+      backgroundColor: 'orange',
+      borderRadius: 20,
+      padding: 5,
+      width: 300,
+    },
+    showEditAvatarText: {
+      color: 'white'
     },
     showAnsweredText: {
       color: 'white',

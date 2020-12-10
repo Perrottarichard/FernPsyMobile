@@ -1,10 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { View, StyleSheet, ScrollView} from 'react-native';
+import { View, StyleSheet} from 'react-native';
 import LoginNavigate from './LoginNavigate';
-import Logout from './Logout';
 import MyQuestionsNavigate from './MyQuestionsNavigate';
-import AvatarPreview from './AvatarPreview'
 
 const Home = () => {
   const user = useSelector((state) => state.activeUser);
@@ -12,10 +10,9 @@ const Home = () => {
   if (user && user.token) {
     return (
       <View style={styles.ifLoggedInContainer}>
-        <AvatarPreview/>
-        {/* <View style={styles.myQuestionsContainer}>
+        <View style={styles.myQuestionsContainer}>
         <MyQuestionsNavigate/>
-        </View> */}
+        </View>
         </View>
     );
   }
@@ -39,8 +36,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'stretch'
   },
-  // myQuestionsContainer: {
-  //   flex: 1
-  // }
+  myQuestionsContainer: {
+    flex: 1
+  }
 });
 export default Home;

@@ -13,7 +13,7 @@ const Logout = () => {
   };
   return (
     <View style={styles.view}>
-      <TouchableHighlight onPress={() => logout}>
+      <TouchableHighlight onPress={logout}>
         <Text>
           Sign Out
         </Text>

@@ -61,7 +61,7 @@ const RegisterForm = ({ navigation }) => {
       <View style={styles.formView}>
         <Input keyboardType="email-address" placeholder="email" onChangeText={(email) => setEmail(email)} style={styles.input} />
 
-        <Input placeholder="Password" autoCompleteType="password" secureTextEntryonChangeText={(pass) => setPassword(pass)} style={styles.input} />
+        <Input placeholder="Password" autoCompleteType="password" secureTextEntry onChangeText={(pass) => setPassword(pass)} style={styles.input} />
 
         <Input onChangeText={(cpass) => setConfirmPassword(cpass)} type="password" placeholder="ยืนยัน Password" secureTextEntry style={styles.input} />
 

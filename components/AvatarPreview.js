@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {View, TouchableHighlight, StyleSheet, ScrollView, ToastAndroid} from 'react-native'
-import {RadioButton, Text, Surface, TextInput} from 'react-native-paper'
+import {RadioButton, Text, Surface, TextInput, Button} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import {updateUserAvatar} from '../reducers/activeUserReducer'
 
@@ -138,6 +138,12 @@ const AvatarPreview = ({navigation}) => {
     }else{
     let id = user._id
     let avatarProps = {
+      hat: 'none',
+      hatColor: 'blue',
+      lashes: true,
+      lipColor: 'pink',
+      showBackground: true,
+      bgShape: 'squircle',
       accessory: accessory,
       bgColor: bgColor,
       body: body,
@@ -164,6 +170,8 @@ const AvatarPreview = ({navigation}) => {
   return(
     <View style={styles.container}>
       <TextInput
+      style={styles.textInput}
+      mode='outlined'
       label="Name"
       value={name}
       dense={true}
@@ -194,7 +202,7 @@ skinTone={skinTone}
 containerStyles={styles.avatarPreview}
 />
 </View>
-<ScrollView horizontal>
+<ScrollView horizontal showsHorizontalScrollIndicator={false}>
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
@@ -381,11 +389,11 @@ value={hairColor}
 </Surface>
 
 </ScrollView>
-<TouchableHighlight style={styles.submitButton}onPress={submitUpdate}>
+<Button mode='contained'style={styles.submitButton}onPress={submitUpdate}>
   <Text style={styles.submitButtonText}>
-    Finished
+    Save
   </Text>
-</TouchableHighlight>
+</Button>
     </View>
   )
 }
@@ -395,14 +403,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
-    paddingLeft: 10,
-    paddingRight: 10
   },
   surface: {
     padding: 0,
     elevation: 4,
     marginTop: 0,
-    marginRight:20,
+    marginLeft: 10,
+    marginRight:10,
     borderRadius: 10,
     height: 220,
     width: 200
@@ -415,6 +422,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 0,
     paddingTop: 0
+  },
+  textInput: {
+    marginTop: 10,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 0
   },
   groupCategoryText: {
     fontWeight: 'bold',
@@ -435,11 +448,11 @@ const styles = StyleSheet.create({
     height: 30
   },
   submitButton: {
-    height: 30,
     backgroundColor: 'pink',
     borderRadius: 20,
     width: 300,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginBottom: 10
   },
   submitButtonText: {
     alignSelf: 'center',

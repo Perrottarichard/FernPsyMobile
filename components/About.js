@@ -74,7 +74,7 @@ const About = () => {
                 About Fern
               </Text>
               <Text style={styles.bodyText}>
-                Nilubon Sukawanich, nicknamed Fern, works as a counseling psychologist at Rajamangala University of Technology Lanna.  She graduated from Chiang Mai University with a Bachelor's degree in Clinical Psychology in 2005, then completed her Master's degree in Counseling Psychology from the same institution in 2016.  She has been working as a counselor since 2005.
+                I'm Nilubon Sukawanich, but you can call me Fern. I work as a counselor at Rajamangala University of Technology Lanna.  I graduated from Chiang Mai University with a Bachelor's degree in Clinical Psychology in 2005, then I completed my Master's degree in Counseling Psychology from the same institution in 2016.  I have been working as a counselor since 2012.
               </Text>
             </Card>
             <Card containerStyle={styles.cardCard}>
@@ -82,7 +82,7 @@ const About = () => {
                 About the App
               </Text>
               <Text style={styles.bodyText}>
-                AskFern provides a platform where people can ask questions and receive answers from an experienced psychologist.  All users can access and read the forum, but in order to prevent spam and harassment, users must register in order to post their own questions, as well as comment on the posts of others.  The forum is anonymous; no user details will be displayed, and users should avoid including identifying information in their posts and comments.  Our intention is to create a safe space for people to talk freely about their issues.
+                AskFern provides a platform where people can ask questions and receive answers from an experienced counselor.  All users can access and read the forum, but in order to prevent spam and harassment, users must register before posting their own questions, as well as commenting on the posts of others.  The forum is anonymous; no user details will be displayed, and users should avoid including identifying information in their posts and comments.  My intention is to create a safe space for people to talk freely about their issues.
               </Text>
             </Card>
           </View>

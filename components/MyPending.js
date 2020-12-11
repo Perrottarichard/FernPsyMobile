@@ -31,7 +31,6 @@ const chooseTagColor = (passed) => {
 
 const MyPending = ({navigation, route}) => {
   const myPendingPosts = route.params
-  console.log(myPendingPosts)
   return(
     <ScrollView>
     {myPendingPosts.myPendingPosts.map((f) => (

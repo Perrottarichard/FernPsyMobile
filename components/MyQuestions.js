@@ -3,8 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   View, Text, TouchableHighlight, ScrollView, RefreshControl, StyleSheet,
 } from 'react-native';
+import {ListItem} from 'react-native-elements'
+import {Button} from 'react-native-paper'
+import {BigHead} from 'react-native-bigheads'
 import { initializeForumPending, initializeForumAnswered } from '../reducers/forumReducer';
 import Logout from './Logout'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const wait = (timeout) => new Promise((resolve) => {
   setTimeout(resolve, timeout);
@@ -15,11 +19,14 @@ const MyQuestions = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
 
   const user = useSelector((state) => state.activeUser);
+  const avatarProps = user.avatarProps
+  const avatarName = user.avatarName
   const id = user._id;
   const answered = useSelector((state) => state.forum.answered);
   const pending = useSelector((state) => state.forum.pending);
   const myAnsweredPosts = answered.filter((p) => p.user === id).sort((a, b) => new Date(b.date) - new Date(a.date));
   const myPendingPosts = pending.filter((p) => p.user.id === id).sort((a, b) => new Date(b.date) - new Date(a.date));
+
 
   useEffect(() => {
     dispatch(initializeForumAnswered());
@@ -38,7 +45,9 @@ const MyQuestions = ({navigation}) => {
 
   if (myAnsweredPosts.length === 0 && myPendingPosts.length === 0) {
     return (
-      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+      <View contentContainerStyle={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+
+        <BigHead {...avatarProps}/>
         <Text>
           ยินดีต้อนรับกลับสู่
           {user.email}
@@ -55,63 +64,89 @@ const MyQuestions = ({navigation}) => {
           </TouchableHighlight>
         </View>
         <Logout/>
-      </ScrollView>
+      </View>
     );
   }
   return(
-  <View>
-    <TouchableHighlight style={styles.showAnsweredButton} onPress={() => navigation.navigate("MyAnswered", {myAnsweredPosts: myAnsweredPosts})}>
-      <Text style={styles.showAnsweredText}>
-        Answered
-      </Text>
-    </TouchableHighlight>
-    <TouchableHighlight style={styles.showPendingButton} onPress={() => navigation.navigate("MyPending", {myPendingPosts: myPendingPosts})}>
-      <Text style={styles.showPendingText}>
-        Pending
-      </Text>
-    </TouchableHighlight>
-    <Logout/>
+  <ScrollView contentContainerStyle={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+    <View style={styles.editAvatarContainer}>
+    <BigHead {...avatarProps} size={160}/>
     <View>
-        <TouchableHighlight style={styles.showEditAvatarButton} onPress={() => navigation.navigate("EditAvatar")}>
-          <Text style={styles.showEditAvatarText}>
-            Edit Avatar
+    <Text style={styles.avatarIntro}>
+            Hi, I'm {avatarName}. I'll be your avatar.
           </Text>
-        </TouchableHighlight>
+        <Button mode='text' icon='square-edit-outline'style={styles.showEditAvatarButton} onPress={() => navigation.navigate("EditAvatar")}>
+          <Text style={styles.showEditAvatarText}>
+            Edit
+          </Text>
+        </Button>
         </View>
-  </View>
+    </View>
+    <View style={styles.answerPendingContainer}>
+    <Button icon='checkbox-marked-circle-outline' mode='contained'style={styles.showAnsweredButton} onPress={() => navigation.navigate("MyAnswered", {myAnsweredPosts: myAnsweredPosts})}>
+      <Text style={styles.showAnsweredText}>
+  Show Answered ({myAnsweredPosts.length})
+      </Text>
+    </Button>
+    <Button icon='timer-sand' mode='contained' style={styles.showPendingButton} onPress={() => navigation.navigate("MyPending", {myPendingPosts: myPendingPosts})}>
+      <Text style={styles.showPendingText}>
+      Show Pending ({myPendingPosts.length})
+      </Text>
+    </Button>
+    </View>
+    <Logout/>
+    
+  </ScrollView>
 )
 };
 
   const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    answerPendingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
     showAnsweredButton: {
       alignSelf: 'center',
-      backgroundColor: 'pink',
       borderRadius: 20,
-      padding: 5,
       width: 300,
+      backgroundColor: 'lightgray',
+      marginBottom: 20
     },
     showPendingButton: {
       alignSelf: 'center',
-      backgroundColor: 'purple',
       borderRadius: 20,
-      padding: 5,
       width: 300,
+      backgroundColor: 'lightpink'
+    },
+    avatarIntro: {
+      color: 'black',
+      alignSelf: 'center'
     },
     showEditAvatarButton: {
       alignSelf: 'center',
-      backgroundColor: 'orange',
       borderRadius: 20,
       padding: 5,
       width: 300,
     },
+    editAvatarContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
     showEditAvatarText: {
-      color: 'white'
+      color: 'black'
     },
     showAnsweredText: {
-      color: 'white',
+      color: 'black',
     },
     showPendingText: {
-      color: 'white',
+      color: 'black',
     },
   });
 

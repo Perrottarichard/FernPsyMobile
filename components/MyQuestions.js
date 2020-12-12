@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  View, Text, TouchableHighlight, ScrollView, RefreshControl, StyleSheet,
+  View, Text, ScrollView, RefreshControl, StyleSheet,
 } from 'react-native';
-import {ListItem} from 'react-native-elements'
 import {Button} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import { initializeForumPending, initializeForumAnswered } from '../reducers/forumReducer';
 import Logout from './Logout'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const wait = (timeout) => new Promise((resolve) => {
   setTimeout(resolve, timeout);
@@ -43,41 +41,17 @@ const MyQuestions = ({navigation}) => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  if (myAnsweredPosts.length === 0 && myPendingPosts.length === 0) {
-    return (
-      <View contentContainerStyle={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-
-        <BigHead {...avatarProps}/>
-        <Text>
-          ยินดีต้อนรับกลับสู่
-          {user.email}
-        </Text>
-        <Text>...คุณยังไม่ได้ถามคำถามใด ๆ</Text>
-        <View>
-          <Text>
-            ตั้งกระทู้ถาม
-          </Text>
-          <TouchableHighlight>
-            <Text>
-              ส่งคำถาม
-            </Text>
-          </TouchableHighlight>
-        </View>
-        <Logout/>
-      </View>
-    );
-  }
   return(
   <ScrollView contentContainerStyle={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
     <View style={styles.editAvatarContainer}>
     <BigHead {...avatarProps} size={160}/>
     <View>
     <Text style={styles.avatarIntro}>
-            Hi, I'm {avatarName}. I'll be your avatar.
+             สวัสดี, ฉันคือ {avatarName} เราเป็นเพื่อนกันแล้วนะ
           </Text>
         <Button mode='text' icon='square-edit-outline'style={styles.showEditAvatarButton} onPress={() => navigation.navigate("EditAvatar")}>
           <Text style={styles.showEditAvatarText}>
-            Edit
+            แก้ไข
           </Text>
         </Button>
         </View>
@@ -85,12 +59,12 @@ const MyQuestions = ({navigation}) => {
     <View style={styles.answerPendingContainer}>
     <Button icon='checkbox-marked-circle-outline' mode='contained'style={styles.showAnsweredButton} onPress={() => navigation.navigate("MyAnswered", {myAnsweredPosts: myAnsweredPosts})}>
       <Text style={styles.showAnsweredText}>
-  Show Answered ({myAnsweredPosts.length})
+      มีการตอบแล้ว ({myAnsweredPosts.length})
       </Text>
     </Button>
     <Button icon='timer-sand' mode='contained' style={styles.showPendingButton} onPress={() => navigation.navigate("MyPending", {myPendingPosts: myPendingPosts})}>
       <Text style={styles.showPendingText}>
-      Show Pending ({myPendingPosts.length})
+      กำลังรอคำตอบ ({myPendingPosts.length})
       </Text>
     </Button>
     </View>

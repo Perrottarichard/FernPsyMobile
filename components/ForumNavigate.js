@@ -8,10 +8,11 @@ import SingleTagDisplay from './SingleTagDisplay';
 const Stack = createStackNavigator();
 
 const ForumNavigate = () => (
-  <Stack.Navigator>
-    <Stack.Screen name="ForumLandingPage" component={ForumLandingPage} options={{ title: 'Choose a Topic' }} />
+  <Stack.Navigator screenOptions={{
+    headerShown: false,
+  }}>
+    <Stack.Screen name="ForumDisplayAll" component={ForumDisplayAll} />
     <Stack.Screen name="SingleTagDisplay" component={SingleTagDisplay} options={({ route }) => ({ title: route.params.tag })} />
-    <Stack.Screen name="ForumDisplayAll" component={ForumDisplayAll} options={({ route }) => ({ title: route.params.tag })} />
     <Stack.Screen name="SinglePostDisplay" component={SinglePostDisplay} options={({ route }) => ({ title: route.params.postTitle })} />
   </Stack.Navigator>
 );

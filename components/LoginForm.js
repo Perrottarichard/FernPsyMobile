@@ -28,7 +28,7 @@ const LoginForm = (props) => {
   const submitLogin = async () => {
     setIsLoading(true);
     if (!email || !password) {
-      ToastAndroid.show('กรุณาใส่ username และ password', ToastAndroid.SHORT);
+      ToastAndroid.show('กรุณาใส่ email และ password', ToastAndroid.SHORT);
       setIsLoading(false);
     } else {
       try {

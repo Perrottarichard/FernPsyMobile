@@ -30,13 +30,13 @@ function TabNav() {
           ),
         }}
       />
-      <Tab.Screen
-        name="About"
-        component={About}
+           <Tab.Screen
+        name="View Forum"
+        component={ForumNavigate}
         options={{
-          tabBarLabel: 'About',
+          tabBarLabel: 'Forum',
           tabBarIcon: ({ color }) => (
-            <Icon name="info-outline" color={color} size={26} />
+            <Icon name="forum" color={color} size={26} />
           ),
         }}
       />
@@ -60,13 +60,13 @@ function TabNav() {
           ),
         }}
       />
-      <Tab.Screen
-        name="View Forum"
-        component={ForumNavigate}
+       <Tab.Screen
+        name="About"
+        component={About}
         options={{
-          tabBarLabel: 'Forum',
+          tabBarLabel: 'About',
           tabBarIcon: ({ color }) => (
-            <Icon name="forum" color={color} size={26} />
+            <Icon name="info-outline" color={color} size={26} />
           ),
         }}
       />

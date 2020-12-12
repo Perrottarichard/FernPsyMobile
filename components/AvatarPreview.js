@@ -28,108 +28,108 @@ const AvatarPreview = ({navigation}) => {
   const [name, setName] = useState(avatarName ? avatarName : 'anonymous')
 
   const accessoryButtons = [
-    {name: "none", value: "none"},
-    {name: "hoop earrings", value: "hoopEarrings"}, 
-    {name: "round glasses", value: "roundGlasses"},
-    {name: "tiny glasses", value: "tinyGlasses"},
-    {name: "shades", value:"shades"},
-    {name: "face mask", value: "faceMask"}
+    {name: "ไม่มี", value: "none"},
+    {name: "ตุ้มหู", value: "hoopEarrings"}, 
+    {name: "แว่นตาทรงกลม", value: "roundGlasses"},
+    {name: "แว่นตาจิ๋ว", value: "tinyGlasses"},
+    {name: "แว่นตาดำ", value:"shades"},
+    {name: "หน้ากากอนามัย", value: "faceMask"}
   ]
   const bgColorButtons = [
-    {name: "blue", value: "blue"}, 
-    {name: "green", value: "green"},
-    {name: "red", value: "red"},
-    {name: "orange", value: "orange"},
-    {name: "yellow", value:"yellow"},
-    {name: "pink", value: "pink"}
+    {name: "ฟ้า", value: "blue"}, 
+    {name: "เขียว", value: "green"},
+    {name: "แดง", value: "red"},
+    {name: "ส้ม", value: "orange"},
+    {name: "เหลือง", value:"yellow"},
+    {name: "ชมพู", value: "pink"}
   ]
   const bodyButtons = [
-    {name: "boobs", value: "breasts"},
-    {name: "chest", value: "chest"}
+    {name: "มีหน้าอก", value: "breasts"},
+    {name: "ไม่มีหน้าอก", value: "chest"}
   ]
 
   const clothingButtons = [
-    {name: "shirt", value: "blue"}, 
-    {name: "naked", value: "naked"},
-    {name: "denim jacket", value: "denimJacket"},
-    {name: "hoodie", value: "hoodie"},
-    {name: "tank top", value:"tankTop"},
-    {name: "dress", value: "dress"}
+    {name: "เสื้อเชิ้ต", value: "blue"}, 
+    {name: "ไม่ใส่เสื้อ", value: "naked"},
+    {name: "เสื้อยีนส์", value: "denimJacket"},
+    {name: "เสื้อมีหมวก", value: "hoodie"},
+    {name: "เสื้อแขนกุด", value:"tankTop"},
+    {name: "เดรส", value: "dress"}
   ]
 
   const clothingColorButtons = [
-    {name: "white", value: "white"}, 
-    {name: "blue", value: "blue"},
-    {name: "green", value: "green"},
-    {name: "red", value: "red"},
-    {name: "black", value:"black"},
+    {name: "ขาว", value: "white"}, 
+    {name: "ฟ้า", value: "blue"},
+    {name: "เขียว", value: "green"},
+    {name: "แดง", value: "red"},
+    {name: "ดำ", value:"black"},
   ]
 
   const eyebrowsButtons = [
-    {name: "left lowered", value: "leftLowered"}, 
-    {name: "raised", value: "raised"},
-    {name: "serious", value: "serious"},
-    {name: "angry", value: "angry"},
-    {name: "concerned", value:"concerned"},
+    {name: "คิ้วต่ำ", value: "leftLowered"}, 
+    {name: "คิ้วโก่ง", value: "raised"},
+    {name: "เคร่งเครียด", value: "serious"},
+    {name: "โกรธ", value: "angry"},
+    {name: "ครุ่นคิด", value:"concerned"},
   ]
 
   const eyesButtons = [
-    {name: "normal", value: "normal"}, 
-    {name: "stars", value: "stars"},
-    {name: "happy", value: "happy"},
-    {name: "squint", value: "squint"},
-    {name: "wink", value:"wink"},
-    {name: "cute", value: "cute"},
+    {name: "ปกติ", value: "normal"}, 
+    {name: "รูปดาว", value: "stars"},
+    {name: "มีความสุข", value: "happy"},
+    {name: "หรี่ตา", value: "squint"},
+    {name: "หลับตาข้างเดียว", value:"wink"},
+    {name: "น่ารัก", value: "cute"},
   ]
 
   const facialHairButtons = [
-    {name: "none", value: "none"}, 
-    {name: "stubble", value: "stubble"},
-    {name: "beard", value: "mediumBeard"},
-    {name: "goatee", value: "goatee"},
+    {name: "ไม่มี", value: "none"}, 
+    {name: "หนวดหรอมแหรม", value: "stubble"},
+    {name: "หนวดเครา", value: "mediumBeard"},
+    {name: "เคราแพะ", value: "goatee"},
   ]
 
   const graphicButtons = [
-    {name: "none", value: "none"}, 
-    {name: "donut", value: "donut"},
-    {name: "rainbow", value: "rainbow"},
+    {name: "ไม่มี", value: "none"}, 
+    {name: "โดนัท", value: "donut"},
+    {name: "สายรุ้ง", value: "rainbow"},
   ]
 
 
   const hairButtons = [
-    {name: "none", value: "none"}, 
-    {name: "long", value: "long"},
-    {name: "short", value: "short"},
-    {name: "bun", value: "bun"},
-    {name: "pixie", value:"pixie"},
-    {name: "bob", value: "bob"},
+    {name: "ไม่มี", value: "none"}, 
+    {name: "ผมยาว", value: "long"},
+    {name: "ผมสั้น", value: "short"},
+    {name: "มวยผม", value: "bun"},
+    {name: "ผมทรงกะลา", value:"pixie"},
+    {name: "ผมบ๊อบ", value: "bob"},
   ]
 
   const hairColorButtons = [
-    {name: "brown", value: "brown"}, 
-    {name: "black", value: "black"},
-    {name: "blue", value: "blue"},
-    {name: "white", value: "white"},
-    {name: "pink", value: "pink"}, 
-    {name: "blonde", value: "blonde"},
+    {name: "น้ำตาล", value: "brown"}, 
+    {name: "ดำ", value: "black"},
+    {name: "ฟ้า", value: "blue"},
+    {name: "ขาว", value: "white"},
+    {name: "ชมพู", value: "pink"}, 
+    {name: "บลอนด์", value: "blonde"},
   ]
 
   const skinToneButtons = [
-    {name: "brown", value: "brown"}, 
-    {name: "black", value: "black"},
-    {name: "yellow", value: "yellow"},
-    {name: "red", value: "red"},
-    {name: "light", value:"light"},
-    {name: "dark", value: "dark"}, 
+    {name: "น้ำตาล", value: "brown"}, 
+    {name: "ดำ", value: "black"},
+    {name: "เหลือง", value: "yellow"},
+    {name: "แดง", value: "red"},
+    {name: "สีอ่อน", value:"light"},
+    {name: "สีเข้ม", value: "dark"}, 
   ]
 
   const mouthButtons = [
-    {name: "lips", value: "lips"}, 
-    {name: "serious", value: "serious"},
-    {name: "grin", value: "grin"},
-    {name: "sad", value: "sad"},
-    {name: "open", value:"open"},
-    {name: "pierced tongue", value: "piercedTongue"},
+    {name: "ทาลิป", value: "lips"}, 
+    {name: "เคร่งเครียด", value: "serious"},
+    {name: "ยิ้มยิงฟัน", value: "grin"},
+    {name: "เศร้า", value: "sad"},
+    {name: "ยิ้มกว้าง", value:"open"},
+    {name: "แลบลิ้น", value: "piercedTongue"},
   ]
 
   const submitUpdate = async () => {
@@ -172,7 +172,7 @@ const AvatarPreview = ({navigation}) => {
       <TextInput
       style={styles.textInput}
       mode='outlined'
-      label="Name"
+      label="ชื่อ"
       value={name}
       dense={true}
       onChangeText={text => setName(text)}
@@ -206,7 +206,7 @@ containerStyles={styles.avatarPreview}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Skin tone:
+  สีผิว:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setSkinTone(newValue)}
@@ -222,7 +222,7 @@ value={skinTone}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Mouth:
+  ปาก:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setMouth(newValue)}
@@ -236,7 +236,7 @@ value={mouth}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Accessory:
+  เครื่องประดับ:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setAccessory(newValue)}
@@ -250,7 +250,7 @@ value={accessory}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Background color:
+  สีพื้นหลัง:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setBgColor(newValue)}
@@ -264,7 +264,7 @@ value={bgColor}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Body type:
+  รูปร่าง:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setBody(newValue)}
@@ -278,7 +278,7 @@ value={body}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Clothing type:
+  เสื้อผ้า:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setClothing(newValue)}
@@ -292,7 +292,7 @@ value={clothing}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Clothing color:
+  สีเสื้อผ้า:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setClothingColor(newValue)}
@@ -306,7 +306,7 @@ value={clothingColor}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Eyebrows:
+  คิ้ว:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setEyebrows(newValue)}
@@ -320,7 +320,7 @@ value={eyebrows}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Eyes:
+  ตา:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setEyes(newValue)}
@@ -334,7 +334,7 @@ value={eyes}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Facial hair:
+  หนวด:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setFacialHair(newValue)}
@@ -348,7 +348,7 @@ value={facialHair}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Shirt graphic:
+  ลายเสื้อ:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setGraphic(newValue)}
@@ -362,7 +362,7 @@ value={graphic}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Hair style:
+  ทรงผม:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setHair(newValue)}
@@ -376,7 +376,7 @@ value={hair}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  Hair color:
+  สีผม:
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setHairColor(newValue)}
@@ -391,7 +391,7 @@ value={hairColor}
 </ScrollView>
 <Button mode='contained'style={styles.submitButton}onPress={submitUpdate}>
   <Text style={styles.submitButtonText}>
-    Save
+    บันทึก
   </Text>
 </Button>
     </View>
@@ -441,8 +441,7 @@ const styles = StyleSheet.create({
     height: 30
   },
   innerChoices: {
-    // paddingLeft: 50,
-    // paddingRight: 50
+    // color: 'gray'
   },
   radioButtonItems: {
     height: 30

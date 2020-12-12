@@ -16,7 +16,7 @@ const Logout = () => {
     <View style={styles.view}>
       <Button color='black' mode='text' onPress={logout} style={styles.button}>
         <Text>
-          Sign Out
+          ออกจากระบบ
         </Text>
         </Button>
     </View>

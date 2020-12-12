@@ -66,7 +66,7 @@ export const answerQuestion = (answer) => async (dispatch) => {
       type: 'POST_ANSWER',
       data: answer,
     });
-    ToastAndroid.show('You answered a question!', ToastAndroid.SHORT);
+    ToastAndroid.show('Question answered', ToastAndroid.SHORT);
   } catch (error) {
     ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
   }
@@ -102,7 +102,7 @@ export const addQuestion = (data) => async (dispatch) => {
       type: 'NEW_QUESTION',
       data: newQuestion,
     });
-    ToastAndroid.show('คำถามของคุณถูกส่งเรียบร้อยแล้ว อดใจรอสักนิด โพสของคุณจะปรากฏหลังได้รับการยืนยันจากแอดมินค่ะ', ToastAndroid.LONG);
+    ToastAndroid.show('ส่งคำถามแล้ว', ToastAndroid.LONG);
   } catch (error) {
     ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.LONG);
   }

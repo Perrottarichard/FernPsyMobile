@@ -29,10 +29,10 @@ try {
     type: 'UPDATE_AVATAR',
     data: {id: id, avatarProps: avatarProps, avatarName: avatarName}
   })
-  ToastAndroid.show('Avatar updated', ToastAndroid.SHORT)
+  ToastAndroid.show('บันทึกสำเร็จ', ToastAndroid.SHORT)
 } catch (error) {
   console.log(error)
-  ToastAndroid.show('something went wrong', ToastAndroid.SHORT)
+  ToastAndroid.show('มีบางอย่างผิดพลาดกรุณาตรวจสอบ', ToastAndroid.SHORT)
 }
 
 }

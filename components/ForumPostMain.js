@@ -1,10 +1,10 @@
-/* eslint-disable no-multi-str */
 import React, { useState, useEffect } from 'react';
 import {
   Keyboard, Text, ToastAndroid, View, StyleSheet, TextInput, ScrollView, LogBox, TouchableHighlight,
 } from 'react-native';
+import {Button} from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux';
-import MultiSelect from 'react-native-multiple-select';
+import {Picker} from '@react-native-picker/picker'
 import { addQuestion } from '../reducers/forumReducer';
 import PostGraphic from '../undraw_add_post_64nu.svg';
 
@@ -29,24 +29,14 @@ const ForumPostMain = (props) => {
     }
   }, [isLoading]);
 
-  let chosenFilter = useSelector((state) => state.forum.tagFilter);
-  if (chosenFilter === 'รวมทุกหัวข้อ' || chosenFilter === '') {
-    chosenFilter = undefined;
-  }
-  const handleTagChange = (selected) => {
-    setSelectedTags(selected);
-  };
-
-  console.log(selectedTags);
   const handleEditorSubmit = async () => {
-    console.log(question);
 
     if (!title || !question) {
-      ToastAndroid.show('กรุณาใส่หัวข้อคำถาม คำถามของคุณ และโปรดเลือกแท็กสองหัวข้อ', ToastAndroid.SHORT);
-      // 'Please make sure you have a title, a question, and two tags'
-      // กรุณาใส่หัวข้อคำถาม คำถามของคุณ และโปรดเลือกแท็กสองหัวข้อ
-    } else if ((selectedTags.length === 0 && !chosenFilter) || selectedTags.length > 3) {
-      ToastAndroid.show('กรุณาเลือก 1-3 tags ค่ะ', ToastAndroid.SHORT);
+      ToastAndroid.show('ใส่หัวข้อและคำถามของคุณด้วยนะคะ', ToastAndroid.SHORT);
+      // 'Please make sure you have a title, a question'
+      // ใส่หัวข้อและคำถามของคุณด้วยนะคะ
+    } else if (selectedTags.length === 0 || selectedTags.includes('เลือก tag')) {
+      ToastAndroid.show('คุณต้องเลือก 1 tag', ToastAndroid.SHORT);
       // กรุณาเลือกแท็กสองหัวข้อค่ะ
       // 'Please select 2 tags'
     } else if (!activeUser) {
@@ -82,8 +72,9 @@ const ForumPostMain = (props) => {
   return (
     <ScrollView>
       <View style={styles.graphicContainer}>
-        <PostGraphic width={200} height={160} />
+        <PostGraphic width={180} height={120} />
       </View>
+      <View style={styles.form}>
       <View style={styles.textAreaContainerTitle}>
         <TextInput
           style={styles.textAreaTitle}
@@ -91,6 +82,7 @@ const ForumPostMain = (props) => {
           numberOfLines={1}
           placeholder="พิมพ์หัวข้อที่นี่"
           onChangeText={(t) => setTitle(t)}
+          placeholderTextColor='gray'
           keyboardType="default"
           returnKeyType="done"
           onSubmitEditing={() => { Keyboard.dismiss(); }}
@@ -104,6 +96,7 @@ const ForumPostMain = (props) => {
           multiline
           textAlignVertical="top"
           numberOfLines={4}
+          placeholderTextColor='gray'
           placeholder="พิมพ์รายละเอียดคำถามของคุณ"
           onChangeText={(q) => setQuestion(q)}
           keyboardType="default"
@@ -113,46 +106,36 @@ const ForumPostMain = (props) => {
           value={question}
         />
       </View>
-      <View>
-        <MultiSelect
-          hideDropdown
-          styleTextDropdown={styles.styleTextDropdown}
-          styleListContainer={styles.styleListContainer}
-          styleMainWrapper={styles.picker}
-          selectedItemTextColor="#d896ac"
-          submitButtonText="Submit Tags"
-          tagContainerStyle={styles.tagContainerStyle}
-          tagTextColor="black"
-          tagRemoveIconColor="gray"
-          tagBorderColor="#d896ac"
-          onSelectedItemsChange={(value) => handleTagChange(value)}
-          selectedItems={selectedTags}
-          uniqueKey="name"
-          selectText="เลือก tags"
-          items={[
-            { name: 'ปัญหาเรื่องเพศ', value: 'ปัญหาเรื่องเพศ', key: 'a' }, // sex
-            { name: 'การออกเดท', value: 'การออกเดท', key: 'b' }, // dating
-            { name: 'การเสพติด', value: 'การเสพติด', key: 'c' }, // addiction
-            { name: 'เพื่อน', value: 'เพื่อน', key: 'd' }, // friendship
-            { name: 'lgbt', value: 'LGBT', key: 'e' },
-            { name: 'โรคซึมเศร้า', value: 'โรคซึมเศร้า', key: 'f' }, // depression
-            { name: 'ความวิตกกังวล', value: 'ความวิตกกังวล', key: 'g' }, // anxiety
-            { name: 'ไบโพลาร์', value: 'ไบโพลาร์', key: 'h' }, // bipolar
-            { name: 'relationships', value: 'Relationships', key: 'i' },
-            { name: 'การทำงาน', value: 'การทำงาน', key: 'j' }, // career
-            { name: 'สุขภาพจิต', value: 'สุขภาพจิต', key: 'k' }, // mental health
-            { name: 'bullying', value: 'Bullying', key: 'l' },
-            { name: 'ครอบครัว', value: 'ครอบครัว', key: 'm' }, // family
-            { name: 'อื่นๆ', value: 'อื่นๆ', key: 'n' }, // other
-          ]}
-        />
+      <View style={styles.picker}>
+        <Picker
+          onValueChange={(value) => setSelectedTags(value)}
+          selectedValue={selectedTags}
+          style={styles.styleTextDropdown}
+          prompt='Choose a tag'
+        >
+          <Picker.Item label='เลือก tag' value='เลือก tag'/>
+          <Picker.Item label='ปัญหาเรื่องเพศ' value='ปัญหาเรื่องเพศ'/>
+          <Picker.Item label='การเสพติด' value='การเสพติด'/>
+          <Picker.Item label='เพื่อน' value='เพื่อน'/>
+          <Picker.Item label='lgbt' value='lgbt'/>
+          <Picker.Item label='โรคซึมเศร้า' value='โรคซึมเศร้า'/>
+          <Picker.Item label='ความวิตกกังวล' value='ความวิตกกังวล'/>
+          <Picker.Item label='ไบโพลาร์' value='ไบโพลาร์'/>
+          <Picker.Item label='relationships' value='relationships'/>
+          <Picker.Item label='การทำงาน' value='การทำงาน'/>
+          <Picker.Item label='สุขภาพจิต' value='สุขภาพจิต'/>
+          <Picker.Item label='bullying' value='bullying'/>
+          <Picker.Item label='ครอบครัว' value='ครอบครัว'/>
+          <Picker.Item label='อื่นๆ' value='อื่นๆ'/>
+        </Picker>
+        </View>
         <View style={styles.afterForm}>
           <Text style={styles.afterFormText}>ชื่อที่คุณใช้ล็อคอินจะไม่ปรากฏในคำถามของคุณ</Text>
-          <TouchableHighlight onPress={handleEditorSubmit} style={styles.submitPostButton}>
+          <Button mode='contained' onPress={handleEditorSubmit} style={styles.submitPostButton}>
             <Text style={styles.submitPostText}>
               ส่งคำถาม
             </Text>
-          </TouchableHighlight>
+          </Button>
         </View>
       </View>
     </ScrollView>
@@ -161,10 +144,15 @@ const ForumPostMain = (props) => {
 
 const styles = StyleSheet.create({
   graphicContainer: {
-    marginTop: 30,
-    marginBottom: 30,
+    flex: 1,
+    marginTop: 10,
+    marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  form: {
+    flex: 1,
+    justifyContent: 'space-evenly'
   },
   textAreaContainerTitle: {
     paddingLeft: 10,
@@ -182,6 +170,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: 'white',
     justifyContent: 'flex-start',
+    fontSize: 16,
+    color: 'gray'
   },
   textAreaQuestion: {
     height: 100,
@@ -189,6 +179,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: 'white',
     justifyContent: 'flex-start',
+    fontSize: 16
   },
   picker: {
     marginTop: 10,
@@ -197,26 +188,17 @@ const styles = StyleSheet.create({
   },
   styleTextDropdown: {
     paddingLeft: 10, 
-    color: 'gray'
-  },
-  styleListContainer: {
-    height: 120
-  },
-  tagContainerStyle: {
-    height: 30
+    color: 'gray',
+    backgroundColor: 'white',
   },
   submitPostButton: {
-    backgroundColor: '#252626',
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    width: 300,
-    margin: 8,
     alignSelf: 'center',
+    borderRadius: 20,
+    width: 300,
+    backgroundColor: 'lightpink'
   },
   submitPostText: {
-    color: '#d896ac',
-    alignSelf: 'center',
+    color: 'black',
   },
   afterForm: {
     marginTop: 50,

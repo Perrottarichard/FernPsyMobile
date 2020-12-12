@@ -124,9 +124,10 @@ const ForumPostMain = (props) => {
           <Picker.Item label='relationships' value='relationships'/>
           <Picker.Item label='การทำงาน' value='การทำงาน'/>
           <Picker.Item label='สุขภาพจิต' value='สุขภาพจิต'/>
-          <Picker.Item label='bullying' value='bullying'/>
+          <Picker.Item label='การรังแก' value='การรังแก'/>
           <Picker.Item label='ครอบครัว' value='ครอบครัว'/>
           <Picker.Item label='อื่นๆ' value='อื่นๆ'/>
+          <Picker.Item label='ความรัก' value='ความรัก'/>
         </Picker>
         </View>
         <View style={styles.afterForm}>

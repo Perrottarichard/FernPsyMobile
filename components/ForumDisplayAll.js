@@ -9,6 +9,7 @@ import {BigHead} from 'react-native-bigheads'
 import { List, Chip, IconButton} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons'
 import {Picker} from '@react-native-picker/picker'
+import NoPostsYet from './NoPostsYet'
 
 const tagOptions = [
   { tag: 'ปัญหาเรื่องเพศ', backgroundColor: '#ff5c4d', icon: 'gender-male-female' },
@@ -42,7 +43,7 @@ const chooseIcon = (passed) => {
   return 'star'
 }
 
-const timeSince = (date) => {
+export const timeSince = (date) => {
   if (typeof date !== 'object') {
     date = new Date(date);
   }
@@ -90,7 +91,7 @@ const applyFilterByTag = (allAnsweredPosts, filter) => {
     return allAnsweredPosts.filter(f => f.tags.includes(filter))
   }
 }
-const Item = ({ item, navigation }) => (
+const Item = ({ item, onPress }) => (
   <Card containerStyle={styles.cardStyle} key={item._id}>
               <List.Item
               title={item.title}
@@ -101,12 +102,8 @@ const Item = ({ item, navigation }) => (
               titleNumberOfLines={3}
               descriptionNumberOfLines={2}
               titleEllipsizeMode='tail'
-              onPress={() => {
-                navigation.navigate('SinglePostDisplay', {
-                  postId: item._id,
-                  postTitle: item.title,
-                });
-              }}
+              onPress={onPress}
+              style={styles.listItemStyle}
               />
             <View style={styles.bottomTags}>
               {item.tags.map((t) => <Chip key={t} mode='outlined' icon={chooseIcon(t)}style={styles.chip} textStyle={{ color: chooseTagColor(t), ...styles.chipText}}>{t}</Chip>)}
@@ -131,16 +128,8 @@ const Item = ({ item, navigation }) => (
             </View>
           </Card>
 );
-const renderItem = ({ item }) => {
-  return (
-    <Item
-      item={item}
-    />
-  );
-};
 
-
-const ForumDisplayAll = () => {
+const ForumDisplayAll = ({navigation}) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -164,6 +153,21 @@ const ForumDisplayAll = () => {
       setIsLoading(false);
     }
   }, [dispatch, forumAnswered]);
+
+  const renderItem = ({item }) => {
+    return (
+      <Item
+        item={item}
+        onPress={() => {
+          navigation.navigate('SinglePostDisplay', {
+            postId: item._id,
+            postTitle: item.title,
+          });
+        }
+      }
+      />
+    );
+  };
 
   if (isLoading) {
     return (
@@ -205,6 +209,7 @@ const ForumDisplayAll = () => {
     data={DATA}
     renderItem={renderItem}
     keyExtractor={item => item._id}
+    ListEmptyComponent={<NoPostsYet/>}
     />
     </View>
   );
@@ -248,7 +253,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: 0,
     paddingTop: 0,
-    paddingBottom: 4
+    paddingBottom: 4,
+    paddingRight: 0
+  },
+  listItemStyle: {
+    paddingLeft: 5, 
+    margin: 0,
+    borderRadius: 10,
   },
   bottomTags: {
     flexDirection: 'row-reverse',
@@ -264,17 +275,19 @@ const styles = StyleSheet.create({
   likeTextStyle: {
     position: 'absolute',
     right: 45,
-    bottom: 8
+    bottom: 8,
+    color: 'gray'
   },
   headTitle: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    padding: 0,
   },
   descriptionStyle: {
     color: 'gray'
   },
   chip: {
     position: 'absolute',
-    left: 0,
+    left: 10,
     bottom: 9,
     paddingLeft: 0,
     paddingRight: 1,
@@ -294,7 +307,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 172,
     bottom: 8,
-    color: 'black',
+    color: 'gray',
     fontSize: 14
   }
 });

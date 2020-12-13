@@ -1,24 +1,32 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import {
-  Button, View, Text
+  StyleSheet, View, Text
 } from 'react-native';
+import EmptyStreet from '../undraw_empty_street_sfxm.svg'
 
 const NoPostsYet = () => {
-  const activeUser = useSelector((state) => state.activeUser);
 
   return (
-    <View>
+    <View style={styles.container}>
       <View>
-        <Text>
+        <Text style={styles.text}>
           ยังไม่มีคำถามในหัวข้อนี้
         </Text>
-        <Text>
-          ตั้งกระทู้ คลิก
-        </Text>
-        <Button title="ส่งคำถาม" />
       </View>
+      <EmptyStreet width={200} height={200}/>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 100
+  },
+  text: {
+    color: 'gray'
+  }
+})
 export default NoPostsYet;

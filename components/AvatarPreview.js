@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {View, TouchableHighlight, StyleSheet, ScrollView, ToastAndroid} from 'react-native'
+import {View, StyleSheet, ScrollView, ToastAndroid} from 'react-native'
 import {RadioButton, Text, Surface, TextInput, Button} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import {updateUserAvatar} from '../reducers/activeUserReducer'

@@ -22,7 +22,7 @@ const MyQuestions = ({navigation}) => {
   const id = user._id;
   const answered = useSelector((state) => state.forum.answered);
   const pending = useSelector((state) => state.forum.pending);
-  const myAnsweredPosts = answered.filter((p) => p.user === id).sort((a, b) => new Date(b.date) - new Date(a.date));
+  const myAnsweredPosts = answered.filter((p) => p.user.id === id).sort((a, b) => new Date(b.date) - new Date(a.date));
   const myPendingPosts = pending.filter((p) => p.user.id === id).sort((a, b) => new Date(b.date) - new Date(a.date));
 
 

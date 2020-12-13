@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
-  Text, View, ScrollView, StyleSheet, ActivityIndicator,
+  Text, View, FlatList, StyleSheet, ActivityIndicator, RefreshControl
 } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { initializeForumAnswered } from '../reducers/forumReducer';
 import {BigHead} from 'react-native-bigheads'
 import { List, Chip, IconButton} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons'
+import {Picker} from '@react-native-picker/picker'
 
 const tagOptions = [
   { tag: 'ปัญหาเรื่องเพศ', backgroundColor: '#ff5c4d', icon: 'gender-male-female' },
@@ -78,36 +79,23 @@ const timeSince = (date) => {
   return interval + '' + intervalType;
 };
 
+const wait = (timeout) => new Promise((resolve) => {
+  setTimeout(resolve, timeout);
+});
 
-const ForumDisplayAll = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
-  const forumAnswered = useSelector((state) => state.forum.answered);
-
-  useEffect(() => {
-    if (!forumAnswered) {
-      setIsLoading(true);
-      dispatch(initializeForumAnswered());
-    } else {
-      setIsLoading(false);
-    }
-  }, [dispatch, forumAnswered]);
-
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="blue" />
-      </View>
-    );
+const applyFilterByTag = (allAnsweredPosts, filter) => {
+  if(filter === 'none'){
+    return allAnsweredPosts;
+  }else{
+    return allAnsweredPosts.filter(f => f.tags.includes(filter))
   }
-  return (
-    <ScrollView>
-      {forumAnswered && forumAnswered.map((f) => (
-          <Card containerStyle={styles.cardStyle} key={f._id}>
+}
+const Item = ({ item, navigation }) => (
+  <Card containerStyle={styles.cardStyle} key={item._id}>
               <List.Item
-              title={f.title}
-              description={`Posted by ${f.user.avatarName} ${timeSince(f.date)} ago`}
-              left={() => <BigHead {...f.user.avatarProps} size={50}/>}
+              title={item.title}
+              description={`Posted by ${item.user.avatarName} ${timeSince(item.date)} ago`}
+              left={() => <BigHead {...item.user.avatarProps} size={50}/>}
               titleStyle={styles.headTitle}
               descriptionStyle={styles.descriptionStyle}
               titleNumberOfLines={3}
@@ -115,22 +103,15 @@ const ForumDisplayAll = ({ navigation }) => {
               titleEllipsizeMode='tail'
               onPress={() => {
                 navigation.navigate('SinglePostDisplay', {
-                  postId: f._id,
-                  postTitle: f.title,
+                  postId: item._id,
+                  postTitle: item.title,
                 });
               }}
               />
-
-            {/* <Text>
-              {f.question}
-            </Text>
-            <Text>
-              {f.answer.answer}
-            </Text> */}
             <View style={styles.bottomTags}>
-              {f.tags.map((t) => <Chip key={t} mode='outlined' icon={chooseIcon(t)}style={styles.chip} textStyle={{ color: chooseTagColor(t), ...styles.chipText}}>{t}</Chip>)}
+              {item.tags.map((t) => <Chip key={t} mode='outlined' icon={chooseIcon(t)}style={styles.chip} textStyle={{ color: chooseTagColor(t), ...styles.chipText}}>{t}</Chip>)}
               <Text style={styles.commentCountText}>
-              {f.comments.length}
+              {item.comments.length}
             </Text>
             <IconButton
             icon='comment-outline'
@@ -145,21 +126,122 @@ const ForumDisplayAll = ({ navigation }) => {
               style={styles.heartIconStyle}
             />
             <Text style={styles.likeTextStyle}>
-              {f.likes}
+              {item.likes}
             </Text>
             </View>
           </Card>
-      ))}
-    </ScrollView>
+);
+const renderItem = ({ item }) => {
+  return (
+    <Item
+      item={item}
+    />
+  );
+};
+
+
+const ForumDisplayAll = () => {
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  let forumAnswered = useSelector((state) => state.forum.answered);
+  const [selectedFilterTag, setSelectedFilterTag] = useState('none')
+
+  forumAnswered = applyFilterByTag(forumAnswered, selectedFilterTag)
+  const DATA = forumAnswered.sort((a, b) => new Date(b.date) - new Date(a.date))
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    dispatch(initializeForumAnswered());
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
+  useEffect(() => {
+    if (!forumAnswered) {
+      setIsLoading(true);
+      dispatch(initializeForumAnswered());
+    } else {
+      setIsLoading(false);
+    }
+  }, [dispatch, forumAnswered]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="pink" />
+      </View>
+    );
+  }
+  return (
+    <View style={styles.container}>
+       <View style={styles.filterContainer}>
+         <Icon name='ios-filter-outline' style={styles.filterIcon} size={24}/>
+        <Picker
+          onValueChange={(value) => setSelectedFilterTag(value)}
+          selectedValue={selectedFilterTag}
+          dropdownIconColor='#d896ac'
+          style={styles.picker}
+        >
+          <Picker.Item label='Show all' value='none'/>
+          <Picker.Item label='ปัญหาเรื่องเพศ' value='ปัญหาเรื่องเพศ'/>
+          <Picker.Item label='การเสพติด' value='การเสพติด'/>
+          <Picker.Item label='เพื่อน' value='เพื่อน'/>
+          <Picker.Item label='lgbt' value='lgbt'/>
+          <Picker.Item label='โรคซึมเศร้า' value='โรคซึมเศร้า'/>
+          <Picker.Item label='ความวิตกกังวล' value='ความวิตกกังวล'/>
+          <Picker.Item label='ไบโพลาร์' value='ไบโพลาร์'/>
+          <Picker.Item label='relationships' value='relationships'/>
+          <Picker.Item label='การทำงาน' value='การทำงาน'/>
+          <Picker.Item label='สุขภาพจิต' value='สุขภาพจิต'/>
+          <Picker.Item label='การรังแก' value='การรังแก'/>
+          <Picker.Item label='ครอบครัว' value='ครอบครัว'/>
+          <Picker.Item label='อื่นๆ' value='อื่นๆ'/>
+          <Picker.Item label='ความรัก' value='ความรัก'/>
+        </Picker>
+        </View>
+    <FlatList 
+    style={styles.scroll} 
+    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    data={DATA}
+    renderItem={renderItem}
+    keyExtractor={item => item._id}
+    />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 5
+  },
+  loadingContainer: {
+    flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: 0
+    alignItems: 'center'
+  },
+  filterContainer: {
+    flex: 0.05,
+    flexDirection: 'row',
+    marginBottom: 0,
+    padding: 15,
+    paddingBottom: 0,
+  },
+  filterIcon: {
+    position: 'absolute',
+    left: 20,
+    color: 'gray',
+    top: 12,
+  },
+  picker: {
+    width: 200,
+    position: 'absolute',
+    left: 45,
+    top: 0,
+    color: 'gray',
+  },
+  scroll: {
+    flex: 1,
   },
   cardStyle: {
     flex: 1,

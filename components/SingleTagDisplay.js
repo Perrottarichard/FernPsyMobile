@@ -51,8 +51,8 @@ const SingleTagDisplay = ({ route, navigation }) => {
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="blue" />
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="pink"  />
       </View>
     );
   }
@@ -110,11 +110,6 @@ const SingleTagDisplay = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   cardStyle: {
     flex: 1,
     alignItems: 'center',
@@ -136,7 +131,12 @@ const styles = StyleSheet.create({
     paddingTop: 6, 
     color: 'white', 
     fontWeight: 'bold'
-  }
+  },
+  loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
 });
 
 export default SingleTagDisplay;

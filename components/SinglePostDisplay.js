@@ -3,7 +3,7 @@ import {
   Text, View, ScrollView, StyleSheet, ActivityIndicator, RefreshControl, ToastAndroid, TouchableOpacity
 } from 'react-native';
 import { Card } from 'react-native-elements';
-import { List, Chip, IconButton, TextInput, Menu, Provider} from 'react-native-paper';
+import { List, Chip, IconButton, Surface, Menu, Provider} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons'
 import {BigHead} from 'react-native-bigheads'
@@ -120,11 +120,11 @@ const SinglePostDisplay = (props) => {
   return (
     <Provider>
     <ScrollView style={styles.container}>
-      <Card containerStyle={styles.cardStyle} key={post._id}>
+      <Card containerStyle={styles.cardStylePost} key={post._id}>
               <List.Item
               title={post.title}
               description={`Posted by ${post.user.avatarName} ${timeSince(post.date)} ago`}
-              left={() => <BigHead {...post.user.avatarProps} size={50}/>}
+              left={() => <BigHead {...post.user.avatarProps} size={55}/>}
               titleStyle={styles.headTitle}
               descriptionStyle={styles.descriptionStyle}
               titleNumberOfLines={3}
@@ -153,10 +153,10 @@ const SinglePostDisplay = (props) => {
               {post.comments.length}
             </Text>
             <IconButton
-            icon='comment-outline'
+            icon='comment'
             size={24}
             style={styles.commentIconButton}
-            color='gray'
+            color='lightgray'
             />
             <Icon
               name="ios-heart-sharp"
@@ -171,20 +171,21 @@ const SinglePostDisplay = (props) => {
           </Card>
           <View>
             {post.comments.map(c =>
-                  <Card containerStyle={styles.cardStyle} key={c._id}>
+                  <Card containerStyle={styles.cardStyleComment} key={c._id}>
                   <List.Item
-                  title={c.user.avatarName}
+                  title={`${c.user.avatarName}`}
                   description={`${timeSince(c.date)} ago`}
-                  left={() => <Menu visible={visibleMenu} onDismiss={closeMenu} anchor={ <TouchableOpacity onPress={openMenu} style={styles.touchableOpacityEllipsis}><Icon name='ellipsis-vertical' size={16} color='gray'  style={styles.ellipsis}/></TouchableOpacity>}>
+                  right={() => <Menu visible={visibleMenu} onDismiss={closeMenu} anchor={ <TouchableOpacity onPress={openMenu} style={styles.touchableOpacityEllipsis}><Icon name='ellipsis-vertical' size={16} color='gray'  style={styles.ellipsis}/></TouchableOpacity>}>
                     <Menu.Item icon='flag' titleStyle={styles.flagMenuContent} onPress={() => flag(c)} title='Flag comment'/>
                   </Menu>}
-                  right={() => <BigHead {...c.user.avatarProps} size={35}/>}
+                  left={() => <BigHead {...c.user.avatarProps} size={38}/>}
                   titleStyle={styles.commentHeadTitle}
                   descriptionStyle={styles.commentDescriptionStyle}
                   titleNumberOfLines={1}
                   descriptionNumberOfLines={1}
                   titleEllipsizeMode='tail'
                   disabled={true}
+                  style={styles.commentListItem}
                   onPress={() => console.log('pressed')}
                   />
                 <Menu >
@@ -216,14 +217,27 @@ const styles = StyleSheet.create({
   // scroll: {
   //   flex: 1,
   // },
-  cardStyle: {
+  cardStylePost: {
     flex: 1,
+    borderStyle: 'solid',
+    borderColor: 'pink',
     borderRadius: 10,
     paddingLeft: 0,
     paddingTop: 0,
     paddingBottom: 4,
     paddingRight: 0
   },
+  cardStyleComment: {
+    flex: 1,
+    borderStyle: 'solid',
+    borderColor: 'darkgray',
+    borderRadius: 10,
+    paddingLeft: 0,
+    paddingTop: 0,
+    paddingBottom: 4,
+    paddingRight: 0
+  },
+
   questionContainer: {
     padding: 10
   },
@@ -286,20 +300,23 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   commentHeadTitle: {
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
     fontWeight: 'normal',
     fontSize: 12,
     color: 'gray',
   },
   commentDescriptionStyle: {
-    fontSize: 10,
-    alignSelf: 'flex-end',
+    fontSize: 8,
+    alignSelf: 'flex-start',
+  },
+  commentListItem: {
+    paddingLeft: 13
   },
   commentContent: {
     color: 'gray',
     fontSize: 13,
-    paddingLeft: 10,
-    paddingRight: 10
+    paddingLeft: 20,
+    paddingRight: 20
   },
   flagMenuContent: {
     fontSize: 12,
@@ -307,7 +324,7 @@ const styles = StyleSheet.create({
   },
   ellipsis: {
     marginTop: 8,
-    marginLeft: 2
+    marginLeft: 0
   },
   touchableOpacityEllipsis: {
     width: 40

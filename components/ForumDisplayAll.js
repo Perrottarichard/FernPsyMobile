@@ -111,10 +111,10 @@ const Item = ({ item, onPress }) => (
               {item.comments.length}
             </Text>
             <IconButton
-            icon='comment-outline'
+            icon='comment'
             size={24}
             style={styles.commentIconButton}
-            color='gray'
+            color='lightgray'
             />
             <Icon
               name="ios-heart-sharp"

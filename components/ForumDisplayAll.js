@@ -298,7 +298,8 @@ const styles = StyleSheet.create({
     padding: 0,
     fontSize: 10,
     marginLeft: 0,
-    marginRight: 2
+    marginRight: 2,
+    opacity: 0.7
   },
   commentIconButton: {
     margin: 0,

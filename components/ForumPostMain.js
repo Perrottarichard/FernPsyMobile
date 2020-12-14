@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Keyboard, Text, ToastAndroid, View, StyleSheet, TextInput, ScrollView, LogBox, TouchableHighlight,
+  Keyboard, Text, ToastAndroid, View, StyleSheet, TextInput, ScrollView, LogBox,
 } from 'react-native';
 import {Button} from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux';

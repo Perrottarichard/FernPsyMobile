@@ -28,7 +28,6 @@ const forumReducer = (state = initialState, action) => {
     case 'EDIT_ANSWER':
       const editedId = action.data._id;
       const modifiedAnswer = state.answered.find((p) => p.answer._id === editedId);
-      console.log(modifiedAnswer);
       const withNewAnswer = { ...modifiedAnswer, answer: action.data };
       return { ...state, answered: state.answered.map((a) => (a.answer._id !== editedId ? a : withNewAnswer)) };
     case 'ADD_COMMENT':

@@ -6,6 +6,7 @@ import { Card } from 'react-native-elements';
 import { List, Chip, IconButton, Surface, Menu, Provider} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons'
+import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {BigHead} from 'react-native-bigheads'
 import { addComment, heart } from '../reducers/forumReducer';
 import { initializeForumAnswered, setFlaggedComment } from '../reducers/forumReducer';
@@ -45,17 +46,18 @@ const chooseIcon = (passed) => {
 
 const SinglePostDisplay = (props) => {
   const { activeUser, navigation, route } = props;
-  const { postId, postTitle } = route.params;
+  const { postId} = route.params;
   const [isLoading, setIsLoading] = useState(false);
-  const [comment, setComment] = useState('');
   const dispatch = useDispatch();
   const post = useSelector((state) => state.forum.answered.find((p) => p._id === postId));
+  // console.log(post)
   const [sentHeart, setSentHeart] = useState(null);
   const [pulseHeart, setPulseHeart] = useState('');
-  const [visibleMenu, setVisibleMenu] = useState(false);
 
-  const openMenu = () => setVisibleMenu(true)
-  const closeMenu = () => setVisibleMenu(false)
+  const [visibleMenu, setVisibleMenu] = useState('');
+
+  const openMenu = (id) => setVisibleMenu(id)
+  const closeMenu = () => setVisibleMenu('')
 
   useEffect(() => {
     dispatch(initializeForumAnswered());
@@ -69,24 +71,6 @@ const SinglePostDisplay = (props) => {
     }
   }, [isLoading]);
 
-  const submitComment = async () => {
-    const postToModifyId = post;
-    if (activeUser === null) {
-      ToastAndroid.show('คุณต้องลงชื่อเพื่อแสดงความคิดเห็น', ToastAndroid.SHORT);
-      navigation.navigate('Login');
-    } else if (comment === '') {
-      ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT);
-    } else {
-      try {
-        setIsLoading(true);
-        dispatch(addComment(comment, postToModifyId));
-        setComment('');
-      } catch (error) {
-        console.log(error);
-        ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
-      }
-    }
-  };
   const submitHeart = async () => {
     const postToModify = post;
     if (activeUser === null) {
@@ -110,17 +94,17 @@ const SinglePostDisplay = (props) => {
   };
   const flag = (comment) => {
     if (comment.isFlagged) {
-      setVisibleMenu(false)
+      setVisibleMenu('')
       return ToastAndroid.show('ความคิดเห็นนี้มีผู้รายงานให้แอดมินทราบปัญหาเรียบร้อยแล้ว', ToastAndroid.SHORT);
     }
-    setVisibleMenu(false)
+    setVisibleMenu('')
     dispatch(setFlaggedComment(comment));
   };
 
   return (
     <Provider>
     <ScrollView style={styles.container}>
-      <Card containerStyle={styles.cardStylePost} key={post._id}>
+      <Surface style={styles.cardStylePost} key={post._id}>
               <List.Item
               title={post.title}
               description={`Posted by ${post.user.avatarName} ${timeSince(post.date)} ago`}
@@ -130,12 +114,6 @@ const SinglePostDisplay = (props) => {
               titleNumberOfLines={3}
               descriptionNumberOfLines={2}
               titleEllipsizeMode='tail'
-              onPress={() => {
-                navigation.navigate('SinglePostDisplay', {
-                  postId: post._id,
-                  postTitle: post.title,
-                });
-              }}
               />
             <View style={styles.questionContainer}>
               <Text style={styles.questionText}>
@@ -152,12 +130,19 @@ const SinglePostDisplay = (props) => {
               <Text style={styles.commentCountText}>
               {post.comments.length}
             </Text>
-            <IconButton
-            icon='comment'
-            size={24}
-            style={styles.commentIconButton}
+            <Micon.Button
+            name='comment-plus'
+            size={23}
+            style={styles.commentMiconButton}
+            iconStyle={styles.miconIconStyle}
             color='lightgray'
-            />
+            onPress={() => {
+              navigation.navigate('AddComment', {
+                postId: post._id,
+                postTitle: post.title,
+              });
+            }}
+            ><Text style={styles.miconText}>Comment</Text></Micon.Button>
             <Icon
               name="ios-heart-sharp"
               color="pink"
@@ -168,16 +153,16 @@ const SinglePostDisplay = (props) => {
               {post.likes}
             </Text>
             </View>
-          </Card>
+          </Surface>
           <View>
             {post.comments.map(c =>
-                  <Card containerStyle={styles.cardStyleComment} key={c._id}>
+                  <Surface style={styles.cardStyleComment} key={c._id}>
                   <List.Item
                   title={`${c.user.avatarName}`}
                   description={`${timeSince(c.date)} ago`}
-                  right={() => <Menu visible={visibleMenu} onDismiss={closeMenu} anchor={ <TouchableOpacity onPress={openMenu} style={styles.touchableOpacityEllipsis}><Icon name='ellipsis-vertical' size={16} color='gray'  style={styles.ellipsis}/></TouchableOpacity>}>
+                  right={() => <View style={styles.replyView}><Micon.Button name='reply' color='gray' size={14} iconStyle={styles.miconIconStyle}style={styles.replyButton} backgroundColor='white'><Text style={styles.replyButtonText}>Reply</Text></Micon.Button><Menu visible={visibleMenu === c._id ? true : false} onDismiss={closeMenu} anchor={ <TouchableOpacity onPress={() => openMenu(c._id)} style={styles.touchableOpacityEllipsis}><Icon name='ellipsis-vertical' size={16} color='gray'  style={styles.ellipsis}/></TouchableOpacity>}>
                     <Menu.Item icon='flag' titleStyle={styles.flagMenuContent} onPress={() => flag(c)} title='Flag comment'/>
-                  </Menu>}
+                  </Menu></View>}
                   left={() => <BigHead {...c.user.avatarProps} size={38}/>}
                   titleStyle={styles.commentHeadTitle}
                   descriptionStyle={styles.commentDescriptionStyle}
@@ -196,7 +181,7 @@ const SinglePostDisplay = (props) => {
                   {c.content}
                   </Text>
                 </View>
-              </Card>
+              </Surface>
             )}
           </View>
     </ScrollView>
@@ -207,7 +192,8 @@ const SinglePostDisplay = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 5
+    padding: 5,
+    marginBottom: 20
   },
   // loadingContainer: {
   //   flex: 1,
@@ -219,23 +205,22 @@ const styles = StyleSheet.create({
   // },
   cardStylePost: {
     flex: 1,
-    borderStyle: 'solid',
-    borderColor: 'pink',
-    borderRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
     paddingLeft: 0,
     paddingTop: 0,
     paddingBottom: 4,
-    paddingRight: 0
+    paddingRight: 0,
+    marginBottom: 5,
   },
   cardStyleComment: {
     flex: 1,
-    borderStyle: 'solid',
-    borderColor: 'darkgray',
-    borderRadius: 10,
+    marginTop: 5,
     paddingLeft: 0,
     paddingTop: 0,
     paddingBottom: 4,
-    paddingRight: 0
+    paddingRight: 0,
+    marginBottom: 5
   },
 
   questionContainer: {
@@ -259,13 +244,14 @@ const styles = StyleSheet.create({
   heartIconStyle: {
     position: 'absolute', 
     right: 16,
-    bottom: 4
+    bottom: 6
   },
   likeTextStyle: {
     position: 'absolute',
     right: 45,
-    bottom: 8,
-    color: 'gray'
+    bottom: 11,
+    color: 'gray',
+    fontSize: 12
   },
   headTitle: {
     fontWeight: 'bold',
@@ -277,7 +263,7 @@ const styles = StyleSheet.create({
   chip: {
     position: 'absolute',
     left: 10,
-    bottom: 9,
+    bottom: 11,
     paddingLeft: 0,
     paddingRight: 1,
     alignItems: 'center',
@@ -287,10 +273,19 @@ const styles = StyleSheet.create({
     padding: 0,
     fontSize: 10,
     marginLeft: 0,
-    marginRight: 2
+    marginRight: 2,
+    opacity: 0.7
   },
-  commentIconButton: {
+  commentMiconButton: {
+    backgroundColor: 'white',
+    borderRadius: 0,
+    borderColor: 'white',
+  },
+  miconText: {
+    color: 'gray',
+    padding: 0,
     margin: 0,
+    fontSize: 10
   },
   commentCountText: {
     position: 'absolute',
@@ -315,12 +310,29 @@ const styles = StyleSheet.create({
   commentContent: {
     color: 'gray',
     fontSize: 13,
-    paddingLeft: 20,
-    paddingRight: 20
+    paddingLeft: 30,
+    paddingRight: 10
   },
   flagMenuContent: {
     fontSize: 12,
     color: '#cf4f46',
+  },
+  replyView: {
+    flexDirection: 'row'
+  },
+  miconIconStyle: {
+    marginRight: 3
+  },
+  replyButton: {
+    height: 30, 
+    backgroundColor: 'white', 
+    fontSize: 10, 
+    marginRight: 30, 
+    borderRadius: 0
+  },
+  replyButtonText: {
+    fontSize: 10,
+    color: 'gray'
   },
   ellipsis: {
     marginTop: 8,

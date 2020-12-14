@@ -15,7 +15,6 @@ const App = () => {
     const loggedUserJSON = await AsyncStorage.getItem('loggedForumUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      console.log(user);
       dispatch(setUser(user));
       forumService.setToken(user.token);
     } else {

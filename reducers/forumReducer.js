@@ -35,6 +35,10 @@ const forumReducer = (state = initialState, action) => {
       const postToChange = state.answered.find((p) => p._id === commentedOnId);
       const newPost = { ...postToChange, comments: postToChange.comments.concat(action.data.comments[action.data.comments.length - 1]) };
       return { ...state, answered: state.answered.map((s) => (s._id === commentedOnId ? newPost : s)) };
+    case 'ADD_REPLY':
+      const postWithCommentToEdit = state.answered.find(p => p._id === action.data.postId)
+      const modifiedPost = {...postWithCommentToEdit, comments: postWithCommentToEdit.comments.filter(x => x._id !== action.data.commentObj._id).concat(action.data.commentObj)}
+      return { ...state, answered: state.answered.map((s) => (s._id === action.data.postId ? modifiedPost : s)) };
     case 'DELETE_QUESTION':
       return { ...state, pending: state.pending.filter((q) => q._id !== action.data) };
     case 'DELETE_COMMENT':
@@ -87,6 +91,20 @@ export const addComment = (comment, postToModify) => async (dispatch) => {
       dispatch({
         type: 'ADD_COMMENT',
         data: res,
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
+  }
+};
+export const addReply = (reply, commentObject, postId) => async (dispatch) => {
+  const id = postId
+  try {
+    await forumService.addReply(reply, commentObject).then((res) => {
+      dispatch({
+        type: 'ADD_REPLY',
+        data: {commentObj: res, postId: id}
       });
     });
   } catch (error) {

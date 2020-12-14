@@ -1,31 +1,33 @@
 import React, { useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {View, Text, TextInput, StyleSheet, Keyboard} from 'react-native'
+import {View, Text, TextInput, StyleSheet, Keyboard, ToastAndroid} from 'react-native'
 import {Button, Surface} from 'react-native-paper'
-import { addComment} from '../reducers/forumReducer';
+import { addReply} from '../reducers/forumReducer';
 import AddCommentGraphic from '../undraw_Add_content_re_vgqa.svg'
 
 
 const AddReply = ({navigation, route}) => {
-  const { postId} = route.params;
+  const { commentId, postId} = route.params;
   const post = useSelector(state => state.forum.answered.find(p => p._id === postId))
+  const comment = post.comments.find(c => c._id === commentId)
+  const replies = comment.replies
   const activeUser = useSelector(state => state.activeUser)
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false)
-  const [comment, setComment] = useState('')
+  const [reply, setReply] = useState('')
 
-  const submitComment = async () => {
-    const postToModifyId = post;
+  const submitReply = async () => {
+
     if (activeUser === null) {
       ToastAndroid.show('คุณต้องลงชื่อเพื่อแสดงความคิดเห็น', ToastAndroid.SHORT);
       navigation.navigate('LoginForm');
-    } else if (comment === '') {
+    } else if (reply === '') {
       ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT);
     } else {
       try {
         setIsLoading(true);
-        dispatch(addComment(comment, postToModifyId));
-        setComment('');
+        dispatch(addReply(reply, comment, postId));
+        setReply('');
         setIsLoading(false)
         navigation.navigate('SinglePostDisplay', {
         postId: postId,
@@ -49,16 +51,16 @@ const AddReply = ({navigation, route}) => {
           textAlignVertical="top"
           numberOfLines={6}
           placeholderTextColor='gray'
-          placeholder="Add a comment..."
-          onChangeText={(c) => setComment(c)}
+          placeholder="Add a reply..."
+          onChangeText={(r) => setReply(r)}
           keyboardType="default"
           returnKeyType="done"
           onSubmitEditing={() => { Keyboard.dismiss(); }}
           blurOnSubmit
-          value={comment}
+          value={reply}
         />
         </Surface>
-        <Button style={styles.commentButton} icon='comment-plus' mode='contained' onPress={submitComment}>
+        <Button style={styles.commentButton} icon='comment-plus' mode='contained' onPress={submitReply}>
           <Text style={styles.commentButtonText}>
             Submit
           </Text>

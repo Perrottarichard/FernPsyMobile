@@ -3,7 +3,7 @@ import {
   Text, View, ScrollView, StyleSheet, ActivityIndicator, RefreshControl, ToastAndroid, TouchableOpacity
 } from 'react-native';
 import { Card } from 'react-native-elements';
-import { List, Chip, IconButton, Surface, Menu, Provider} from 'react-native-paper';
+import { List, Chip, IconButton, Surface, Menu, Provider, Divider} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons'
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -50,7 +50,7 @@ const SinglePostDisplay = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const post = useSelector((state) => state.forum.answered.find((p) => p._id === postId));
-  // console.log(post)
+
   const [sentHeart, setSentHeart] = useState(null);
   const [pulseHeart, setPulseHeart] = useState('');
 
@@ -103,6 +103,7 @@ const SinglePostDisplay = (props) => {
 
   return (
     <Provider>
+    {post && post._id &&
     <ScrollView style={styles.container}>
       <Surface style={styles.cardStylePost} key={post._id}>
               <List.Item
@@ -136,6 +137,8 @@ const SinglePostDisplay = (props) => {
             style={styles.commentMiconButton}
             iconStyle={styles.miconIconStyle}
             color='lightgray'
+            underlayColor='white'
+            activeOpacity={0.5} 
             onPress={() => {
               navigation.navigate('AddComment', {
                 postId: post._id,
@@ -154,15 +157,51 @@ const SinglePostDisplay = (props) => {
             </Text>
             </View>
           </Surface>
+          
           <View>
             {post.comments.map(c =>
-                  <Surface style={styles.cardStyleComment} key={c._id}>
+            <View key={c._id}>
+                  <Surface style={styles.cardStyleComment} >
                   <List.Item
                   title={`${c.user.avatarName}`}
-                  description={`${timeSince(c.date)} ago`}
-                  right={() => <View style={styles.replyView}><Micon.Button name='reply' color='gray' size={14} iconStyle={styles.miconIconStyle}style={styles.replyButton} backgroundColor='white'><Text style={styles.replyButtonText}>Reply</Text></Micon.Button><Menu visible={visibleMenu === c._id ? true : false} onDismiss={closeMenu} anchor={ <TouchableOpacity onPress={() => openMenu(c._id)} style={styles.touchableOpacityEllipsis}><Icon name='ellipsis-vertical' size={16} color='gray'  style={styles.ellipsis}/></TouchableOpacity>}>
-                    <Menu.Item icon='flag' titleStyle={styles.flagMenuContent} onPress={() => flag(c)} title='Flag comment'/>
-                  </Menu></View>}
+                  description={`commented ${timeSince(c.date)} ago`}
+                  right={() => 
+                  <View style={styles.replyButtonView}>
+                    <Micon.Button 
+                    name='reply' 
+                    color='lightgray' 
+                    size={18}
+                    underlayColor='white'
+                    activeOpacity={0.5} 
+                    iconStyle={styles.miconIconStyle}
+                    style={styles.replyButton} 
+                    backgroundColor='white'
+                    onPress={() => {
+                      navigation.navigate('AddReply', {
+                        commentId: c._id,
+                        postId: post._id
+                      });
+                    }}
+                    >
+                      <Text style={styles.replyButtonText}>Reply</Text>
+                      </Micon.Button>
+                      <Menu visible={visibleMenu === c._id ? true : false} 
+                      onDismiss={closeMenu} 
+                      anchor={ 
+                      <TouchableOpacity 
+                      onPress={() => openMenu(c._id)} style={styles.touchableOpacityEllipsis}>
+                        <Icon name='ellipsis-vertical' 
+                        size={16} 
+                        color='gray'  
+                        style={styles.ellipsis}/>
+                        </TouchableOpacity>}>
+                    <Menu.Item 
+                    icon='flag' 
+                    titleStyle={styles.flagMenuContent} 
+                    onPress={() => flag(c)} 
+                    title='Flag comment'/>
+                  </Menu>
+                  </View>}
                   left={() => <BigHead {...c.user.avatarProps} size={38}/>}
                   titleStyle={styles.commentHeadTitle}
                   descriptionStyle={styles.commentDescriptionStyle}
@@ -173,18 +212,39 @@ const SinglePostDisplay = (props) => {
                   style={styles.commentListItem}
                   onPress={() => console.log('pressed')}
                   />
-                <Menu >
-
-                </Menu>
                 <View>
                   <Text style={styles.commentContent}>
                   {c.content}
                   </Text>
                 </View>
               </Surface>
+
+              {c.replies.map(r => 
+              <View key={r._id}>
+                <List.Item
+                  title={`${r.user.avatarName}`}
+                  description={`replied ${timeSince(r.date)} ago`}
+                  left={() => <BigHead {...r.user.avatarProps} size={28}/>
+                  }
+                  titleStyle={styles.replyHeadTitle}
+                  descriptionStyle={styles.replyDescriptionStyle}
+                  titleNumberOfLines={1}
+                  descriptionNumberOfLines={1}
+                  titleEllipsizeMode='tail'
+                  disabled={true}
+                  style={styles.replyListItem}
+                  onPress={() => console.log('pressed')}
+                  />
+                  {/* <Surface style={styles.replySurface}> */}
+                <Text style={styles.replyContent}>{r.reply}</Text>
+                <Divider style={styles.replyDivider}/>
+                {/* </Surface> */}
+                </View>)}
+              </View>
             )}
           </View>
     </ScrollView>
+   }
     </Provider>
   );
 };
@@ -301,45 +361,69 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   commentDescriptionStyle: {
-    fontSize: 8,
+    fontSize: 10,
     alignSelf: 'flex-start',
   },
   commentListItem: {
-    paddingLeft: 13
+    paddingLeft: 13,
   },
   commentContent: {
     color: 'gray',
     fontSize: 13,
     paddingLeft: 30,
-    paddingRight: 10
+    paddingRight: 10,
+    paddingBottom: 10
   },
   flagMenuContent: {
     fontSize: 12,
     color: '#cf4f46',
   },
-  replyView: {
+  replyButtonView: {
     flexDirection: 'row'
   },
   miconIconStyle: {
     marginRight: 3
   },
   replyButton: {
-    height: 30, 
-    backgroundColor: 'white', 
-    fontSize: 10, 
-    marginRight: 30, 
-    borderRadius: 0
+    backgroundColor: 'white',
+    borderRadius: 0,
+    borderColor: 'white',
   },
   replyButtonText: {
-    fontSize: 10,
-    color: 'gray'
+    color: 'gray',
+    padding: 0,
+    margin: 0,
+    fontSize: 10
   },
   ellipsis: {
     marginTop: 8,
-    marginLeft: 0
+    marginLeft: 15
   },
   touchableOpacityEllipsis: {
     width: 40
+  },
+  replyListItem: {
+    margin: 5,
+    padding: 0,
+  },
+  replyHeadTitle: {
+    alignSelf: 'flex-start',
+    fontSize: 10,
+    color: 'gray'
+  },
+  replyDescriptionStyle: {
+    alignSelf: 'flex-start',
+    fontSize: 8,
+    color: 'gray'
+  },
+  replyContent: {
+    marginLeft: 30,
+    fontSize: 12,
+    color: 'gray'
+  },
+  replyDivider: {
+    backgroundColor: 'black',
+    margin: 5
   }
 })
 export default SinglePostDisplay;

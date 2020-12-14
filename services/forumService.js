@@ -48,6 +48,14 @@ const addComment = async (comment, postToModify) => {
   return response.data;
 };
 
+const addReply = async (reply, commentObject) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.put(`${baseUrl}/addreply/${commentObject._id}`, { commentObject, reply }, config);
+  return response.data;
+};
+
 const remove = async (idToDelete) => {
   const config = {
     headers: { Authorization: token },
@@ -81,5 +89,5 @@ const flagComment = async (c) => {
 };
 
 export default {
-  getPending, getAnswered, create, update, setToken, remove, heartUp, addComment, flagComment, getFlagged, removeComment, unflag, updateEditedAnswer,
+  getPending, getAnswered, create, update, setToken, remove, heartUp, addComment, addReply, flagComment, getFlagged, removeComment, unflag, updateEditedAnswer,
 };

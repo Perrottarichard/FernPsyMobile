@@ -37,7 +37,7 @@ const forumReducer = (state = initialState, action) => {
       return { ...state, answered: state.answered.map((s) => (s._id === commentedOnId ? newPost : s)) };
     case 'ADD_REPLY':
       const postWithCommentToEdit = state.answered.find(p => p._id === action.data.postId)
-      const modifiedPost = {...postWithCommentToEdit, comments: postWithCommentToEdit.comments.filter(x => x._id !== action.data.commentObj._id).concat(action.data.commentObj)}
+      const modifiedPost = {...postWithCommentToEdit, comments: postWithCommentToEdit.comments.filter(x => x._id !== action.data.commentObj._id).concat(action.data.commentObj).sort((a, b) => new Date(b.date) - new Date(a.date))}
       return { ...state, answered: state.answered.map((s) => (s._id === action.data.postId ? modifiedPost : s)) };
     case 'DELETE_QUESTION':
       return { ...state, pending: state.pending.filter((q) => q._id !== action.data) };

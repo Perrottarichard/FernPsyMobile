@@ -101,6 +101,9 @@ const Item = ({ item, onPress }) => (
               descriptionStyle={styles.descriptionStyle}
               titleNumberOfLines={3}
               descriptionNumberOfLines={2}
+              underlayColor='white'
+              rippleColor='#f2f2f2'
+              borderless={true}
               titleEllipsizeMode='tail'
               onPress={onPress}
               style={styles.listItemStyle}
@@ -112,14 +115,14 @@ const Item = ({ item, onPress }) => (
             </Text>
             <IconButton
             icon='comment'
-            size={24}
+            size={22}
             style={styles.commentIconButton}
             color='lightgray'
             />
             <Icon
               name="ios-heart-sharp"
               color="pink"
-              size={26}
+              size={24}
               style={styles.heartIconStyle}
             />
             <Text style={styles.likeTextStyle}>
@@ -274,8 +277,8 @@ const styles = StyleSheet.create({
   },
   likeTextStyle: {
     position: 'absolute',
-    right: 45,
-    bottom: 8,
+    right: 42,
+    bottom: 6,
     color: 'gray'
   },
   headTitle: {
@@ -288,7 +291,7 @@ const styles = StyleSheet.create({
   chip: {
     position: 'absolute',
     left: 10,
-    bottom: 9,
+    bottom: 7,
     paddingLeft: 0,
     paddingRight: 1,
     alignItems: 'center',
@@ -307,7 +310,7 @@ const styles = StyleSheet.create({
   commentCountText: {
     position: 'absolute',
     right: 172,
-    bottom: 8,
+    bottom: 7,
     color: 'gray',
     fontSize: 14
   }

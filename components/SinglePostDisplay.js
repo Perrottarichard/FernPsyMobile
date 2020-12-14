@@ -117,12 +117,12 @@ const SinglePostDisplay = (props) => {
               titleEllipsizeMode='tail'
               />
             <View style={styles.questionContainer}>
-              <Text style={styles.questionText}>
+              <Text style={styles.questionText} selectable={true}>
               {post.question}
               </Text>
             </View>
             <View style={styles.answerContainer}>
-              <Text style={styles.answerText}>
+              <Text style={styles.answerText} selectable={true}>
               {post.answer.answer}
               </Text>
             </View>
@@ -159,7 +159,7 @@ const SinglePostDisplay = (props) => {
           </Surface>
           
           <View>
-            {post.comments.map(c =>
+            {post.comments.sort((a, b) => new Date(b.date) - new Date(a.date)).map(c =>
             <View key={c._id}>
                   <Surface style={styles.cardStyleComment} >
                   <List.Item
@@ -213,7 +213,7 @@ const SinglePostDisplay = (props) => {
                   onPress={() => console.log('pressed')}
                   />
                 <View>
-                  <Text style={styles.commentContent}>
+                  <Text style={styles.commentContent} selectable={true}>
                   {c.content}
                   </Text>
                 </View>
@@ -236,7 +236,7 @@ const SinglePostDisplay = (props) => {
                   onPress={() => console.log('pressed')}
                   />
                   {/* <Surface style={styles.replySurface}> */}
-                <Text style={styles.replyContent}>{r.reply}</Text>
+                <Text style={styles.replyContent} selectable={true}>{r.reply}</Text>
                 <Divider style={styles.replyDivider}/>
                 {/* </Surface> */}
                 </View>)}
@@ -403,26 +403,36 @@ const styles = StyleSheet.create({
     width: 40
   },
   replyListItem: {
-    margin: 5,
+    marginBottom: 9,
+    marginTop: 0,
     padding: 0,
   },
   replyHeadTitle: {
-    alignSelf: 'flex-start',
+    // alignSelf: 'flex-start',
+    position: 'absolute',
+    left: 0,
+    top: 0,
     fontSize: 10,
     color: 'gray'
   },
   replyDescriptionStyle: {
-    alignSelf: 'flex-start',
+    // alignSelf: 'flex-start',
+    position: 'absolute',
+    left: 0,
+    top: 14,
     fontSize: 8,
-    color: 'gray'
+    color: 'gray',
+    padding: 0,
+    margin: 0
   },
   replyContent: {
     marginLeft: 30,
+    paddingTop: 0,
     fontSize: 12,
-    color: 'gray'
+    color: 'gray',
   },
   replyDivider: {
-    backgroundColor: 'black',
+    backgroundColor: 'gray',
     margin: 5
   }
 })

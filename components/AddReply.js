@@ -1,9 +1,10 @@
 import React, { useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {View, Text, TextInput, StyleSheet, Keyboard, ToastAndroid} from 'react-native'
+import {View, Text, TextInput, StyleSheet, Keyboard, ToastAndroid, ScrollView} from 'react-native'
 import {Button, Surface} from 'react-native-paper'
 import { addReply} from '../reducers/forumReducer';
-import AddCommentGraphic from '../undraw_Add_content_re_vgqa.svg'
+import {BigHead} from 'react-native-bigheads'
+import Ficon from 'react-native-vector-icons/FontAwesome5'
 
 
 const AddReply = ({navigation, route}) => {
@@ -40,18 +41,25 @@ const AddReply = ({navigation, route}) => {
   };
 
   return(
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.graphicView}>
-      <AddCommentGraphic width={180} height={180}/>
+      <BigHead {...activeUser.avatarProps} size={180}/>
       </View>
+      <View>
+        <Text style={styles.leadIn}>
+          {`${activeUser.avatarName} says...`}
+        </Text>
+      </View>
+      
       <Surface style={styles.surface}>
+      <Ficon name='quote-left' size={25} color='gray'/>
       <TextInput
           style={styles.textAreaComment}
+          autoFocus={true}
           multiline
-          textAlignVertical="top"
-          numberOfLines={6}
-          placeholderTextColor='gray'
-          placeholder="Add a reply..."
+          textAlignVertical="center"
+          textAlign='center'
+          numberOfLines={2}
           onChangeText={(r) => setReply(r)}
           keyboardType="default"
           returnKeyType="done"
@@ -59,13 +67,14 @@ const AddReply = ({navigation, route}) => {
           blurOnSubmit
           value={reply}
         />
+        <Ficon name='quote-right' size={25} style={styles.rightQuote} color='gray'/>
         </Surface>
         <Button style={styles.commentButton} icon='comment-plus' mode='contained' onPress={submitReply}>
           <Text style={styles.commentButtonText}>
             Submit
           </Text>
         </Button>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -78,23 +87,31 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
   },
+  leadIn: {
+    alignSelf: 'center',
+    margin: 10,
+    fontWeight: 'bold'
+  },
   surface: {
     borderRadius: 10,
     padding: 10
   },
   textAreaComment: {
-    color: 'gray'
+    color: 'gray',
   },
   commentButton: {
       alignSelf: 'center',
       borderRadius: 20,
       width: 300,
       backgroundColor: 'lightgray',
-      marginBottom: 20,
+      marginBottom: 40,
       marginTop: 20
   },
   commentButtonText: {
     color: 'black'
+  },
+  rightQuote: {
+    alignSelf: 'flex-end'
   }
 })
 export default AddReply

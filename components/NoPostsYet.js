@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StyleSheet, View, Text
 } from 'react-native';
-import EmptyStreet from '../undraw_empty_street_sfxm.svg'
+import EmptyStreet from '../assets/undraw_empty_street_sfxm.svg'
 
 const NoPostsYet = () => {
 

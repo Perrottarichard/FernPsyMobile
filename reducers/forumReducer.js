@@ -6,6 +6,7 @@ const initialState = {
   pending: [],
   tagFilter: '',
   flagged: [],
+  loading: false
 };
 const forumReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -15,6 +16,12 @@ const forumReducer = (state = initialState, action) => {
       return { ...state, pending: action.data };
     case 'INIT_FORUM_ANSWERED':
       return { ...state, answered: action.data };
+    case 'LOADING': {
+      return {...state, loading: true}
+    }
+    case 'CANCEL_LOADING': {
+      return {...state, loading: false}
+    }
     case 'HEART':
       const id = action.data._id;
       const questionToChange = state.answered.find((q) => q._id === id);
@@ -54,6 +61,12 @@ const forumReducer = (state = initialState, action) => {
     default: return state;
   }
 };
+export const loading = () => ({
+  type: 'LOADING'
+});
+export const cancelLoading = () => ({
+  type: 'CANCEL_LOADING'
+})
 export const heart = (question) => async (dispatch) => {
   const updatedObject = { ...question, likes: question.likes + 1 };
   await forumService.heartUp(updatedObject);
@@ -87,12 +100,14 @@ export const editAnswer = (answer) => async (dispatch) => {
 };
 export const addComment = (comment, postToModify) => async (dispatch) => {
   try {
+    dispatch(loading())
     await forumService.addComment(comment, postToModify).then((res) => {
       dispatch({
         type: 'ADD_COMMENT',
         data: res,
       });
     });
+    dispatch(cancelLoading())
   } catch (error) {
     console.log(error);
     ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
@@ -101,12 +116,14 @@ export const addComment = (comment, postToModify) => async (dispatch) => {
 export const addReply = (reply, commentObject, postId) => async (dispatch) => {
   const id = postId
   try {
+    dispatch(loading())
     await forumService.addReply(reply, commentObject).then((res) => {
       dispatch({
         type: 'ADD_REPLY',
         data: {commentObj: res, postId: id}
       });
     });
+    dispatch(cancelLoading())
   } catch (error) {
     console.log(error);
     ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);

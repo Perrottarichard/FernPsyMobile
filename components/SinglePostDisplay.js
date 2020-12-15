@@ -1,15 +1,15 @@
-import React, { useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import {
-  Text, View, ScrollView, StyleSheet, ActivityIndicator, RefreshControl, ToastAndroid, TouchableOpacity
+  Text, View, ScrollView, StyleSheet, ToastAndroid, TouchableOpacity
 } from 'react-native';
-import { Card } from 'react-native-elements';
-import { List, Chip, IconButton, Surface, Menu, Provider, Divider} from 'react-native-paper';
+import { List, Chip, Surface, Menu, Provider, Avatar} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons'
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
+import {PacmanIndicator} from 'react-native-indicators'
 import {BigHead} from 'react-native-bigheads'
-import { addComment, heart } from '../reducers/forumReducer';
-import { initializeForumAnswered, setFlaggedComment } from '../reducers/forumReducer';
+import { heart } from '../reducers/forumReducer';
+import { setFlaggedComment } from '../reducers/forumReducer';
 import {timeSince} from './ForumDisplayAll'
 
 const tagOptions = [
@@ -46,8 +46,7 @@ const chooseIcon = (passed) => {
 
 const SinglePostDisplay = (props) => {
   const { activeUser, navigation, route } = props;
-  const { postId} = route.params;
-  const [isLoading, setIsLoading] = useState(false);
+  const { postId } = route.params;
   const dispatch = useDispatch();
   const post = useSelector((state) => state.forum.answered.find((p) => p._id === postId));
 
@@ -55,43 +54,45 @@ const SinglePostDisplay = (props) => {
   const [pulseHeart, setPulseHeart] = useState('');
 
   const [visibleMenu, setVisibleMenu] = useState('');
+  const [showReplies, setShowReplies] = useState('');
+  const [showPac, setShowPac] = useState(false)
 
   const openMenu = (id) => setVisibleMenu(id)
   const closeMenu = () => setVisibleMenu('')
 
-  useEffect(() => {
-    dispatch(initializeForumAnswered());
-  }, [dispatch]);
+  const openReplies = (id) => {
+    setShowPac(true)
+    setShowReplies(id)
+    setTimeout(() => {
+      setShowPac(false)
+    }, 2500);
+  }
+  const closeReplies = () => {
+    setShowReplies('')
+  }
 
-  useEffect(() => {
-    if (isLoading) {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1500);
-    }
-  }, [isLoading]);
+  // const submitHeart = async () => {
+  //   const postToModify = post;
+  //   if (activeUser === null) {
+  //     ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
+  //     navigation.navigate('Login');
+  //   } else if (sentHeart !== null) {
+  //     ToastAndroid.show('คุณได้ส่งหัวใจสำหรับโพสต์นี้แล้ว', ToastAndroid.SHORT);
+  //   } else {
+  //     try {
+  //       setPulseHeart('heart-icon');
+  //       setTimeout(() => {
+  //         setSentHeart(post._id);
+  //         dispatch(heart(postToModify));
+  //         setPulseHeart('');
+  //       }, 2000);
+  //     } catch (error) {
+  //       console.log(error);
+  //       ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
+  //     }
+  //   }
+  // };
 
-  const submitHeart = async () => {
-    const postToModify = post;
-    if (activeUser === null) {
-      ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
-      navigation.navigate('Login');
-    } else if (sentHeart !== null) {
-      ToastAndroid.show('คุณได้ส่งหัวใจสำหรับโพสต์นี้แล้ว', ToastAndroid.SHORT);
-    } else {
-      try {
-        setPulseHeart('heart-icon');
-        setTimeout(() => {
-          setSentHeart(post._id);
-          dispatch(heart(postToModify));
-          setPulseHeart('');
-        }, 2000);
-      } catch (error) {
-        console.log(error);
-        ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
-      }
-    }
-  };
   const flag = (comment) => {
     if (comment.isFlagged) {
       setVisibleMenu('')
@@ -121,13 +122,21 @@ const SinglePostDisplay = (props) => {
               {post.question}
               </Text>
             </View>
-            <View style={styles.answerContainer}>
+            <List.Item
+              left={() => <Avatar.Image size={45} source={require('../assets/fernhippie500.jpg')}
+              style={styles.fernAvatar}/>}
+              title={post.answer.answer}
+              titleStyle={styles.answerHeadTitle}
+              titleNumberOfLines={100}
+              titleEllipsizeMode='tail'
+              />
+            {/* <View style={styles.answerContainer}>
               <Text style={styles.answerText} selectable={true}>
               {post.answer.answer}
               </Text>
-            </View>
+            </View> */}
             <View style={styles.bottomTags}>
-              {post.tags.map((t) => <Chip key={t} mode='outlined' icon={chooseIcon(t)} style={styles.chip} textStyle={{ color: chooseTagColor(t), ...styles.chipText}}>{t}</Chip>)}
+              <Chip key={post._id} mode='outlined' icon={chooseIcon(post.tags[0])} style={styles.chip} textStyle={{ color: chooseTagColor(post.tags[0]), ...styles.chipText}}>{post.tags[0]}</Chip>
               <Text style={styles.commentCountText}>
               {post.comments.length}
             </Text>
@@ -190,13 +199,13 @@ const SinglePostDisplay = (props) => {
                       anchor={ 
                       <TouchableOpacity 
                       onPress={() => openMenu(c._id)} style={styles.touchableOpacityEllipsis}>
-                        <Icon name='ellipsis-vertical' 
-                        size={16} 
+                        <Icon name='md-flag-outline' 
+                        size={14}
                         color='gray'  
                         style={styles.ellipsis}/>
                         </TouchableOpacity>}>
                     <Menu.Item 
-                    icon='flag' 
+                    icon='flag-variant' 
                     titleStyle={styles.flagMenuContent} 
                     onPress={() => flag(c)} 
                     title='Flag comment'/>
@@ -212,19 +221,57 @@ const SinglePostDisplay = (props) => {
                   style={styles.commentListItem}
                   onPress={() => console.log('pressed')}
                   />
-                <View>
+                <View style={styles.contentContainerView}>
                   <Text style={styles.commentContent} selectable={true}>
                   {c.content}
                   </Text>
-                </View>
-              </Surface>
+                {c.replies.length > 0 && showReplies !== c._id && !showPac &&
+                <Micon.Button 
+                name='dots-horizontal' 
+                size={25} 
+                color='lightgray'
+                underlayColor='white'
+                backgroundColor='white'
+                activeOpacity={0.5}  
+                onPress={() => openReplies(c._id)} 
+                style={styles.replyDownArrow}
+                />}
 
-              {c.replies.map(r => 
+                {c.replies.length > 0 && showReplies !== c._id && showPac &&
+                <Micon.Button 
+                name='dots-horizontal' 
+                size={25} 
+                color='lightgray'
+                underlayColor='white'
+                backgroundColor='white'
+                activeOpacity={0.5}  
+                onPress={() => openReplies(c._id)} 
+                style={styles.replyDownArrow}
+                />}
+
+                {c.replies.length > 0 && showReplies === c._id && !showPac &&
+                <Micon.Button 
+                name='dots-horizontal' 
+                size={25} 
+                color='lightgray'
+                underlayColor='white'
+                activeOpacity={0.5}
+                backgroundColor='white'  
+                onPress={closeReplies} 
+                style={styles.replyDownArrow}/>}
+                </View>
+
+                {c.replies.length > 0 && showReplies === c._id && showPac &&
+                <PacmanIndicator color='lightgray' size={35} style={styles.replyDownArrow}/>
+                }
+              </Surface>
+              
+              {showReplies === c._id && c.replies.length > 0 && !showPac && c.replies.map(r => 
               <View key={r._id}>
                 <List.Item
                   title={`${r.user.avatarName}`}
                   description={`replied ${timeSince(r.date)} ago`}
-                  left={() => <BigHead {...r.user.avatarProps} size={28}/>
+                  left={() => <BigHead {...r.user.avatarProps} size={28} containerStyles={styles.bigHeadReplyContainer}/>
                   }
                   titleStyle={styles.replyHeadTitle}
                   descriptionStyle={styles.replyDescriptionStyle}
@@ -235,10 +282,7 @@ const SinglePostDisplay = (props) => {
                   style={styles.replyListItem}
                   onPress={() => console.log('pressed')}
                   />
-                  {/* <Surface style={styles.replySurface}> */}
                 <Text style={styles.replyContent} selectable={true}>{r.reply}</Text>
-                <Divider style={styles.replyDivider}/>
-                {/* </Surface> */}
                 </View>)}
               </View>
             )}
@@ -255,14 +299,6 @@ const styles = StyleSheet.create({
     padding: 5,
     marginBottom: 20
   },
-  // loadingContainer: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center'
-  // },
-  // scroll: {
-  //   flex: 1,
-  // },
   cardStylePost: {
     flex: 1,
     borderTopLeftRadius: 10,
@@ -282,18 +318,22 @@ const styles = StyleSheet.create({
     paddingRight: 0,
     marginBottom: 5
   },
-
+  fernAvatar: {
+    marginLeft: 6,
+    marginTop: 8
+  },
   questionContainer: {
     padding: 10
   },
   questionText: {
-    fontSize: 14
+    fontSize: 14,
+    marginLeft: 62
   },
-  answerContainer: {
-    padding: 10
-  },
-  answerText: {
-    fontSize: 14
+  answerHeadTitle: {
+    fontSize: 14,
+    color: 'gray',
+    fontWeight: 'normal',
+    marginLeft: 5,
   },
   bottomTags: {
     flexDirection: 'row-reverse',
@@ -370,13 +410,17 @@ const styles = StyleSheet.create({
   commentContent: {
     color: 'gray',
     fontSize: 13,
-    paddingLeft: 30,
+    paddingLeft: 20,
     paddingRight: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    alignSelf: 'stretch',
   },
   flagMenuContent: {
     fontSize: 12,
     color: '#cf4f46',
+  },
+  contentContainerView: {
+    flex: 1,
   },
   replyButtonView: {
     flexDirection: 'row'
@@ -396,19 +440,27 @@ const styles = StyleSheet.create({
     fontSize: 10
   },
   ellipsis: {
-    marginTop: 8,
+    marginTop: 9,
     marginLeft: 15
   },
   touchableOpacityEllipsis: {
     width: 40
+  },
+  replyDownArrow: {
+    alignSelf: 'flex-end',
+    paddingRight: 3,
+    height: 25,
+    backgroundColor: 'white'
   },
   replyListItem: {
     marginBottom: 9,
     marginTop: 0,
     padding: 0,
   },
+  bigHeadReplyContainer: {
+    marginTop: 3
+  },
   replyHeadTitle: {
-    // alignSelf: 'flex-start',
     position: 'absolute',
     left: 0,
     top: 0,
@@ -416,7 +468,6 @@ const styles = StyleSheet.create({
     color: 'gray'
   },
   replyDescriptionStyle: {
-    // alignSelf: 'flex-start',
     position: 'absolute',
     left: 0,
     top: 14,
@@ -426,14 +477,12 @@ const styles = StyleSheet.create({
     margin: 0
   },
   replyContent: {
-    marginLeft: 30,
+    marginLeft: 27,
+    marginBottom: 10,
     paddingTop: 0,
     fontSize: 12,
     color: 'gray',
-  },
-  replyDivider: {
-    backgroundColor: 'gray',
-    margin: 5
   }
 })
+
 export default SinglePostDisplay;

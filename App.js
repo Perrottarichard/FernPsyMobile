@@ -30,6 +30,7 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log('App UF forumAnswered running')
     dispatch(initializeForumAnswered());
   }, []);
 

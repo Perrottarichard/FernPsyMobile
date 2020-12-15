@@ -27,14 +27,17 @@ const MyQuestions = ({navigation}) => {
 
 
   useEffect(() => {
+    console.log('UF Answered MQ')
     dispatch(initializeForumAnswered());
   }, []);
 
   useEffect(() => {
+    console.log('UF Pending MQ')
     dispatch(initializeForumPending());
   }, []);
 
   const onRefresh = useCallback(() => {
+    console.log('callback MQ init')
     setRefreshing(true);
     dispatch(initializeForumAnswered());
     dispatch(initializeForumPending());

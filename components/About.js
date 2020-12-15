@@ -4,8 +4,9 @@ import {
 } from 'react-native';
 import { Switch } from 'react-native-switch';
 import { Image, Card } from 'react-native-elements';
+import {Avatar} from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Fontisto';
-import CatFernGraphic from '../undraw_friends_r511.svg';
+import CatFernGraphic from '../assets/undraw_friends_r511.svg';
 
 const About = () => {
   const [isEng, setIsEng] = useState(false);
@@ -89,7 +90,7 @@ const About = () => {
         )}
       <View style={styles.contactContainer}>
         <View style={styles.bodySpacer} />
-        <Image source={{ uri: 'http://fern-counseling.herokuapp.com/static/media/fernhippie500.8ec92f3a.jpg' }} style={styles.image} PlaceholderContent={<ActivityIndicator />} resizeMode="cover" />
+        <Avatar.Image source={require('../assets/fernhippie500.jpg')} size={100}/>
 
         {isEng
           ? (
@@ -140,9 +141,6 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     justifyContent: 'center', alignItems: 'center', marginTop: 40,
-  },
-  image: {
-    height: 100, width: 100, borderRadius: 90,
   },
   titleText: {
     fontSize: 22,

@@ -1,7 +1,7 @@
 import React, { useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {View, Text, TextInput, StyleSheet, Keyboard, ToastAndroid, ScrollView} from 'react-native'
-import {Button, Surface} from 'react-native-paper'
+import {View, Text, TextInput, StyleSheet, Keyboard, ToastAndroid, ScrollView, ActivityIndicator} from 'react-native'
+import { Button, Surface} from 'react-native-paper'
 import { addReply} from '../reducers/forumReducer';
 import {BigHead} from 'react-native-bigheads'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
@@ -11,10 +11,9 @@ const AddReply = ({navigation, route}) => {
   const { commentId, postId} = route.params;
   const post = useSelector(state => state.forum.answered.find(p => p._id === postId))
   const comment = post.comments.find(c => c._id === commentId)
-  const replies = comment.replies
   const activeUser = useSelector(state => state.activeUser)
+  const loading = useSelector(state => state.forum.loading)
   const dispatch = useDispatch()
-  const [isLoading, setIsLoading] = useState(false)
   const [reply, setReply] = useState('')
 
   const submitReply = async () => {
@@ -26,13 +25,12 @@ const AddReply = ({navigation, route}) => {
       ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT);
     } else {
       try {
-        setIsLoading(true);
         dispatch(addReply(reply, comment, postId));
-        setReply('');
-        setIsLoading(false)
-        navigation.navigate('SinglePostDisplay', {
-        postId: postId,
-        });
+        setTimeout(() => {
+            navigation.navigate('SinglePostDisplay', {
+              postId: postId,
+              });
+        }, 2000);
       } catch (error) {
         console.log(error);
         ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
@@ -69,11 +67,13 @@ const AddReply = ({navigation, route}) => {
         />
         <Ficon name='quote-right' size={25} style={styles.rightQuote} color='gray'/>
         </Surface>
+        {!loading ?
         <Button style={styles.commentButton} icon='comment-plus' mode='contained' onPress={submitReply}>
           <Text style={styles.commentButtonText}>
             Submit
           </Text>
         </Button>
+: <ActivityIndicator style={styles.spinner} color='pink'/>}
     </ScrollView>
   )
 }
@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
   leadIn: {
     alignSelf: 'center',
     margin: 10,
-    fontWeight: 'bold'
   },
   surface: {
     borderRadius: 10,
@@ -112,6 +111,9 @@ const styles = StyleSheet.create({
   },
   rightQuote: {
     alignSelf: 'flex-end'
+  },
+  spinner: {
+    marginTop: 25,
   }
 })
 export default AddReply

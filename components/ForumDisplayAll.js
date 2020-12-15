@@ -109,7 +109,7 @@ const Item = ({ item, onPress }) => (
               style={styles.listItemStyle}
               />
             <View style={styles.bottomTags}>
-              {item.tags.map((t) => <Chip key={t} mode='outlined' icon={chooseIcon(t)}style={styles.chip} textStyle={{ color: chooseTagColor(t), ...styles.chipText}}>{t}</Chip>)}
+              <Chip key={item._id} mode='outlined' icon={chooseIcon(item.tags[0])}style={styles.chip} textStyle={{ color: chooseTagColor(item.tags[0]), ...styles.chipText}}>{item.tags[0]}</Chip>
               <Text style={styles.commentCountText}>
               {item.comments.length}
             </Text>
@@ -143,6 +143,7 @@ const ForumDisplayAll = ({navigation}) => {
   const DATA = forumAnswered.sort((a, b) => new Date(b.date) - new Date(a.date))
 
   const onRefresh = useCallback(() => {
+    console.log('Callback Refresh init answered')
     setRefreshing(true);
     dispatch(initializeForumAnswered());
     wait(2000).then(() => setRefreshing(false));
@@ -150,6 +151,7 @@ const ForumDisplayAll = ({navigation}) => {
 
   useEffect(() => {
     if (!forumAnswered) {
+      console.log('UF FDAll')
       setIsLoading(true);
       dispatch(initializeForumAnswered());
     } else {
@@ -164,7 +166,6 @@ const ForumDisplayAll = ({navigation}) => {
         onPress={() => {
           navigation.navigate('SinglePostDisplay', {
             postId: item._id,
-            postTitle: item.title,
           });
         }
       }

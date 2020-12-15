@@ -6,7 +6,7 @@ import {Button} from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux';
 import {Picker} from '@react-native-picker/picker'
 import { addQuestion } from '../reducers/forumReducer';
-import PostGraphic from '../undraw_add_post_64nu.svg';
+import PostGraphic from '../assets/undraw_add_post_64nu.svg';
 
 const ForumPostMain = (props) => {
   const { navigation } = props;

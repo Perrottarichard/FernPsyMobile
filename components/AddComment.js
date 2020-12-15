@@ -1,6 +1,6 @@
 import React, { useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {View, Text, TextInput, StyleSheet, Keyboard, ScrollView, ToastAndroid} from 'react-native'
+import {View, Text, TextInput, StyleSheet, Keyboard, ScrollView, ToastAndroid, ActivityIndicator} from 'react-native'
 import {Button, Surface} from 'react-native-paper'
 import { addComment} from '../reducers/forumReducer';
 import {BigHead} from 'react-native-bigheads'
@@ -12,7 +12,7 @@ const AddComment = ({navigation, route}) => {
   const post = useSelector(state => state.forum.answered.find(p => p._id === postId))
   const activeUser = useSelector(state => state.activeUser)
   const dispatch = useDispatch()
-  const [isLoading, setIsLoading] = useState(false)
+  const loading = useSelector(state => state.forum.loading)
   const [comment, setComment] = useState('')
 
   const submitComment = async () => {
@@ -24,13 +24,12 @@ const AddComment = ({navigation, route}) => {
       ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT);
     } else {
       try {
-        setIsLoading(true);
         dispatch(addComment(comment, postToModifyId));
-        setComment('');
-        setIsLoading(false)
-        navigation.navigate('SinglePostDisplay', {
-        postId: postId,
-        });
+        setTimeout(() => {
+          navigation.navigate('SinglePostDisplay', {
+            postId: postId,
+            });
+      }, 2000);
       } catch (error) {
         console.log(error);
         ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
@@ -67,11 +66,13 @@ const AddComment = ({navigation, route}) => {
         />
         <Ficon name='quote-right' size={25} style={styles.rightQuote} color='gray'/>
         </Surface>
+        {!loading ?
         <Button style={styles.commentButton} icon='comment-plus' mode='contained' onPress={submitComment}>
           <Text style={styles.commentButtonText}>
             Submit
           </Text>
         </Button>
+: <ActivityIndicator style={styles.spinner} color='pink'/>}
     </ScrollView>
   )
 }
@@ -92,7 +93,6 @@ const styles = StyleSheet.create({
   leadIn: {
     alignSelf: 'center',
     margin: 10,
-    fontWeight: 'bold'
   },
   textAreaComment: {
     color: 'gray',
@@ -110,6 +110,9 @@ const styles = StyleSheet.create({
   },
   rightQuote: {
     alignSelf: 'flex-end'
+  },
+  spinner: {
+    marginTop: 25,
   }
 })
 export default AddComment

@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { Input } from 'react-native-elements';
 import userService from '../services/userService';
-import Graphic from '../undraw_mobile_login_ikmv.svg';
+import Graphic from '../assets/undraw_mobile_login_ikmv.svg';
 
 const RegisterForm = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);

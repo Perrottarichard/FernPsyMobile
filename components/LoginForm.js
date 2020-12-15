@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setUser } from '../reducers/activeUserReducer';
 import loginService from '../services/loginService';
 import forumService from '../services/forumService';
-import WelcomeCats from '../undraw_welcome_cats_thqn.svg';
+import WelcomeCats from '../assets/undraw_welcome_cats_thqn.svg';
 
 const LoginForm = (props) => {
   const { navigation } = props;

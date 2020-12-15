@@ -90,7 +90,7 @@ const About = () => {
         )}
       <View style={styles.contactContainer}>
         <View style={styles.bodySpacer} />
-        <Avatar.Image source={require('../assets/fernhippie500.jpg')} size={100}/>
+        <Avatar.Image source={{uri: 'http://fern-counseling.herokuapp.com/static/media/fernhippie500.8ec92f3a.jpg'}} size={100}/>
 
         {isEng
           ? (

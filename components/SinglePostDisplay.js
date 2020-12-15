@@ -153,7 +153,7 @@ const SinglePostDisplay = (props) => {
               </Text>
             </View>
             <List.Item
-              left={() => <Avatar.Image size={45} source={require('../assets/fernhippie500.jpg')}
+              left={() => <Avatar.Image size={45} source={{uri: 'http://fern-counseling.herokuapp.com/static/media/fernhippie500.8ec92f3a.jpg'}}
               style={styles.fernAvatar}/>}
               title={post.answer.answer}
               titleStyle={styles.answerHeadTitle}

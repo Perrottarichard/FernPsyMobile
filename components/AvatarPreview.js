@@ -206,23 +206,23 @@ containerStyles={styles.avatarPreview}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  สีผิว:
+  สีผิว
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setSkinTone(newValue)}
 value={skinTone}
 >
-{skinToneButtons.map(b => <ScrollView key={b.value} style={styles.innerChoices}>
+{skinToneButtons.map(b => <View key={b.value} style={styles.innerChoices}>
  
   <RadioButton.Item label={b.name}value={b.value} style={styles.radioButtonItems}/>
   
-</ScrollView>)}
+</View>)}
 </RadioButton.Group>
 </Surface>
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  ปาก:
+  ปาก
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setMouth(newValue)}
@@ -236,155 +236,155 @@ value={mouth}
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  เครื่องประดับ:
+  เครื่องประดับ
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setAccessory(newValue)}
 value={accessory}
 >
-{accessoryButtons.map(b => <ScrollView key={b.value} style={styles.innerChoices}>
+{accessoryButtons.map(b => <View key={b.value} style={styles.innerChoices}>
   <RadioButton.Item label={b.name}value={b.value} style={styles.radioButtonItems}/>
-</ScrollView>)}
+</View>)}
 </RadioButton.Group>
 </Surface>
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  สีพื้นหลัง:
+  สีพื้นหลัง
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setBgColor(newValue)}
 value={bgColor}
 >
-{bgColorButtons.map(b => <ScrollView key={b.value} style={styles.innerChoices}>
+{bgColorButtons.map(b => <View key={b.value} style={styles.innerChoices}>
   <RadioButton.Item label={b.name}value={b.value} style={styles.radioButtonItems}/>
-</ScrollView>)}
+</View>)}
 </RadioButton.Group>
 </Surface>
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  รูปร่าง:
+  รูปร่าง
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setBody(newValue)}
 value={body}
 >
-{bodyButtons.map(b => <ScrollView key={b.value} style={styles.innerChoices}>
+{bodyButtons.map(b => <View key={b.value} style={styles.innerChoices}>
   <RadioButton.Item label={b.name}value={b.value} style={styles.radioButtonItems}/>
-</ScrollView>)}
+</View>)}
 </RadioButton.Group>
 </Surface>
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  เสื้อผ้า:
+  เสื้อผ้า
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setClothing(newValue)}
 value={clothing}
 >
-{clothingButtons.map(b => <ScrollView key={b.value} style={styles.innerChoices}>
+{clothingButtons.map(b => <View key={b.value} style={styles.innerChoices}>
   <RadioButton.Item label={b.name}value={b.value} style={styles.radioButtonItems}/>
-</ScrollView>)}
+</View>)}
 </RadioButton.Group>
 </Surface>
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  สีเสื้อผ้า:
+  สีเสื้อผ้า
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setClothingColor(newValue)}
 value={clothingColor}
 >
-{clothingColorButtons.map(b => <ScrollView key={b.value} style={styles.innerChoices}>
+{clothingColorButtons.map(b => <View key={b.value} style={styles.innerChoices}>
   <RadioButton.Item label={b.name}value={b.value} style={styles.radioButtonItems}/>
-</ScrollView>)}
+</View>)}
 </RadioButton.Group>
 </Surface>
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  คิ้ว:
+  คิ้ว
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setEyebrows(newValue)}
 value={eyebrows}
 >
-{eyebrowsButtons.map(b => <ScrollView key={b.value} style={styles.innerChoices}>
+{eyebrowsButtons.map(b => <View key={b.value} style={styles.innerChoices}>
   <RadioButton.Item label={b.name}value={b.value} style={styles.radioButtonItems}/>
-</ScrollView>)}
+</View>)}
 </RadioButton.Group>
 </Surface>
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  ตา:
+  ตา
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setEyes(newValue)}
 value={eyes}
 >
-{eyesButtons.map(b => <ScrollView key={b.value} style={styles.innerChoices}>
+{eyesButtons.map(b => <View key={b.value} style={styles.innerChoices}>
   <RadioButton.Item label={b.name}value={b.value} style={styles.radioButtonItems}/>
-</ScrollView>)}
+</View>)}
 </RadioButton.Group>
 </Surface>
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  หนวด:
+  หนวด
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setFacialHair(newValue)}
 value={facialHair}
 >
-{facialHairButtons.map(b => <ScrollView key={b.value} style={styles.innerChoices}>
+{facialHairButtons.map(b => <View key={b.value} style={styles.innerChoices}>
   <RadioButton.Item label={b.name}value={b.value} style={styles.radioButtonItems}/>
-</ScrollView>)}
+</View>)}
 </RadioButton.Group>
 </Surface>
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  ลายเสื้อ:
+  ลายเสื้อ
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setGraphic(newValue)}
 value={graphic}
 >
-{graphicButtons.map(b => <ScrollView key={b.value} style={styles.innerChoices}>
+{graphicButtons.map(b => <View key={b.value} style={styles.innerChoices}>
   <RadioButton.Item label={b.name}value={b.value} style={styles.radioButtonItems}/>
-</ScrollView>)}
+</View>)}
 </RadioButton.Group>
 </Surface>
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  ทรงผม:
+  ทรงผม
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setHair(newValue)}
 value={hair}
 >
-{hairButtons.map(b => <ScrollView key={b.value} style={styles.innerChoices}>
+{hairButtons.map(b => <View key={b.value} style={styles.innerChoices}>
   <RadioButton.Item label={b.name}value={b.value} style={styles.radioButtonItems}/>
-</ScrollView>)}
+</View>)}
 </RadioButton.Group>
 </Surface>
 
 <Surface style={styles.surface}>
 <Text style={styles.groupCategoryText}>
-  สีผม:
+  สีผม
 </Text>
 <RadioButton.Group
 onValueChange={newValue => setHairColor(newValue)}
 value={hairColor}
 >
-{hairColorButtons.map(b => <ScrollView key={b.value} style={styles.innerChoices}>
+{hairColorButtons.map(b => <View key={b.value} style={styles.innerChoices}>
   <RadioButton.Item label={b.name}value={b.value} style={styles.radioButtonItems}/>
-</ScrollView>)}
+</View>)}
 </RadioButton.Group>
 </Surface>
 

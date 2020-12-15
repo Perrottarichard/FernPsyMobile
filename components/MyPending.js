@@ -1,6 +1,7 @@
 import React from 'react'
 import {ScrollView, View, Text} from 'react-native'
 import {Card, Badge} from 'react-native-elements'
+import NoPostsYet from './NoPostsYet';
 
 const tagColorOptions = [
 
@@ -33,7 +34,7 @@ const MyPending = ({navigation, route}) => {
   const myPendingPosts = route.params
   return(
     <ScrollView>
-    {myPendingPosts.myPendingPosts.map((f) => (
+    {myPendingPosts.length > 0 ? myPendingPosts.myPendingPosts.map((f) => (
       <View key={f._id}>
         <Card>
           <Card.Title>
@@ -52,7 +53,10 @@ const MyPending = ({navigation, route}) => {
           </View>
         </Card>
       </View>
-    ))}
+    )) 
+  :
+  <NoPostsYet/>
+  }
     </ScrollView>
   )
 }

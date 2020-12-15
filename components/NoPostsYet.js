@@ -10,7 +10,7 @@ const NoPostsYet = () => {
     <View style={styles.container}>
       <View>
         <Text style={styles.text}>
-          ยังไม่มีคำถามในหัวข้อนี้
+        ยังไม่มีโพสต์
         </Text>
       </View>
       <EmptyStreet width={200} height={200}/>

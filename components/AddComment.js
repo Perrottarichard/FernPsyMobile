@@ -6,6 +6,16 @@ import { addComment} from '../reducers/forumReducer';
 import {BigHead} from 'react-native-bigheads'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
 
+const countAt = (passed) => {
+  let count = 0
+  for(let i = 0; i < passed.length; i++){
+    if(passed[i] === '@'){
+      count++
+    }
+  }
+  return count;
+}
+
 
 const AddComment = ({navigation, route}) => {
   const { postId} = route.params;
@@ -22,7 +32,9 @@ const AddComment = ({navigation, route}) => {
       navigation.navigate('LoginForm');
     } else if (comment === '') {
       ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT);
-    } else {
+    } else if (countAt(reply) >= 2) {
+      ToastAndroid.show('you can only have one @mention', ToastAndroid.SHORT)
+    }else {
       try {
         dispatch(addComment(comment, postToModifyId));
         setTimeout(() => {

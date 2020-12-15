@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import {Picker} from '@react-native-picker/picker'
 import NoPostsYet from './NoPostsYet'
 
+
 const tagOptions = [
   { tag: 'ปัญหาเรื่องเพศ', backgroundColor: '#ff5c4d', icon: 'gender-male-female' },
   { tag: 'relationships', backgroundColor: '#63ba90', icon: 'account-heart-outline' },
@@ -91,7 +92,7 @@ const applyFilterByTag = (allAnsweredPosts, filter) => {
     return allAnsweredPosts.filter(f => f.tags.includes(filter))
   }
 }
-const Item = ({ item, onPress }) => (
+const Item = ({ item, onPress}) => (
   <Card containerStyle={styles.cardStyle} key={item._id}>
               <List.Item
               title={item.title}
@@ -164,9 +165,9 @@ const ForumDisplayAll = ({navigation}) => {
       <Item
         item={item}
         onPress={() => {
-          navigation.navigate('SinglePostDisplay', {
-            postId: item._id,
-          });
+            navigation.navigate('SinglePostDisplay', {
+              postId: item._id,
+            });
         }
       }
       />

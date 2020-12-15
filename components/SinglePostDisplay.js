@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Text, View, ScrollView, StyleSheet, ToastAndroid, TouchableOpacity
+  Text, View, ScrollView, StyleSheet, ToastAndroid, TouchableOpacity, ActivityIndicator
 } from 'react-native';
 import { List, Chip, Surface, Menu, Provider, Avatar} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {PacmanIndicator} from 'react-native-indicators'
 import {BigHead} from 'react-native-bigheads'
-import { heart } from '../reducers/forumReducer';
+// import { heart } from '../reducers/forumReducer';
 import { setFlaggedComment } from '../reducers/forumReducer';
 import {timeSince} from './ForumDisplayAll'
 
@@ -43,15 +43,37 @@ const chooseIcon = (passed) => {
   }
   return 'star'
 }
+const checkMention = (passed) => {
+  let regex = /\B@(\w+|[^\x00-\x7F]+)/g
+  let found = passed.match(regex)
+  if(found){
+    let start = passed.substring(0, passed.indexOf('@'))
+    let target = found.toString()
+    let after = passed.substring(start.length + target.length)
+
+    return <View style={styles.mentionContainer}><Text style={styles.replyWithMention}>{start}</Text><Text style={styles.replyWithMentionTarget}>{target}</Text><Text style={styles.replyWithMention}>{after}</Text></View>
+  }else{
+    return <View><Text style={styles.replyWithoutMention}>{passed}</Text></View>
+  }
+}
 
 const SinglePostDisplay = (props) => {
-  const { activeUser, navigation, route } = props;
+  const { navigation, route } = props;
   const { postId } = route.params;
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
   const post = useSelector((state) => state.forum.answered.find((p) => p._id === postId));
 
-  const [sentHeart, setSentHeart] = useState(null);
-  const [pulseHeart, setPulseHeart] = useState('');
+  useEffect(() => {
+    if(!post){
+      setIsLoading(true)
+    }else{
+      setIsLoading(false)
+    }
+  }, [dispatch, post])
+
+  // const [sentHeart, setSentHeart] = useState(null);
+  // const [pulseHeart, setPulseHeart] = useState('');
 
   const [visibleMenu, setVisibleMenu] = useState('');
   const [showReplies, setShowReplies] = useState('');
@@ -102,6 +124,14 @@ const SinglePostDisplay = (props) => {
     dispatch(setFlaggedComment(comment));
   };
 
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="pink" />
+      </View>
+    );
+  }
+
   return (
     <Provider>
     {post && post._id &&
@@ -130,11 +160,6 @@ const SinglePostDisplay = (props) => {
               titleNumberOfLines={100}
               titleEllipsizeMode='tail'
               />
-            {/* <View style={styles.answerContainer}>
-              <Text style={styles.answerText} selectable={true}>
-              {post.answer.answer}
-              </Text>
-            </View> */}
             <View style={styles.bottomTags}>
               <Chip key={post._id} mode='outlined' icon={chooseIcon(post.tags[0])} style={styles.chip} textStyle={{ color: chooseTagColor(post.tags[0]), ...styles.chipText}}>{post.tags[0]}</Chip>
               <Text style={styles.commentCountText}>
@@ -282,7 +307,7 @@ const SinglePostDisplay = (props) => {
                   style={styles.replyListItem}
                   onPress={() => console.log('pressed')}
                   />
-                <Text style={styles.replyContent} selectable={true}>{r.reply}</Text>
+                {checkMention(r.reply)}
                 </View>)}
               </View>
             )}
@@ -298,6 +323,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 5,
     marginBottom: 20
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   cardStylePost: {
     flex: 1,
@@ -327,13 +357,15 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: 14,
-    marginLeft: 62
+    marginLeft: 62,
+    marginRight: 5
   },
   answerHeadTitle: {
     fontSize: 14,
     color: 'gray',
     fontWeight: 'normal',
     marginLeft: 5,
+    marginRight: 10
   },
   bottomTags: {
     flexDirection: 'row-reverse',
@@ -412,6 +444,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     paddingLeft: 20,
     paddingRight: 10,
+    marginRight: 10,
     paddingBottom: 10,
     alignSelf: 'stretch',
   },
@@ -476,13 +509,33 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0
   },
-  replyContent: {
+  replyWithoutMention: {
     marginLeft: 27,
     marginBottom: 10,
+    marginRight: 20,
     paddingTop: 0,
     fontSize: 12,
     color: 'gray',
-  }
+  },
+    mentionContainer: {
+    flex: 1, 
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginLeft: 27,
+    marginRight: 10
+  },
+    replyWithMentionTarget: {
+    color: 'black',
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 10
+  },
+    replyWithMention: {
+    color: 'gray',
+    fontSize: 12,
+    marginBottom: 10,
+  },
+
 })
 
 export default SinglePostDisplay;

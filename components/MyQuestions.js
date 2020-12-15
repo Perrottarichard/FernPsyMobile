@@ -27,9 +27,11 @@ const MyQuestions = ({navigation}) => {
 
 
   useEffect(() => {
-    console.log('UF Answered MQ')
-    dispatch(initializeForumAnswered());
-  }, []);
+    if(!answered){
+      console.log('UF Answered MQ')
+      dispatch(initializeForumAnswered());
+    }
+  }, [dispatch, answered]);
 
   useEffect(() => {
     console.log('UF Pending MQ')

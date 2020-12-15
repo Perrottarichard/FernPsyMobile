@@ -62,6 +62,7 @@ const SinglePostDisplay = (props) => {
   const { postId } = route.params;
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
+  const activeUser = useSelector(state => state.activeUser)
   const post = useSelector((state) => state.forum.answered.find((p) => p._id === postId));
 
   useEffect(() => {
@@ -71,9 +72,6 @@ const SinglePostDisplay = (props) => {
       setIsLoading(false)
     }
   }, [dispatch, post])
-
-  // const [sentHeart, setSentHeart] = useState(null);
-  // const [pulseHeart, setPulseHeart] = useState('');
 
   const [visibleMenu, setVisibleMenu] = useState('');
   const [showReplies, setShowReplies] = useState('');
@@ -93,27 +91,22 @@ const SinglePostDisplay = (props) => {
     setShowReplies('')
   }
 
-  // const submitHeart = async () => {
-  //   const postToModify = post;
-  //   if (activeUser === null) {
-  //     ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
-  //     navigation.navigate('Login');
-  //   } else if (sentHeart !== null) {
-  //     ToastAndroid.show('คุณได้ส่งหัวใจสำหรับโพสต์นี้แล้ว', ToastAndroid.SHORT);
-  //   } else {
-  //     try {
-  //       setPulseHeart('heart-icon');
-  //       setTimeout(() => {
-  //         setSentHeart(post._id);
-  //         dispatch(heart(postToModify));
-  //         setPulseHeart('');
-  //       }, 2000);
-  //     } catch (error) {
-  //       console.log(error);
-  //       ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
-  //     }
-  //   }
-  // };
+  const submitHeart = async () => {
+    const postToModify = post;
+    if (activeUser === null) {
+      ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
+      navigation.navigate('LoginForm');
+    } else if (activeUser.heartedPosts.includes(post._id)) {
+      ToastAndroid.show('คุณได้ส่งหัวใจสำหรับโพสต์นี้แล้ว', ToastAndroid.SHORT);
+    } else {
+      try {
+          dispatch(heart(postToModify));
+      } catch (error) {
+        console.log(error);
+        ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
+      }
+    }
+  };
 
   const flag = (comment) => {
     if (comment.isFlagged) {
@@ -162,16 +155,14 @@ const SinglePostDisplay = (props) => {
               />
             <View style={styles.bottomTags}>
               <Chip key={post._id} mode='outlined' icon={chooseIcon(post.tags[0])} style={styles.chip} textStyle={{ color: chooseTagColor(post.tags[0]), ...styles.chipText}}>{post.tags[0]}</Chip>
-              <Text style={styles.commentCountText}>
-              {post.comments.length}
-            </Text>
             <Micon.Button
             name='comment-plus'
-            size={23}
+            size={28}
             style={styles.commentMiconButton}
             iconStyle={styles.miconIconStyle}
             color='lightgray'
             underlayColor='white'
+            backgroundColor='white'
             activeOpacity={0.5} 
             onPress={() => {
               navigation.navigate('AddComment', {
@@ -180,15 +171,19 @@ const SinglePostDisplay = (props) => {
               });
             }}
             ><Text style={styles.miconText}>Comment</Text></Micon.Button>
-            <Icon
-              name="ios-heart-sharp"
+            <Micon.Button
+              name="heart-half-full"
               color="pink"
-              size={26}
+              size={28}
               style={styles.heartIconStyle}
-            />
-            <Text style={styles.likeTextStyle}>
+              backgroundColor='white'
+              underlayColor='white'
+              activeOpacity={0.5}
+            >
+              <Text style={styles.likeTextStyle}>
               {post.likes}
             </Text>
+            </Micon.Button>
             </View>
           </Surface>
           
@@ -368,22 +363,21 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   bottomTags: {
+    flex: 1,
     flexDirection: 'row-reverse',
-    justifyContent: 'center',
-    padding: 0,
-    margin: 0
+    justifyContent: 'space-between',
+    paddingLeft: 5,
+    paddingRight: 5,
+    alignItems: 'center',
+    height: 50,
   },
   heartIconStyle: {
-    position: 'absolute', 
-    right: 16,
-    bottom: 6
+    alignSelf: 'flex-end',
+    height: 40,
   },
   likeTextStyle: {
-    position: 'absolute',
-    right: 45,
-    bottom: 11,
+    alignSelf: 'flex-end',
     color: 'gray',
-    fontSize: 12
   },
   headTitle: {
     fontWeight: 'bold',
@@ -393,16 +387,12 @@ const styles = StyleSheet.create({
     color: 'gray'
   },
   chip: {
-    position: 'absolute',
-    left: 10,
-    bottom: 11,
-    paddingLeft: 0,
-    paddingRight: 1,
+    marginTop: 14,
+    height: 20,
     alignItems: 'center',
-    height: 20
+    alignSelf: 'flex-start'
   },
   chipText: {
-    padding: 0,
     fontSize: 10,
     marginLeft: 0,
     marginRight: 2,
@@ -412,19 +402,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 0,
     borderColor: 'white',
+    alignSelf: 'center',
+    marginTop: 1,
+    height: 40
   },
   miconText: {
     color: 'gray',
     padding: 0,
     margin: 0,
-    fontSize: 10
-  },
-  commentCountText: {
-    position: 'absolute',
-    right: 172,
-    bottom: 8,
-    color: 'gray',
-    fontSize: 14
+    fontSize: 11
   },
   commentHeadTitle: {
     alignSelf: 'flex-start',

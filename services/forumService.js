@@ -78,8 +78,11 @@ const unflag = async (idToUnflag) => {
 };
 
 const heartUp = async (toUpdate) => {
+  const config = {
+    headers: { Authorization: token },
+  };
   const id = toUpdate._id;
-  const response = await axios.put(`${baseUrl}/heart/${id}`, toUpdate);
+  const response = await axios.put(`${baseUrl}/heart/${id}`, toUpdate, config);
   return response.data;
 };
 const flagComment = async (c) => {

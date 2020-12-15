@@ -9,6 +9,10 @@ const activeUserReducer = (state = {}, action) => {
       return action.data;
     case 'UPDATE_AVATAR':
       return {...state, avatarProps: action.data.avatarProps, avatarName: action.data.avatarName}
+    case 'UPDATE_USER':
+      return {...state, ...action.data}
+    case 'HEART_LOCK':
+      return {...state, heartedPosts: [...state.heartedPosts, action.data]}
     default:
       return state;
   }
@@ -22,12 +26,20 @@ export const clearUser = () => ({
   type: 'USER_LOGOUT',
   data: null,
 });
+export const heartLock = (postId) => ({
+  type: 'HEART_LOCK',
+  data: postId
+})
 export const updateUserAvatar = (id, avatarProps, avatarName) => async (dispatch) => {
 try {
-  await userService.createAvatar(id, avatarProps, avatarName);
+  const updated = await userService.createAvatar(id, avatarProps, avatarName);
   dispatch({
     type: 'UPDATE_AVATAR',
     data: {id: id, avatarProps: avatarProps, avatarName: avatarName}
+  })
+  dispatch({
+    type: 'UPDATE_USER',
+    data: updated
   })
   ToastAndroid.show('บันทึกสำเร็จ', ToastAndroid.SHORT)
 } catch (error) {

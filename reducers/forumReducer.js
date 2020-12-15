@@ -23,7 +23,7 @@ const forumReducer = (state = initialState, action) => {
       return {...state, loading: false}
     }
     case 'HEART':
-      const id = action.data._id;
+      const id = action.data;
       const questionToChange = state.answered.find((q) => q._id === id);
       const changedQuestion = { ...questionToChange, likes: questionToChange.likes + 1 };
       return { ...state, answered: state.answered.map((q) => (q._id === id ? changedQuestion : q)) };
@@ -68,11 +68,12 @@ export const cancelLoading = () => ({
   type: 'CANCEL_LOADING'
 })
 export const heart = (question) => async (dispatch) => {
-  const updatedObject = { ...question, likes: question.likes + 1 };
-  await forumService.heartUp(updatedObject);
+  // const updatedObject = { ...question, likes: question.likes + 1 };
+  const questionToModifyId = question._id
+  await forumService.heartUp(questionToModifyId);
   dispatch({
     type: 'HEART',
-    data: updatedObject,
+    data: questionToModifyId
   });
 };
 export const answerQuestion = (answer) => async (dispatch) => {

@@ -32,7 +32,7 @@ const AddComment = ({navigation, route}) => {
       navigation.navigate('LoginForm');
     } else if (comment === '') {
       ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT);
-    } else if (countAt(reply) >= 2) {
+    } else if (countAt(comment) >= 2) {
       ToastAndroid.show('you can only have one @mention', ToastAndroid.SHORT)
     }else {
       try {

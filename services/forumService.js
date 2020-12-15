@@ -81,7 +81,7 @@ const heartUp = async (toUpdate) => {
   const config = {
     headers: { Authorization: token },
   };
-  const id = toUpdate._id;
+  const id = toUpdate;
   const response = await axios.put(`${baseUrl}/heart/${id}`, toUpdate, config);
   return response.data;
 };

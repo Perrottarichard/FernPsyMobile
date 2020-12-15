@@ -96,8 +96,8 @@ const Item = ({ item, onPress}) => (
   <Card containerStyle={styles.cardStyle} key={item._id}>
               <List.Item
               title={item.title}
-              description={`Posted by ${item.user.avatarName} ${timeSince(item.date)} ago`}
-              left={() => <BigHead {...item.user.avatarProps} size={50}/>}
+              description={`Posted by ${item.user?.avatarName} ${timeSince(item.date)} ago`}
+              left={() => <BigHead {...item.user?.avatarProps} size={50}/>}
               titleStyle={styles.headTitle}
               descriptionStyle={styles.descriptionStyle}
               titleNumberOfLines={3}
@@ -112,7 +112,7 @@ const Item = ({ item, onPress}) => (
             <View style={styles.bottomTags}>
               <Chip key={item._id} mode='outlined' icon={chooseIcon(item.tags[0])}style={styles.chip} textStyle={{ color: chooseTagColor(item.tags[0]), ...styles.chipText}}>{item.tags[0]}</Chip>
               <Text style={styles.commentCountText}>
-              {item.comments.length}
+              {item.comments?.length}
             </Text>
             <IconButton
             icon='comment'
@@ -151,9 +151,7 @@ const ForumDisplayAll = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    if (!forumAnswered) {
-      console.log('UF FDAll')
-      setIsLoading(true);
+    if(!forumAnswered){
       dispatch(initializeForumAnswered());
     } else {
       setIsLoading(false);

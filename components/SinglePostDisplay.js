@@ -8,8 +8,9 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {PacmanIndicator} from 'react-native-indicators'
 import {BigHead} from 'react-native-bigheads'
-// import { heart } from '../reducers/forumReducer';
+import { heart } from '../reducers/forumReducer';
 import { setFlaggedComment } from '../reducers/forumReducer';
+import {heartLock} from '../reducers/activeUserReducer'
 import {timeSince} from './ForumDisplayAll'
 
 const tagOptions = [
@@ -67,11 +68,10 @@ const SinglePostDisplay = (props) => {
 
   useEffect(() => {
     if(!post){
-      setIsLoading(true)
     }else{
       setIsLoading(false)
     }
-  }, [dispatch, post])
+  }, [])
 
   const [visibleMenu, setVisibleMenu] = useState('');
   const [showReplies, setShowReplies] = useState('');
@@ -96,11 +96,10 @@ const SinglePostDisplay = (props) => {
     if (activeUser === null) {
       ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
       navigation.navigate('LoginForm');
-    } else if (activeUser.heartedPosts.includes(post._id)) {
-      ToastAndroid.show('คุณได้ส่งหัวใจสำหรับโพสต์นี้แล้ว', ToastAndroid.SHORT);
     } else {
       try {
           dispatch(heart(postToModify));
+          dispatch(heartLock(post._id))
       } catch (error) {
         console.log(error);
         ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
@@ -171,6 +170,7 @@ const SinglePostDisplay = (props) => {
               });
             }}
             ><Text style={styles.miconText}>Comment</Text></Micon.Button>
+            {!activeUser.heartedPosts || activeUser?.heartedPosts === 'undefined' || !activeUser.heartedPosts.includes(post._id) ?
             <Micon.Button
               name="heart-half-full"
               color="pink"
@@ -179,11 +179,27 @@ const SinglePostDisplay = (props) => {
               backgroundColor='white'
               underlayColor='white'
               activeOpacity={0.5}
+              onPress={submitHeart}
             >
               <Text style={styles.likeTextStyle}>
-              {post.likes}
-            </Text>
-            </Micon.Button>
+                {post.likes}
+              </Text>
+          </Micon.Button>
+          :
+          <Micon.Button
+          name="heart"
+          color="pink"
+          size={28}
+          style={styles.heartIconStyle}
+          backgroundColor='white'
+          underlayColor='white'
+          activeOpacity={0.5}
+          disabled={true}
+        >
+          <Text style={styles.likeTextStyle}>
+            {post.likes}
+          </Text>
+      </Micon.Button>}  
             </View>
           </Surface>
           
@@ -243,7 +259,7 @@ const SinglePostDisplay = (props) => {
                   />
                 <View style={styles.contentContainerView}>
                   <Text style={styles.commentContent} selectable={true}>
-                  {c.content}
+                  {checkMention(c.content)}
                   </Text>
                 {c.replies.length > 0 && showReplies !== c._id && !showPac &&
                 <Micon.Button 
@@ -403,7 +419,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     borderColor: 'white',
     alignSelf: 'center',
-    marginTop: 1,
+    marginTop: 2,
     height: 40
   },
   miconText: {

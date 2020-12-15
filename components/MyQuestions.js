@@ -22,20 +22,22 @@ const MyQuestions = ({navigation}) => {
   const id = user._id;
   const answered = useSelector((state) => state.forum.answered);
   const pending = useSelector((state) => state.forum.pending);
-  const myAnsweredPosts = answered.filter((p) => p.user.id === id).sort((a, b) => new Date(b.date) - new Date(a.date));
-  const myPendingPosts = pending.filter((p) => p.user.id === id).sort((a, b) => new Date(b.date) - new Date(a.date));
+  const myAnsweredPosts = answered.filter((p) => p.user?.id === id).sort((a, b) => new Date(b.date) - new Date(a.date));
+  const myPendingPosts = pending.filter((p) => p.user?.id === id).sort((a, b) => new Date(b.date) - new Date(a.date));
 
 
   useEffect(() => {
-    if(!answered){
+    if(answered.length === 0){
       console.log('UF Answered MQ')
       dispatch(initializeForumAnswered());
     }
-  }, [dispatch, answered]);
+  }, []);
 
   useEffect(() => {
-    console.log('UF Pending MQ')
-    dispatch(initializeForumPending());
+    if(pending.length === 0){
+      console.log('UF Pending MQ')
+      dispatch(initializeForumPending());
+    }
   }, []);
 
   const onRefresh = useCallback(() => {

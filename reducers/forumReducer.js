@@ -6,7 +6,8 @@ const initialState = {
   pending: [],
   tagFilter: '',
   flagged: [],
-  loading: false
+  loading: false,
+  heartedByUser: []
 };
 const forumReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -23,10 +24,10 @@ const forumReducer = (state = initialState, action) => {
       return {...state, loading: false}
     }
     case 'HEART':
-      const id = action.data;
+      const id = action.data.postId;
       const questionToChange = state.answered.find((q) => q._id === id);
       const changedQuestion = { ...questionToChange, likes: questionToChange.likes + 1 };
-      return { ...state, answered: state.answered.map((q) => (q._id === id ? changedQuestion : q)) };
+      return { ...state, answered: state.answered.map((q) => (q._id === id ? changedQuestion : q)), heartedByUser: action.data.userHeartArray };
     case 'POST_ANSWER':
       const answerId = action.data._id;
       const objectToModify = state.pending.find((s) => s._id === answerId);
@@ -67,13 +68,11 @@ export const loading = () => ({
 export const cancelLoading = () => ({
   type: 'CANCEL_LOADING'
 })
-export const heart = (question) => async (dispatch) => {
-  // const updatedObject = { ...question, likes: question.likes + 1 };
-  const questionToModifyId = question._id
-  await forumService.heartUp(questionToModifyId);
+export const heart = (postId) => async (dispatch) => {
+  const userHeartArray = await forumService.heartUp(postId);
   dispatch({
     type: 'HEART',
-    data: questionToModifyId
+    data: {postId: postId, userHeartArray: userHeartArray}
   });
 };
 export const answerQuestion = (answer) => async (dispatch) => {

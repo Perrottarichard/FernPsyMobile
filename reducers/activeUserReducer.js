@@ -11,9 +11,9 @@ const activeUserReducer = (state = {user: null}, action) => {
       return {...state, user: {...state.user, avatarProps: action.data.avatarProps, avatarName: action.data.avatarName}}
     case 'UPDATE_USER':
       return {...state, user: action.data}
-    case 'HEART_LOCK':
-      console.log(state.user)
-      return {...state, user: {...state.user, heartedPosts: state.user.heartedPosts.concat(action.data)}}
+    // case 'HEART_LOCK':
+    //   return state;
+    //   return {...state, user: {...state.user, heartedPosts: state.user.heartedPosts.push(action.data)}}
     default:
       return state;
   }
@@ -27,10 +27,10 @@ export const clearUser = () => ({
   type: 'USER_LOGOUT',
   data: null,
 });
-export const heartLock = (postId) => ({
-  type: 'HEART_LOCK',
-  data: postId
-})
+// export const heartLock = (postId) => ({
+//   type: 'HEART_LOCK',
+//   data: postId
+// })
 export const updateUserAvatar = (id, avatarProps, avatarName) => async (dispatch) => {
 try {
   const updated = await userService.createAvatar(id, avatarProps, avatarName);

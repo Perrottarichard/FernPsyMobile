@@ -10,7 +10,7 @@ import {PacmanIndicator} from 'react-native-indicators'
 import {BigHead} from 'react-native-bigheads'
 import { heart } from '../reducers/forumReducer';
 import { setFlaggedComment } from '../reducers/forumReducer';
-import {heartLock} from '../reducers/activeUserReducer'
+// import {heartLock} from '../reducers/activeUserReducer'
 import {timeSince} from './ForumDisplayAll'
 
 const tagOptions = [
@@ -64,7 +64,8 @@ const SinglePostDisplay = (props) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const user = useSelector(state => state.activeUser.user)
-  const post = useSelector((state) => state.forum.answered.find((p) => p._id === postId));
+  const post = useSelector(state => state.forum.answered.find((p) => p._id === postId));
+  const heartedByUser = useSelector(state => state.forum.heartedByUser)
 
   useEffect(() => {
     if(!post){
@@ -92,14 +93,13 @@ const SinglePostDisplay = (props) => {
   }
 
   const submitHeart = async () => {
-    const postToModify = post;
     if (user === null) {
       ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
       navigation.navigate('LoginForm');
     } else {
       try {
-          dispatch(heart(postToModify));
-          dispatch(heartLock(post._id))
+          dispatch(heart(post._id));
+          // dispatch(heartLock(post._id))
       } catch (error) {
         console.log(error);
         ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
@@ -170,7 +170,7 @@ const SinglePostDisplay = (props) => {
               });
             }}
             ><Text style={styles.miconText}>Comment</Text></Micon.Button>
-            {!user.heartedPosts || user?.heartedPosts === 'undefined' || !user.heartedPosts.includes(post._id) ?
+            {!user.heartedPosts?.includes(post._id) && !heartedByUser.includes(post._id) ?
             <Micon.Button
               name="heart-half-full"
               color="pink"

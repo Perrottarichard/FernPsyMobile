@@ -132,7 +132,7 @@ const ForumPostMain = (props) => {
         </View>
         <View style={styles.afterForm}>
           <Text style={styles.afterFormText}>ชื่อที่คุณใช้ล็อคอินจะไม่ปรากฏในคำถามของคุณ</Text>
-          <Button mode='contained' onPress={handleEditorSubmit} style={styles.submitPostButton}>
+          <Button mode='contained' icon='text-box-plus' onPress={handleEditorSubmit} style={styles.submitPostButton}>
             <Text style={styles.submitPostText}>
               ส่งคำถาม
             </Text>
@@ -196,13 +196,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 20,
     width: 300,
-    backgroundColor: 'lightpink'
+    backgroundColor: 'lightpink',
+    marginBottom: 20
   },
   submitPostText: {
     color: 'black',
   },
   afterForm: {
-    marginTop: 50,
+    marginTop: 20,
   },
   afterFormText: {
     alignSelf: 'center',

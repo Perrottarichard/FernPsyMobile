@@ -15,7 +15,7 @@ function TabNav() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      activeColor="#d896ac"
+      activeColor="lightpink"
       inactiveColor="lightgray"
       labeled
       barStyle={styles.barStyle}

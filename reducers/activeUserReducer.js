@@ -1,18 +1,19 @@
 import { ToastAndroid } from 'react-native';
 import userService from '../services/userService'
 
-const activeUserReducer = (state = {}, action) => {
+const activeUserReducer = (state = {user: null}, action) => {
   switch (action.type) {
     case 'SET_USER':
-      return action.data;
+      return {...state, user: action.data};
     case 'USER_LOGOUT':
-      return action.data;
+      return {...state, user: action.data};
     case 'UPDATE_AVATAR':
-      return {...state, avatarProps: action.data.avatarProps, avatarName: action.data.avatarName}
+      return {...state, user: {...state.user, avatarProps: action.data.avatarProps, avatarName: action.data.avatarName}}
     case 'UPDATE_USER':
-      return {...state, ...action.data}
+      return {...state, user: action.data}
     case 'HEART_LOCK':
-      return {...state, heartedPosts: [...state.heartedPosts, action.data]}
+      console.log(state.user)
+      return {...state, user: {...state.user, heartedPosts: state.user.heartedPosts.concat(action.data)}}
     default:
       return state;
   }

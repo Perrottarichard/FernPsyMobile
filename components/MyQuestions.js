@@ -16,7 +16,7 @@ const MyQuestions = ({navigation}) => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
 
-  const user = useSelector((state) => state.activeUser);
+  const user = useSelector((state) => state.activeUser.user);
   const avatarProps = user.avatarProps
   const avatarName = user.avatarName
   const id = user._id;
@@ -96,14 +96,14 @@ const MyQuestions = ({navigation}) => {
       alignSelf: 'center',
       borderRadius: 20,
       width: 300,
-      backgroundColor: 'lightgray',
+      backgroundColor: 'lightpink',
       marginBottom: 20
     },
     showPendingButton: {
       alignSelf: 'center',
       borderRadius: 20,
       width: 300,
-      backgroundColor: 'lightpink'
+      backgroundColor: 'lightgray'
     },
     avatarIntro: {
       color: 'black',

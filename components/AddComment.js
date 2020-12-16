@@ -20,14 +20,14 @@ const countAt = (passed) => {
 const AddComment = ({navigation, route}) => {
   const { postId} = route.params;
   const post = useSelector(state => state.forum.answered.find(p => p._id === postId))
-  const activeUser = useSelector(state => state.activeUser)
+  const user = useSelector(state => state.activeUser.user)
   const dispatch = useDispatch()
   const loading = useSelector(state => state.forum.loading)
   const [comment, setComment] = useState('')
 
   const submitComment = async () => {
     const postToModifyId = post;
-    if (activeUser === null) {
+    if (user === null) {
       ToastAndroid.show('คุณต้องลงชื่อเพื่อแสดงความคิดเห็น', ToastAndroid.SHORT);
       navigation.navigate('LoginForm');
     } else if (comment === '') {
@@ -52,11 +52,11 @@ const AddComment = ({navigation, route}) => {
   return(
     <ScrollView style={styles.container}>
       <View style={styles.graphicView}>
-      <BigHead {...activeUser.avatarProps} size={180}/>
+      <BigHead {...user.avatarProps} size={180}/>
       </View>
       <View>
         <Text style={styles.leadIn}>
-          {`${activeUser.avatarName} says...`}
+          {`${user.avatarName} says...`}
         </Text>
       </View>
 

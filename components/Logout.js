@@ -30,8 +30,10 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   button: {
-    width: 300,
     alignSelf: 'center',
+    borderRadius: 20,
+    width: 300,
+    marginBottom: 20
   }
 })
 export default Logout;

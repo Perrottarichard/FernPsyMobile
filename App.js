@@ -9,23 +9,23 @@ import forumService from './services/forumService';
 import TabNav from './components/TabNav';
 
 const App = () => {
-  const activeUser = useSelector((state) => state.activeUser);
+  const user = useSelector((state) => state.activeUser.user);
   const dispatch = useDispatch();
   const getLoggedUser = async () => {
     const loggedUserJSON = await AsyncStorage.getItem('loggedForumUser');
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      dispatch(setUser(user));
-      forumService.setToken(user.token);
+      const existingUser = JSON.parse(loggedUserJSON);
+      dispatch(setUser(existingUser));
+      forumService.setToken(existingUser.token);
     } else {
       console.log('no user');
     }
   };
   useEffect(() => {
-    if (!activeUser) {
+    if (!user) {
       getLoggedUser();
     } else {
-      forumService.setToken(activeUser.token);
+      forumService.setToken(user.token);
     }
   }, [dispatch]);
 

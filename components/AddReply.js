@@ -21,14 +21,14 @@ const AddReply = ({navigation, route}) => {
   const { commentId, postId} = route.params;
   const post = useSelector(state => state.forum.answered.find(p => p._id === postId))
   const comment = post.comments.find(c => c._id === commentId)
-  const activeUser = useSelector(state => state.activeUser)
+  const user = useSelector(state => state.activeUser.user)
   const loading = useSelector(state => state.forum.loading)
   const dispatch = useDispatch()
   const [reply, setReply] = useState('')
 
   const submitReply = async () => {
 
-    if (activeUser === null) {
+    if (user === null) {
       ToastAndroid.show('คุณต้องลงชื่อเพื่อแสดงความคิดเห็น', ToastAndroid.SHORT);
       navigation.navigate('LoginForm');
     } else if (reply === '') {
@@ -53,11 +53,11 @@ const AddReply = ({navigation, route}) => {
   return(
     <ScrollView style={styles.container}>
       <View style={styles.graphicView}>
-      <BigHead {...activeUser.avatarProps} size={180}/>
+      <BigHead {...user.avatarProps} size={180}/>
       </View>
       <View>
         <Text style={styles.leadIn}>
-          {`${activeUser.avatarName} says...`}
+          {`${user.avatarName} says...`}
         </Text>
       </View>
       

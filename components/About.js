@@ -41,6 +41,10 @@ const About = () => {
           switchLeftPx={5}
           switchRightPx={5}
           switchWidthMultiplier={2.5}
+          circleActiveColor={'lightgray'}
+          circleInActiveColor={'lightpink'}
+          backgroundActive={'lightpink'}
+          backgroundInactive={'lightgray'}
         />
       </View>
       <View style={styles.imageContainer}>

@@ -3,6 +3,7 @@ import {
   ToastAndroid, View, Text, StyleSheet, ScrollView, TouchableHighlight,
 } from 'react-native';
 import { Input } from 'react-native-elements';
+import {Button} from 'react-native-paper'
 import userService from '../services/userService';
 import Graphic from '../assets/undraw_mobile_login_ikmv.svg';
 
@@ -65,16 +66,16 @@ const RegisterForm = ({ navigation }) => {
 
         <Input onChangeText={(cpass) => setConfirmPassword(cpass)} type="password" placeholder="ยืนยัน Password" secureTextEntry style={styles.input} />
 
-        <TouchableHighlight onPress={submitRegister} style={styles.submitRegister}>
+        <Button onPress={submitRegister} icon='account-plus' mode='contained' style={styles.submitRegister}>
           <Text style={styles.submitRegisterText}>
             สมัครเข้าใช้งาน
           </Text>
-        </TouchableHighlight>
-        <TouchableHighlight underlayColor="white" onPress={() => navigation.navigate('LoginForm')} style={styles.cancelRegister}>
+        </Button>
+        <Button mode='contained' icon='keyboard-backspace' onPress={() => navigation.navigate('LoginForm')} style={styles.cancelRegister}>
           <Text style={styles.cancelRegisterText}>
             ยกเลิก
           </Text>
-        </TouchableHighlight>
+        </Button>
       </View>
     </ScrollView>
   );
@@ -92,25 +93,26 @@ const styles = StyleSheet.create({
     padding: 0
   },
   submitRegister: {
-    backgroundColor: '#252626',
+    alignSelf: 'center',
     borderRadius: 20,
-    padding: 10,
-    elevation: 2,
     width: 300,
-    margin: 8,
+    backgroundColor: 'lightpink',
+    marginBottom: 20,
+    marginTop: 5
   },
   cancelRegister: {
+    alignSelf: 'center',
     borderRadius: 20,
-    padding: 10,
     width: 300,
-    margin: 8,
+    backgroundColor: 'lightgray',
+    marginBottom: 20
   },
   submitRegisterText: {
-    color: '#d896ac',
+    color: 'black',
     alignSelf: 'center',
   },
   cancelRegisterText: {
-    color: '#d896ac',
+    color: 'black',
     alignSelf: 'center',
   },
 });

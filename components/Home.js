@@ -5,7 +5,7 @@ import LoginNavigate from './LoginNavigate';
 import MyQuestionsNavigate from './MyQuestionsNavigate';
 
 const Home = () => {
-  const user = useSelector((state) => state.activeUser);
+  const user = useSelector((state) => state.activeUser.user);
 
   if (user && user.token) {
     return (

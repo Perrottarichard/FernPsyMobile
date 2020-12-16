@@ -4,6 +4,7 @@ import {
   View, Text, ToastAndroid, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlight,
 } from 'react-native';
 import { Input } from 'react-native-elements';
+import {Button} from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setUser } from '../reducers/activeUserReducer';
 import loginService from '../services/loginService';
@@ -15,6 +16,7 @@ const LoginForm = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [hidePass, setHidePass] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -57,24 +59,24 @@ const LoginForm = (props) => {
         <WelcomeCats width={200} height={200} />
       </View>
       <View>
-        <Input keyboardType="email-address" autoCompleteType="username" onChangeText={(text) => setEmail(text)} placeholder="Email" leftIcon={{ type: 'material-community-icons', name: 'email', color: 'gray' }} />
-        <Input autoCompleteType="password" onChangeText={(text) => setPassword(text)} placeholder="Password" secureTextEntry leftIcon={{ type: 'material-community-icons', name: 'lock-outline', color: 'gray' }} />
-        <TouchableHighlight onPress={submitLogin} style={styles.loginButton}>
-          {isLoading ? <ActivityIndicator size="small" color="white" />
-            : (
+        <Input keyboardType="email-address" autoCompleteType="username" onChangeText={(text) => setEmail(text)} placeholder="Email" leftIcon={{ type: 'material-community-icons', name: 'email', color: 'lightgray' }} />
+        <Input autoCompleteType="password" onChangeText={(text) => setPassword(text)} placeholder="Password" secureTextEntry={hidePass} leftIcon={{ type: 'material-community-icons', name: 'lock-outline', color: 'lightgray' }} rightIcon={hidePass ? { type: 'font-awesome-5', name: 'eye-slash', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) } : { type: 'font-awesome-5', name: 'eye', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) }}/>
+
+        {isLoading ? <ActivityIndicator style={styles.activity} size="large" color='lightpink'/>
+            : 
+        <Button onPress={submitLogin} style={styles.loginButton} icon='login' mode='contained'>
               <Text style={styles.loginButtonText}>
                 เข้าสู่ระบบ
               </Text>
-            )}
-        </TouchableHighlight>
+        </Button>
+}
       </View>
       <View>
-        <TouchableHighlight underlayColor="white" style={styles.goToRegisterButton} onPress={() => navigation.navigate('RegisterForm')}>
+        <Button style={styles.goToRegisterButton} mode='contained' icon='account-plus' onPress={() => navigation.navigate('RegisterForm')}>
           <Text style={styles.openRegText}>
-            ยังไม่มีแอคเคาท์ คลิกที่นี่
-            สมัครเลย
+           สมัครตอนนี้
           </Text>
-        </TouchableHighlight>
+        </Button>
       </View>
     </ScrollView>
   );
@@ -82,29 +84,34 @@ const LoginForm = (props) => {
 
 const styles = StyleSheet.create({
   loginButton: {
-    backgroundColor: '#252626',
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    width: 300,
-    margin: 8,
     alignSelf: 'center',
-    marginTop: 20,
+    borderRadius: 20,
+    width: 300,
+    backgroundColor: 'lightpink',
+    marginBottom: 20,
+    marginTop: 5
+  },
+  activity: {
+    alignSelf: 'center',
+    borderRadius: 20,
+    width: 300,
+    marginBottom: 20,
+    marginTop: 5
   },
   loginButtonText: {
-    color: '#d896ac',
+    color: 'black',
     alignSelf: 'center',
   },
   openRegText: {
-    color: '#d896ac',
+    color: 'black',
     alignSelf: 'center',
   },
   goToRegisterButton: {
-    borderRadius: 20,
-    padding: 10,
-    width: 300,
-    margin: 8,
     alignSelf: 'center',
+    borderRadius: 20,
+    width: 300,
+    backgroundColor: 'lightgray',
+    marginBottom: 20
   },
   cats: {
     paddingTop: 20,

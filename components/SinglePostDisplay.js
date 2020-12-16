@@ -63,7 +63,7 @@ const SinglePostDisplay = (props) => {
   const { postId } = route.params;
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
-  const activeUser = useSelector(state => state.activeUser)
+  const user = useSelector(state => state.activeUser.user)
   const post = useSelector((state) => state.forum.answered.find((p) => p._id === postId));
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const SinglePostDisplay = (props) => {
 
   const submitHeart = async () => {
     const postToModify = post;
-    if (activeUser === null) {
+    if (user === null) {
       ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
       navigation.navigate('LoginForm');
     } else {
@@ -170,7 +170,7 @@ const SinglePostDisplay = (props) => {
               });
             }}
             ><Text style={styles.miconText}>Comment</Text></Micon.Button>
-            {!activeUser.heartedPosts || activeUser?.heartedPosts === 'undefined' || !activeUser.heartedPosts.includes(post._id) ?
+            {!user.heartedPosts || user?.heartedPosts === 'undefined' || !user.heartedPosts.includes(post._id) ?
             <Micon.Button
               name="heart-half-full"
               color="pink"

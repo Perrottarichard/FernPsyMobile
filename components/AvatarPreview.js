@@ -1,16 +1,123 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {View, StyleSheet, ScrollView, ToastAndroid} from 'react-native'
+import {View, StyleSheet, ScrollView, ToastAndroid, ActivityIndicator} from 'react-native'
 import {RadioButton, Text, Surface, TextInput, Button} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import {updateUserAvatar} from '../reducers/activeUserReducer'
 
+const accessoryButtons = [
+  {name: "ไม่มี", value: "none"},
+  {name: "ตุ้มหู", value: "hoopEarrings"}, 
+  {name: "แว่นตาทรงกลม", value: "roundGlasses"},
+  {name: "แว่นตาจิ๋ว", value: "tinyGlasses"},
+  {name: "แว่นตาดำ", value:"shades"},
+  {name: "หน้ากากอนามัย", value: "faceMask"}
+]
+
+const bgColorButtons = [
+  {name: "ฟ้า", value: "blue"}, 
+  {name: "เขียว", value: "green"},
+  {name: "แดง", value: "red"},
+  {name: "ส้ม", value: "orange"},
+  {name: "เหลือง", value:"yellow"},
+  {name: "ชมพู", value: "pink"}
+]
+
+const bodyButtons = [
+  {name: "มีหน้าอก", value: "breasts"},
+  {name: "ไม่มีหน้าอก", value: "chest"}
+]
+
+const clothingButtons = [
+  {name: "เสื้อเชิ้ต", value: "blue"}, 
+  {name: "ไม่ใส่เสื้อ", value: "naked"},
+  {name: "เสื้อยีนส์", value: "denimJacket"},
+  {name: "เสื้อมีหมวก", value: "hoodie"},
+  {name: "เสื้อแขนกุด", value:"tankTop"},
+  {name: "เดรส", value: "dress"}
+]
+
+const clothingColorButtons = [
+  {name: "ขาว", value: "white"}, 
+  {name: "ฟ้า", value: "blue"},
+  {name: "เขียว", value: "green"},
+  {name: "แดง", value: "red"},
+  {name: "ดำ", value:"black"},
+]
+
+const eyebrowsButtons = [
+  {name: "คิ้วต่ำ", value: "leftLowered"}, 
+  {name: "คิ้วโก่ง", value: "raised"},
+  {name: "เคร่งเครียด", value: "serious"},
+  {name: "โกรธ", value: "angry"},
+  {name: "ครุ่นคิด", value:"concerned"},
+]
+
+const eyesButtons = [
+  {name: "ปกติ", value: "normal"}, 
+  {name: "รูปดาว", value: "stars"},
+  {name: "มีความสุข", value: "happy"},
+  {name: "หรี่ตา", value: "squint"},
+  {name: "หลับตาข้างเดียว", value:"wink"},
+  {name: "น่ารัก", value: "cute"},
+]
+
+const facialHairButtons = [
+  {name: "ไม่มี", value: "none"}, 
+  {name: "หนวดหรอมแหรม", value: "stubble"},
+  {name: "หนวดเครา", value: "mediumBeard"},
+  {name: "เคราแพะ", value: "goatee"},
+]
+
+const graphicButtons = [
+  {name: "ไม่มี", value: "none"}, 
+  {name: "โดนัท", value: "donut"},
+  {name: "สายรุ้ง", value: "rainbow"},
+]
+
+const hairButtons = [
+  {name: "ไม่มี", value: "none"}, 
+  {name: "ผมยาว", value: "long"},
+  {name: "ผมสั้น", value: "short"},
+  {name: "มวยผม", value: "bun"},
+  {name: "ผมทรงกะลา", value:"pixie"},
+  {name: "ผมบ๊อบ", value: "bob"},
+]
+
+const hairColorButtons = [
+  {name: "น้ำตาล", value: "brown"}, 
+  {name: "ดำ", value: "black"},
+  {name: "ฟ้า", value: "blue"},
+  {name: "ขาว", value: "white"},
+  {name: "ชมพู", value: "pink"}, 
+  {name: "บลอนด์", value: "blonde"},
+]
+
+const skinToneButtons = [
+  {name: "น้ำตาล", value: "brown"}, 
+  {name: "ดำ", value: "black"},
+  {name: "เหลือง", value: "yellow"},
+  {name: "แดง", value: "red"},
+  {name: "สีอ่อน", value:"light"},
+  {name: "สีเข้ม", value: "dark"}, 
+]
+
+const mouthButtons = [
+  {name: "ทาลิป", value: "lips"}, 
+  {name: "เคร่งเครียด", value: "serious"},
+  {name: "ยิ้มยิงฟัน", value: "grin"},
+  {name: "เศร้า", value: "sad"},
+  {name: "ยิ้มกว้าง", value:"open"},
+  {name: "แลบลิ้น", value: "piercedTongue"},
+]
+
 
 const AvatarPreview = ({navigation}) => {
 
-  const user = useSelector(state => state.activeUser)
+  const user = useSelector(state => state.activeUser.user)
   const avatarProps = user.avatarProps
   const avatarName = user.avatarName
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const [accessory, setAccessory] = useState(avatarProps.accessory ? avatarProps.accessory : 'none')
   const [bgColor, setBgColor] = useState(avatarProps.bgColor ? avatarProps.bgColor : 'blue')
@@ -27,110 +134,11 @@ const AvatarPreview = ({navigation}) => {
   const [mouth, setMouth] = useState(avatarProps.mouth ? avatarProps.mouth : 'lips')
   const [name, setName] = useState(avatarName ? avatarName : 'anonymous')
 
-  const accessoryButtons = [
-    {name: "ไม่มี", value: "none"},
-    {name: "ตุ้มหู", value: "hoopEarrings"}, 
-    {name: "แว่นตาทรงกลม", value: "roundGlasses"},
-    {name: "แว่นตาจิ๋ว", value: "tinyGlasses"},
-    {name: "แว่นตาดำ", value:"shades"},
-    {name: "หน้ากากอนามัย", value: "faceMask"}
-  ]
-  const bgColorButtons = [
-    {name: "ฟ้า", value: "blue"}, 
-    {name: "เขียว", value: "green"},
-    {name: "แดง", value: "red"},
-    {name: "ส้ม", value: "orange"},
-    {name: "เหลือง", value:"yellow"},
-    {name: "ชมพู", value: "pink"}
-  ]
-  const bodyButtons = [
-    {name: "มีหน้าอก", value: "breasts"},
-    {name: "ไม่มีหน้าอก", value: "chest"}
-  ]
-
-  const clothingButtons = [
-    {name: "เสื้อเชิ้ต", value: "blue"}, 
-    {name: "ไม่ใส่เสื้อ", value: "naked"},
-    {name: "เสื้อยีนส์", value: "denimJacket"},
-    {name: "เสื้อมีหมวก", value: "hoodie"},
-    {name: "เสื้อแขนกุด", value:"tankTop"},
-    {name: "เดรส", value: "dress"}
-  ]
-
-  const clothingColorButtons = [
-    {name: "ขาว", value: "white"}, 
-    {name: "ฟ้า", value: "blue"},
-    {name: "เขียว", value: "green"},
-    {name: "แดง", value: "red"},
-    {name: "ดำ", value:"black"},
-  ]
-
-  const eyebrowsButtons = [
-    {name: "คิ้วต่ำ", value: "leftLowered"}, 
-    {name: "คิ้วโก่ง", value: "raised"},
-    {name: "เคร่งเครียด", value: "serious"},
-    {name: "โกรธ", value: "angry"},
-    {name: "ครุ่นคิด", value:"concerned"},
-  ]
-
-  const eyesButtons = [
-    {name: "ปกติ", value: "normal"}, 
-    {name: "รูปดาว", value: "stars"},
-    {name: "มีความสุข", value: "happy"},
-    {name: "หรี่ตา", value: "squint"},
-    {name: "หลับตาข้างเดียว", value:"wink"},
-    {name: "น่ารัก", value: "cute"},
-  ]
-
-  const facialHairButtons = [
-    {name: "ไม่มี", value: "none"}, 
-    {name: "หนวดหรอมแหรม", value: "stubble"},
-    {name: "หนวดเครา", value: "mediumBeard"},
-    {name: "เคราแพะ", value: "goatee"},
-  ]
-
-  const graphicButtons = [
-    {name: "ไม่มี", value: "none"}, 
-    {name: "โดนัท", value: "donut"},
-    {name: "สายรุ้ง", value: "rainbow"},
-  ]
-
-
-  const hairButtons = [
-    {name: "ไม่มี", value: "none"}, 
-    {name: "ผมยาว", value: "long"},
-    {name: "ผมสั้น", value: "short"},
-    {name: "มวยผม", value: "bun"},
-    {name: "ผมทรงกะลา", value:"pixie"},
-    {name: "ผมบ๊อบ", value: "bob"},
-  ]
-
-  const hairColorButtons = [
-    {name: "น้ำตาล", value: "brown"}, 
-    {name: "ดำ", value: "black"},
-    {name: "ฟ้า", value: "blue"},
-    {name: "ขาว", value: "white"},
-    {name: "ชมพู", value: "pink"}, 
-    {name: "บลอนด์", value: "blonde"},
-  ]
-
-  const skinToneButtons = [
-    {name: "น้ำตาล", value: "brown"}, 
-    {name: "ดำ", value: "black"},
-    {name: "เหลือง", value: "yellow"},
-    {name: "แดง", value: "red"},
-    {name: "สีอ่อน", value:"light"},
-    {name: "สีเข้ม", value: "dark"}, 
-  ]
-
-  const mouthButtons = [
-    {name: "ทาลิป", value: "lips"}, 
-    {name: "เคร่งเครียด", value: "serious"},
-    {name: "ยิ้มยิงฟัน", value: "grin"},
-    {name: "เศร้า", value: "sad"},
-    {name: "ยิ้มกว้าง", value:"open"},
-    {name: "แลบลิ้น", value: "piercedTongue"},
-  ]
+  useEffect(() => {
+    if(user){
+      setIsLoading(false)
+    }
+  }, [user])
 
   const submitUpdate = async () => {
     if(!name) {
@@ -167,6 +175,14 @@ const AvatarPreview = ({navigation}) => {
     }
   }
 }
+  if(isLoading) {
+    return(
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="pink" />
+      </View>
+    )
+  }
+
   return(
     <View style={styles.container}>
       <TextInput
@@ -403,6 +419,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   surface: {
     padding: 0,

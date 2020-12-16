@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   View, Text, ToastAndroid, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlight,
 } from 'react-native';
 import { Input } from 'react-native-elements';
 import {Button} from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setUser } from '../reducers/activeUserReducer';
+import { setUser, redirecting } from '../reducers/activeUserReducer';
 import loginService from '../services/loginService';
 import forumService from '../services/forumService';
 import WelcomeCats from '../assets/undraw_welcome_cats_thqn.svg';
@@ -34,12 +34,14 @@ const LoginForm = (props) => {
       setIsLoading(false);
     } else {
       try {
+        dispatch(redirecting(true))
         const user = await loginService.userlogin({ email: email.toLowerCase(), password });
         await AsyncStorage.setItem(
           'loggedForumUser', JSON.stringify(user),
         );
         dispatch(setUser(user));
         forumService.setToken(user.token);
+        dispatch(redirecting(false))
         ToastAndroid.show(`ยินดีต้อนรับ คุณ ${user.email}`, ToastAndroid.SHORT);
       } catch (error) {
         console.log(error.message);

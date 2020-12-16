@@ -20,7 +20,7 @@ const tagOptions = [
   { tag: 'เพื่อน', backgroundColor: '#5050ff', icon: 'account-group' },
   { tag: 'โรคซึมเศร้า', backgroundColor: '#343a40', icon: 'emoticon-sad-outline' },
   { tag: 'ความวิตกกังวล', backgroundColor: '#5e320f', icon: 'lightning-bolt' },
-  { tag: 'ไบโพลาร์', backgroundColor: '#f347ff', icon: 'theater-comedy' },
+  { tag: 'ไบโพลาร์', backgroundColor: '#f347ff', icon: 'arrow-up-down' },
   { tag: 'การทำงาน', backgroundColor: '#8e2bff', icon: 'cash' },
   { tag: 'สุขภาพจิต', backgroundColor: '#1e45a8', icon: 'brain' },
   { tag: 'การรังแก', backgroundColor: '#5e320f', icon: 'emoticon-angry-outline' },

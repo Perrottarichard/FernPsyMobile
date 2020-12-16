@@ -1,24 +1,22 @@
 import { ToastAndroid } from 'react-native';
 import userService from '../services/userService'
 
-const activeUserReducer = (state = {user: null}, action) => {
+const activeUserReducer = (state = {user: null, redirecting: false}, action) => {
   switch (action.type) {
     case 'SET_USER':
       return {...state, user: action.data};
+    case 'REDIRECTING':
+      return {...state, redirecting: action.data}
     case 'USER_LOGOUT':
       return {...state, user: action.data};
     case 'UPDATE_AVATAR':
       return {...state, user: {...state.user, avatarProps: action.data.avatarProps, avatarName: action.data.avatarName}}
     case 'UPDATE_USER':
       return {...state, user: action.data}
-    // case 'HEART_LOCK':
-    //   return state;
-    //   return {...state, user: {...state.user, heartedPosts: state.user.heartedPosts.push(action.data)}}
     default:
       return state;
   }
 };
-
 export const setUser = (data) => ({
   type: 'SET_USER',
   data,
@@ -27,10 +25,10 @@ export const clearUser = () => ({
   type: 'USER_LOGOUT',
   data: null,
 });
-// export const heartLock = (postId) => ({
-//   type: 'HEART_LOCK',
-//   data: postId
-// })
+export const redirecting = (bool) => ({
+  type: 'REDIRECTING',
+  data: bool
+})
 export const updateUserAvatar = (id, avatarProps, avatarName) => async (dispatch) => {
 try {
   const updated = await userService.createAvatar(id, avatarProps, avatarName);

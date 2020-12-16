@@ -21,7 +21,7 @@ const tagOptions = [
   { tag: 'เพื่อน', backgroundColor: '#5050ff', icon: 'account-group' },
   { tag: 'โรคซึมเศร้า', backgroundColor: '#343a40', icon: 'emoticon-sad-outline' },
   { tag: 'ความวิตกกังวล', backgroundColor: '#5e320f', icon: 'lightning-bolt' },
-  { tag: 'ไบโพลาร์', backgroundColor: '#f347ff', icon: 'theater-comedy' },
+  { tag: 'ไบโพลาร์', backgroundColor: '#f347ff', icon: 'arrow-up-down' },
   { tag: 'การทำงาน', backgroundColor: '#8e2bff', icon: 'cash' },
   { tag: 'สุขภาพจิต', backgroundColor: '#1e45a8', icon: 'brain' },
   { tag: 'การรังแก', backgroundColor: '#5e320f', icon: 'emoticon-angry-outline' },
@@ -172,7 +172,7 @@ const SinglePostDisplay = (props) => {
             ><Text style={styles.miconText}>Comment</Text></Micon.Button>
             {!user.heartedPosts?.includes(post._id) && !heartedByUser.includes(post._id) ?
             <Micon.Button
-              name="heart-half-full"
+              name="heart-plus-outline"
               color="pink"
               size={28}
               style={styles.heartIconStyle}
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     borderColor: 'white',
     alignSelf: 'center',
-    marginTop: 2,
+    marginTop: 3,
     height: 40
   },
   miconText: {

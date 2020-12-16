@@ -27,7 +27,6 @@ const AddReply = ({navigation, route}) => {
   const [reply, setReply] = useState('')
 
   const submitReply = async () => {
-
     if (user === null) {
       ToastAndroid.show('คุณต้องลงชื่อเพื่อแสดงความคิดเห็น', ToastAndroid.SHORT);
       navigation.navigate('LoginForm');

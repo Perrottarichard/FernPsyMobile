@@ -19,19 +19,9 @@ const LoginForm = (props) => {
   const [hidePass, setHidePass] = useState(true);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (isLoading) {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1500);
-    }
-  }, [isLoading]);
-
   const submitLogin = async () => {
-    setIsLoading(true);
     if (!email || !password) {
       ToastAndroid.show('กรุณาใส่ email และ password', ToastAndroid.SHORT);
-      setIsLoading(false);
     } else {
       try {
         dispatch(redirecting(true))
@@ -46,10 +36,10 @@ const LoginForm = (props) => {
       } catch (error) {
         console.log(error.message);
         if (error.message.includes('401')) {
-          setIsLoading(false);
+          dispatch(redirecting(false))
           ToastAndroid.show('กรุณาตรวจสอบความถูกต้องของ email และ password', ToastAndroid.SHORT);
         } else {
-          setIsLoading(false);
+          dispatch(redirecting(false))
           ToastAndroid.show('มีข้อผิดพลาด', ToastAndroid.SHORT);
         }
       }

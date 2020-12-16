@@ -12,7 +12,7 @@ const activeUserReducer = (state = {user: null, redirecting: false}, action) => 
     case 'UPDATE_AVATAR':
       return {...state, user: {...state.user, avatarProps: action.data.avatarProps, avatarName: action.data.avatarName}}
     case 'UPDATE_USER':
-      return {...state, user: action.data}
+      return {...state, user: action.data};
     default:
       return state;
   }

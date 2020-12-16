@@ -164,13 +164,18 @@ const SinglePostDisplay = (props) => {
             backgroundColor='white'
             activeOpacity={0.5} 
             onPress={() => {
+              if(!user){
+                ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
+                navigation.navigate('LoginForm')
+              }else{
               navigation.navigate('AddComment', {
                 postId: post._id,
                 postTitle: post.title,
               });
+            };
             }}
             ><Text style={styles.miconText}>Comment</Text></Micon.Button>
-            {!user.heartedPosts?.includes(post._id) && !heartedByUser.includes(post._id) ?
+            {!user?.heartedPosts?.includes(post._id) && !heartedByUser.includes(post._id) ?
             <Micon.Button
               name="heart-plus-outline"
               color="pink"
@@ -222,10 +227,15 @@ const SinglePostDisplay = (props) => {
                     style={styles.replyButton} 
                     backgroundColor='white'
                     onPress={() => {
+                      if(!user){
+                        navigation.navigate('LoginForm');
+                        ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
+                      }else{
                       navigation.navigate('AddReply', {
                         commentId: c._id,
                         postId: post._id
                       });
+                    }
                     }}
                     >
                       <Text style={styles.replyButtonText}>Reply</Text>

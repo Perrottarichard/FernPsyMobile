@@ -29,7 +29,7 @@ const bodyButtons = [
 ]
 
 const clothingButtons = [
-  {name: "เสื้อเชิ้ต", value: "blue"}, 
+  {name: "เสื้อเชิ้ต", value: "shirt"}, 
   {name: "ไม่ใส่เสื้อ", value: "naked"},
   {name: "เสื้อยีนส์", value: "denimJacket"},
   {name: "เสื้อมีหมวก", value: "hoodie"},

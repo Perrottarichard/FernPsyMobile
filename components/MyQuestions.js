@@ -30,14 +30,14 @@ const MyQuestions = ({navigation}) => {
       console.log('UF Answered MQ')
       dispatch(initializeForumAnswered());
     }
-  }, []);
+  }, [answered.length, dispatch]);
 
   useEffect(() => {
     if(pending.length === 0){
       console.log('UF Pending MQ')
       dispatch(initializeForumPending());
     }
-  }, []);
+  }, [dispatch, pending.length]);
 
   const onRefresh = useCallback(() => {
     console.log('callback MQ init')
@@ -45,7 +45,7 @@ const MyQuestions = ({navigation}) => {
     dispatch(initializeForumAnswered());
     dispatch(initializeForumPending());
     wait(2000).then(() => setRefreshing(false));
-  }, []);
+  }, [dispatch]);
 
   return(
   <ScrollView contentContainerStyle={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>

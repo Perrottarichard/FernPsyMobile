@@ -148,7 +148,7 @@ const ForumDisplayAll = ({navigation}) => {
     setRefreshing(true);
     dispatch(initializeForumAnswered());
     wait(2000).then(() => setRefreshing(false));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if(!forumAnswered){

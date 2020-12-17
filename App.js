@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { setUser } from './reducers/activeUserReducer';
@@ -12,7 +12,7 @@ const App = () => {
   const user = useSelector((state) => state.activeUser.user);
   const dispatch = useDispatch();
 
-  const getLoggedUser = async () => {
+  const getLoggedUser = useCallback(async () => {
     const loggedUserJSON = await AsyncStorage.getItem('loggedForumUser');
     if (loggedUserJSON) {
       const existingUser = JSON.parse(loggedUserJSON);
@@ -21,19 +21,20 @@ const App = () => {
     } else {
       console.log('no user');
     }
-  };
+  }, [dispatch]);
+  
   useEffect(() => {
     if (!user) {
       getLoggedUser();
     } else {
       forumService.setToken(user.token);
     }
-  }, [dispatch]);
+  }, [dispatch, getLoggedUser, user]);
 
   useEffect(() => {
     console.log('App initForumAnswered')
     dispatch(initializeForumAnswered());
-  }, []);
+  }, [dispatch]);
 
   return (
     <NavigationContainer>

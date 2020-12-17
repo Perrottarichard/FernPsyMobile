@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo} from 'react';
+import {createSelector} from 'reselect'
 import {
   Text, View, ScrollView, StyleSheet, ToastAndroid, TouchableOpacity, ActivityIndicator
 } from 'react-native';
@@ -57,21 +58,36 @@ const checkMention = (passed) => {
   }
 }
 
+const selectUser = createSelector(
+  state => state.activeUser,
+  activeUser => activeUser.user
+)
+
+const selectHeartedByUser = createSelector(
+  state => state.forum,
+  forum => forum.heartedByUser
+)
+
 const SinglePostDisplay = (props) => {
   const { navigation, route } = props;
   const { postId } = route.params;
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
-  const user = useSelector(state => state.activeUser.user)
-  const post = useSelector(state => state.forum.answered.find((p) => p._id === postId));
-  const heartedByUser = useSelector(state => state.forum.heartedByUser)
+  const user = useSelector(selectUser)
+  const post = useSelector(state => state.forum.answered.find(p => p._id === postId))
+  const heartedByUser = useSelector(selectHeartedByUser)
+
+  const memoizedComments = useMemo(() => {
+    return post?.comments.sort((a, b) => new Date(a.date) - new Date(b.date))
+  }, [post])
 
   useEffect(() => {
-    if(!post){
-    }else{
+    if(post && isLoading === true){
       setIsLoading(false)
     }
-  }, [])
+    else{
+    }
+  }, [post, isLoading ])
 
   const [visibleMenu, setVisibleMenu] = useState('');
   const [showReplies, setShowReplies] = useState('');
@@ -85,11 +101,21 @@ const SinglePostDisplay = (props) => {
     setShowReplies(id)
     setTimeout(() => {
       setShowPac(false)
-    }, 2500);
+    }, 1000);
   }
+
   const closeReplies = () => {
     setShowReplies('')
   }
+
+  const replies = useCallback((id) => {
+    let comment = memoizedComments.find(f => f._id === id)
+    return comment.replies.sort((a, b) => new Date(a.date) - new Date(b.date))
+  }, [memoizedComments])
+
+  const calcTime = useCallback((date) => {
+    return timeSince(date)
+  },[])
 
   const submitHeart = async () => {
     if (user === null) {
@@ -98,7 +124,6 @@ const SinglePostDisplay = (props) => {
     } else {
       try {
           dispatch(heart(post._id));
-          // dispatch(heartLock(post._id))
       } catch (error) {
         console.log(error);
         ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
@@ -125,16 +150,16 @@ const SinglePostDisplay = (props) => {
 
   return (
     <Provider>
-    {post && post._id &&
+    {post &&
     <ScrollView style={styles.container}>
       <Surface style={styles.cardStylePost} key={post._id}>
               <List.Item
               title={post.title}
-              description={`Posted by ${post.user.avatarName} ${timeSince(post.date)} ago`}
+              description={`Posted by ${post.user.avatarName} ${calcTime(post.date)} ago`}
               left={() => <BigHead {...post.user.avatarProps} size={55}/>}
               titleStyle={styles.headTitle}
               descriptionStyle={styles.descriptionStyle}
-              titleNumberOfLines={3}
+              titleNumberOfLines={10}
               descriptionNumberOfLines={2}
               titleEllipsizeMode='tail'
               />
@@ -208,12 +233,12 @@ const SinglePostDisplay = (props) => {
           </Surface>
           
           <View>
-            {post.comments.sort((a, b) => new Date(b.date) - new Date(a.date)).map(c =>
+            {memoizedComments.map(c =>
             <View key={c._id}>
                   <Surface style={styles.cardStyleComment} >
                   <List.Item
                   title={`${c.user.avatarName}`}
-                  description={`commented ${timeSince(c.date)} ago`}
+                  description={`commented ${calcTime(c.date)} ago`}
                   right={() => 
                   <View style={styles.replyButtonView}>
                     <Micon.Button 
@@ -311,11 +336,11 @@ const SinglePostDisplay = (props) => {
                 }
               </Surface>
               
-              {showReplies === c._id && c.replies.length > 0 && !showPac && c.replies.map(r => 
+              {showReplies === c._id && c.replies.length > 0 && !showPac && replies(c._id).map(r => 
               <View key={r._id}>
                 <List.Item
                   title={`${r.user.avatarName}`}
-                  description={`replied ${timeSince(r.date)} ago`}
+                  description={`replied ${calcTime(r.date)} ago`}
                   left={() => <BigHead {...r.user.avatarProps} size={28} containerStyles={styles.bigHeadReplyContainer}/>
                   }
                   titleStyle={styles.replyHeadTitle}

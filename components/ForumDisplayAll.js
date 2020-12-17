@@ -4,11 +4,11 @@ import {
 } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
-import { initializeForumAnswered } from '../reducers/forumReducer';
 import {BigHead} from 'react-native-bigheads'
 import { List, Chip, IconButton} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons'
 import {Picker} from '@react-native-picker/picker'
+import { initializeForumAnswered } from '../reducers/forumReducer';
 import NoPostsYet from './NoPostsYet'
 
 
@@ -78,7 +78,7 @@ export const timeSince = (date) => {
       }
     }
   }
-  return interval + '' + intervalType;
+  return `${interval  }${  intervalType}`;
 };
 
 const wait = (timeout) => new Promise((resolve) => {
@@ -88,49 +88,62 @@ const wait = (timeout) => new Promise((resolve) => {
 const applyFilterByTag = (allAnsweredPosts, filter) => {
   if(filter === 'none'){
     return allAnsweredPosts;
-  }else{
-    return allAnsweredPosts.filter(f => f.tags.includes(filter))
   }
+  return allAnsweredPosts.filter(f => f.tags.includes(filter))
+  
 }
 const Item = ({ item, onPress}) => (
-  <Card containerStyle={styles.cardStyle} key={item._id}>
-              <List.Item
-              title={item.title}
-              description={`Posted by ${item.user?.avatarName} ${timeSince(item.date)} ago`}
-              left={() => <BigHead {...item.user?.avatarProps} size={50}/>}
-              titleStyle={styles.headTitle}
-              descriptionStyle={styles.descriptionStyle}
-              titleNumberOfLines={3}
-              descriptionNumberOfLines={2}
-              underlayColor='white'
-              rippleColor='#f2f2f2'
-              borderless={true}
-              titleEllipsizeMode='tail'
-              onPress={onPress}
-              style={styles.listItemStyle}
-              />
-            <View style={styles.bottomTags}>
-              <Chip key={item._id} mode='outlined' icon={chooseIcon(item.tags[0])}style={styles.chip} textStyle={{ color: chooseTagColor(item.tags[0]), ...styles.chipText}}>{item.tags[0]}</Chip>
-              <Text style={styles.commentCountText}>
-              {item.comments?.length}
-            </Text>
-            <IconButton
-            icon='comment'
-            size={22}
-            style={styles.commentIconButton}
-            color='lightgray'
-            />
-            <Icon
-              name="ios-heart-sharp"
-              color="pink"
-              size={24}
-              style={styles.heartIconStyle}
-            />
-            <Text style={styles.likeTextStyle}>
-              {item.likes}
-            </Text>
-            </View>
-          </Card>
+  <Card
+    containerStyle={styles.cardStyle} key={item._id}
+  >
+    <List.Item
+      title={item.title}
+      description={`Posted by ${item.user?.avatarName} ${timeSince(item.date)} ago`}
+      left={() => <BigHead
+        {...item.user?.avatarProps} size={50}
+      />}
+      titleStyle={styles.headTitle}
+      descriptionStyle={styles.descriptionStyle}
+      titleNumberOfLines={3}
+      descriptionNumberOfLines={2}
+      underlayColor='white'
+      rippleColor='#f2f2f2'
+      borderless
+      titleEllipsizeMode='tail'
+      onPress={onPress}
+      style={styles.listItemStyle}
+    />
+    <View
+      style={styles.bottomTags}
+    >
+      <Chip
+        key={item._id} mode='outlined' icon={chooseIcon(item.tags[0])} style={styles.chip} textStyle={{ color: chooseTagColor(item.tags[0]), ...styles.chipText}}
+      >{item.tags[0]}
+      </Chip>
+      <Text
+        style={styles.commentCountText}
+      >
+        {item.comments?.length}
+      </Text>
+      <IconButton
+        icon='comment'
+        size={22}
+        style={styles.commentIconButton}
+        color='lightgray'
+      />
+      <Icon
+        name="ios-heart-sharp"
+        color="pink"
+        size={24}
+        style={styles.heartIconStyle}
+      />
+      <Text
+        style={styles.likeTextStyle}
+      >
+        {item.likes}
+      </Text>
+    </View>
+  </Card>
 );
 
 const ForumDisplayAll = ({navigation}) => {
@@ -163,57 +176,98 @@ const ForumDisplayAll = ({navigation}) => {
       <Item
         item={item}
         onPress={() => {
-            navigation.navigate('SinglePostDisplay', {
-              postId: item._id,
-            });
-        }
-      }
+          navigation.navigate('SinglePostDisplay', {
+            post: item,
+          });
+        }}
       />
     );
   };
 
   if (isLoading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="pink" />
+      <View
+        style={styles.loadingContainer}
+      >
+        <ActivityIndicator
+          size="large" color="pink"
+        />
       </View>
     );
   }
   return (
-    <View style={styles.container}>
-       <View style={styles.filterContainer}>
-         <Icon name='ios-filter-outline' style={styles.filterIcon} size={24}/>
+    <View
+      style={styles.container}
+    >
+      <View
+        style={styles.filterContainer}
+      >
+        <Icon
+          name='ios-filter-outline' style={styles.filterIcon} size={24}
+        />
         <Picker
           onValueChange={(value) => setSelectedFilterTag(value)}
           selectedValue={selectedFilterTag}
           dropdownIconColor='#d896ac'
           style={styles.picker}
         >
-          <Picker.Item label='Show all' value='none'/>
-          <Picker.Item label='ปัญหาเรื่องเพศ' value='ปัญหาเรื่องเพศ'/>
-          <Picker.Item label='การเสพติด' value='การเสพติด'/>
-          <Picker.Item label='เพื่อน' value='เพื่อน'/>
-          <Picker.Item label='lgbt' value='lgbt'/>
-          <Picker.Item label='โรคซึมเศร้า' value='โรคซึมเศร้า'/>
-          <Picker.Item label='ความวิตกกังวล' value='ความวิตกกังวล'/>
-          <Picker.Item label='ไบโพลาร์' value='ไบโพลาร์'/>
-          <Picker.Item label='relationships' value='relationships'/>
-          <Picker.Item label='การทำงาน' value='การทำงาน'/>
-          <Picker.Item label='สุขภาพจิต' value='สุขภาพจิต'/>
-          <Picker.Item label='การรังแก' value='การรังแก'/>
-          <Picker.Item label='ครอบครัว' value='ครอบครัว'/>
-          <Picker.Item label='อื่นๆ' value='อื่นๆ'/>
-          <Picker.Item label='ความรัก' value='ความรัก'/>
+          <Picker.Item
+            label='Show all' value='none'
+          />
+          <Picker.Item
+            label='ปัญหาเรื่องเพศ' value='ปัญหาเรื่องเพศ'
+          />
+          <Picker.Item
+            label='การเสพติด' value='การเสพติด'
+          />
+          <Picker.Item
+            label='เพื่อน' value='เพื่อน'
+          />
+          <Picker.Item
+            label='lgbt' value='lgbt'
+          />
+          <Picker.Item
+            label='โรคซึมเศร้า' value='โรคซึมเศร้า'
+          />
+          <Picker.Item
+            label='ความวิตกกังวล' value='ความวิตกกังวล'
+          />
+          <Picker.Item
+            label='ไบโพลาร์' value='ไบโพลาร์'
+          />
+          <Picker.Item
+            label='relationships' value='relationships'
+          />
+          <Picker.Item
+            label='การทำงาน' value='การทำงาน'
+          />
+          <Picker.Item
+            label='สุขภาพจิต' value='สุขภาพจิต'
+          />
+          <Picker.Item
+            label='การรังแก' value='การรังแก'
+          />
+          <Picker.Item
+            label='ครอบครัว' value='ครอบครัว'
+          />
+          <Picker.Item
+            label='อื่นๆ' value='อื่นๆ'
+          />
+          <Picker.Item
+            label='ความรัก' value='ความรัก'
+          />
         </Picker>
-        </View>
-    <FlatList 
-    style={styles.scroll} 
-    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-    data={DATA}
-    renderItem={renderItem}
-    keyExtractor={item => item._id}
-    ListEmptyComponent={<NoPostsYet/>}
-    />
+      </View>
+      <FlatList 
+        style={styles.scroll} 
+        refreshControl={<RefreshControl
+          refreshing={refreshing} onRefresh={onRefresh}
+        />}
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={item => item._id}
+        ListEmptyComponent={<NoPostsYet />}
+      />
     </View>
   );
 };

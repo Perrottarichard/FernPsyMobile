@@ -30,33 +30,36 @@ const chooseTagColor = (passed) => {
   return 'magenta';
 };
 
-const MyPending = ({navigation, route}) => {
+const MyPending = ({route}) => {
   const myPendingPosts = route.params
   return(
     <ScrollView>
-    {myPendingPosts.length > 0 ? myPendingPosts.myPendingPosts.map((f) => (
-      <View key={f._id}>
-        <Card>
-          <Card.Title>
-            {f.title}
-            <Text>{f.likes}</Text>
-            <Text>{f.date ? f.date.slice(0, 10) : 'unknown'}</Text>
-          </Card.Title>
-          <Text>
-            {f.question}
-          </Text>
-          <Text>
-            คำถามของคุณอยู่ระหว่างดำเนินการ
-          </Text>
-          <View>
-            {f.tags.map((t) => <Badge key={t} badgeStyle={{ backgroundColor: chooseTagColor(t) }} value={t} />)}
-          </View>
-        </Card>
-      </View>
-    )) 
-  :
-  <NoPostsYet/>
-  }
+      {myPendingPosts.length > 0 ? myPendingPosts.myPendingPosts.map((f) => (
+        <View
+          key={f._id}
+        >
+          <Card>
+            <Card.Title>
+              {f.title}
+              <Text>{f.likes}</Text>
+              <Text>{f.date ? f.date.slice(0, 10) : 'unknown'}</Text>
+            </Card.Title>
+            <Text>
+              {f.question}
+            </Text>
+            <Text>
+              คำถามของคุณอยู่ระหว่างดำเนินการ
+            </Text>
+            <View>
+              {f.tags.map((t) => <Badge
+                key={t} badgeStyle={{ backgroundColor: chooseTagColor(t) }} value={t}
+              />)}
+            </View>
+          </Card>
+        </View>
+      )) 
+        :
+      <NoPostsYet />}
     </ScrollView>
   )
 }

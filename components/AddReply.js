@@ -2,20 +2,9 @@ import React, { useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {View, Text, TextInput, StyleSheet, Keyboard, ToastAndroid, ScrollView, ActivityIndicator} from 'react-native'
 import { Button, Surface} from 'react-native-paper'
-import { addReply} from '../reducers/forumReducer';
 import {BigHead} from 'react-native-bigheads'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
-
-const countAt = (passed) => {
-  let count = 0
-  for(let i = 0; i < passed.length; i++){
-    if(passed[i] === '@'){
-      count++
-    }
-  }
-  return count;
-}
-
+import { addReply} from '../reducers/forumReducer';
 
 const AddReply = ({navigation, route}) => {
   const { commentId, postId} = route.params;
@@ -32,15 +21,13 @@ const AddReply = ({navigation, route}) => {
       navigation.navigate('LoginForm');
     } else if (reply === '') {
       ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT);
-    } else if (countAt(reply) >= 2) {
-      ToastAndroid.show('you can only have one @mention', ToastAndroid.SHORT)
     } else {
       try {
         dispatch(addReply(reply, comment, postId));
         setTimeout(() => {
-            navigation.navigate('SinglePostDisplay', {
-              postId: postId,
-              });
+          navigation.navigate('SinglePostDisplay', {
+            postId,
+          });
         }, 2000);
       } catch (error) {
         console.log(error);
@@ -50,21 +37,33 @@ const AddReply = ({navigation, route}) => {
   };
 
   return(
-    <ScrollView style={styles.container}>
-      <View style={styles.graphicView}>
-      <BigHead {...user.avatarProps} size={180}/>
+    <ScrollView
+      style={styles.container}
+    >
+      <View
+        style={styles.graphicView}
+      >
+        <BigHead
+          {...user.avatarProps} size={180}
+        />
       </View>
       <View>
-        <Text style={styles.leadIn}>
+        <Text
+          style={styles.leadIn}
+        >
           {`${user.avatarName} says...`}
         </Text>
       </View>
       
-      <Surface style={styles.surface}>
-      <Ficon name='quote-left' size={25} color='gray'/>
-      <TextInput
+      <Surface
+        style={styles.surface}
+      >
+        <Ficon
+          name='quote-left' size={25} color='gray'
+        />
+        <TextInput
           style={styles.textAreaComment}
-          autoFocus={true}
+          autoFocus
           multiline
           textAlignVertical="center"
           textAlign='center'
@@ -76,15 +75,24 @@ const AddReply = ({navigation, route}) => {
           blurOnSubmit
           value={reply}
         />
-        <Ficon name='quote-right' size={25} style={styles.rightQuote} color='gray'/>
-        </Surface>
-        {!loading ?
-        <Button style={styles.commentButton} icon='comment-plus' mode='contained' onPress={submitReply}>
-          <Text style={styles.commentButtonText}>
+        <Ficon
+          name='quote-right' size={25} style={styles.rightQuote} color='gray'
+        />
+      </Surface>
+      {!loading ? (
+        <Button
+          style={styles.commentButton} icon='comment-plus' mode='contained' onPress={submitReply}
+        >
+          <Text
+            style={styles.commentButtonText}
+          >
             Submit
           </Text>
         </Button>
-: <ActivityIndicator style={styles.spinner} color='pink'/>}
+      )
+        : <ActivityIndicator
+            style={styles.spinner} color='pink'
+        />}
     </ScrollView>
   )
 }
@@ -95,8 +103,8 @@ const styles = StyleSheet.create({
     padding: 20
   },
   graphicView: {
-      justifyContent: 'center',
-      alignItems: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   leadIn: {
     alignSelf: 'center',
@@ -110,12 +118,12 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   commentButton: {
-      alignSelf: 'center',
-      borderRadius: 20,
-      width: 300,
-      backgroundColor: 'lightgray',
-      marginBottom: 40,
-      marginTop: 20
+    alignSelf: 'center',
+    borderRadius: 20,
+    width: 300,
+    backgroundColor: 'lightgray',
+    marginBottom: 40,
+    marginTop: 20
   },
   commentButtonText: {
     color: 'black'

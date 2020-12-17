@@ -6,7 +6,9 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "eslint:recommended",
+        "prettier/react"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -20,13 +22,27 @@
         "react-native"
     ],
     "rules": {
-        "react-native/no-unused-styles": 2,
+    "react-native/no-unused-styles": 2,
     "react-native/split-platform-components": 0,
     "react-native/no-inline-styles": 2,
     "react-native/no-color-literals": 0,
     "react-native/no-raw-text": 2,
     "react/prop-types": 0,
     "react/display-name": 0,
-    "react/no-unescaped-entities": 0
+    "react/no-unescaped-entities": 0,
+    "semi-spacing": [2, {"before": false, "after": true}],
+    "react/jsx-uses-react": "error",
+    "react/jsx-curly-newline": [2, {"multiline": "consistent", "singleline": "consistent"}],
+    "react/jsx-curly-spacing": 2,
+    "react/jsx-closing-bracket-location": [2 , "line-aligned"],
+    "react/jsx-first-prop-new-line": [1, "always"],
+    "react/jsx-indent-props": [1, 2],
+    "react/jsx-indent": [2 , 2]
+
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

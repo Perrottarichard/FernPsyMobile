@@ -44,11 +44,17 @@ const ForumLandingPage = ({ navigation }) => {
     }
   };
   return (
-    <View style={styles.outerView}>
+    <View
+      style={styles.outerView}
+    >
       <ScrollView>
         {tagOptions.map((t) => (
-          <View key={t.tag} style={styles.cardView}>
-            <Card containerStyle={styles.cardCard}>
+          <View
+            key={t.tag} style={styles.cardView}
+          >
+            <Card
+              containerStyle={styles.cardCard}
+            >
               <Icon.Button
                 onPress={() => clickTag(t)}
                 name={chooseTagIcon(t.tag)}
@@ -56,14 +62,20 @@ const ForumLandingPage = ({ navigation }) => {
                 color={chooseTagColor(t.tag)}
                 style={styles.iconButton}
               >
-                <Text style={dynamicTagColor(t.tag)}>{t.tag}</Text>
+                <Text
+                  style={dynamicTagColor(t.tag)}
+                >{t.tag}
+                </Text>
               </Icon.Button>
             </Card>
           </View>
         ))}
       </ScrollView>
       <View>
-        <Text><Icon name="code" type="fontawesome" /></Text>
+        <Text><Icon
+          name="code" type="fontawesome"
+        />
+        </Text>
       </View>
     </View>
   );

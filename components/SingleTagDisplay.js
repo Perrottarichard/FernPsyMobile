@@ -35,12 +35,10 @@ const chooseTagColor = (passed) => {
   return 'magenta';
 };
 
-const SingleTagDisplay = ({ route, navigation }) => {
-  const { tag } = route.params;
+const SingleTagDisplay = ({ navigation }) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const tagged = useSelector((state) => state.forum.answered.map((post) => (post.tags.includes(state.forum.tagFilter) ? post : null))).filter((t) => t !== null);
-  const activeUser = useSelector((state) => state.activeUser);
 
   useEffect(() => {
     dispatch(initializeForumAnswered());
@@ -51,8 +49,12 @@ const SingleTagDisplay = ({ route, navigation }) => {
 
   if (isLoading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="pink"  />
+      <View
+        style={styles.loadingContainer}
+      >
+        <ActivityIndicator
+          size="large" color="pink"
+        />
       </View>
     );
   }
@@ -72,8 +74,12 @@ const SingleTagDisplay = ({ route, navigation }) => {
             });
           }}
         >
-          <Card style={styles.cardStyle}>
-            <Card.Title style={styles.cardTitle}>
+          <Card
+            style={styles.cardStyle}
+          >
+            <Card.Title
+              style={styles.cardTitle}
+            >
               {f.title}
               {'\n'}
               <Text>{f.date ? f.date.slice(0, 10) : 'unknown'}</Text>
@@ -85,7 +91,8 @@ const SingleTagDisplay = ({ route, navigation }) => {
               size={26}
               style={styles.heartIconStyle}
             />
-            <Text style={styles.likeTextStyle}
+            <Text
+              style={styles.likeTextStyle}
             >
               {f.likes}
             </Text>
@@ -95,15 +102,21 @@ const SingleTagDisplay = ({ route, navigation }) => {
             <Text>
               {f.answer.answer}
             </Text>
-            <View style={styles.bottomTags}>
-              {f.tags.map((t) => <Badge key={t} badgeStyle={{ backgroundColor: chooseTagColor(t) }} value={t} />)}
+            <View
+              style={styles.bottomTags}
+            >
+              {f.tags.map((t) => <Badge
+                key={t} badgeStyle={{ backgroundColor: chooseTagColor(t) }} value={t}
+              />)}
             </View>
           </Card>
         </Pressable>
       ))}
       <View>
         <Text>ตั้งกระทู้ถาม</Text>
-        <Button title="ส่งคำถาม" />
+        <Button
+          title="ส่งคำถาม"
+        />
       </View>
     </View>
   );
@@ -133,10 +146,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   loadingContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
 });
 
 export default SingleTagDisplay;

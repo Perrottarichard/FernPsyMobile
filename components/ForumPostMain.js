@@ -71,69 +71,120 @@ const ForumPostMain = (props) => {
   };
   return (
     <ScrollView>
-      <View style={styles.graphicContainer}>
-        <PostGraphic width={180} height={120} />
-      </View>
-      <View style={styles.form}>
-      <View style={styles.textAreaContainerTitle}>
-        <TextInput
-          style={styles.textAreaTitle}
-          multiline={false}
-          numberOfLines={1}
-          placeholder="พิมพ์หัวข้อที่นี่"
-          onChangeText={(t) => setTitle(t)}
-          placeholderTextColor='gray'
-          keyboardType="default"
-          returnKeyType="done"
-          onSubmitEditing={() => { Keyboard.dismiss(); }}
-          value={title}
+      <View
+        style={styles.graphicContainer}
+      >
+        <PostGraphic
+          width={180} height={120}
         />
       </View>
-
-      <View style={styles.textAreaContainerQuestion}>
-        <TextInput
-          style={styles.textAreaQuestion}
-          multiline
-          textAlignVertical="top"
-          numberOfLines={4}
-          placeholderTextColor='gray'
-          placeholder="พิมพ์รายละเอียดคำถามของคุณ"
-          onChangeText={(q) => setQuestion(q)}
-          keyboardType="default"
-          returnKeyType="done"
-          onSubmitEditing={() => { Keyboard.dismiss(); }}
-          blurOnSubmit
-          value={question}
-        />
-      </View>
-      <View style={styles.picker}>
-        <Picker
-          onValueChange={(value) => setSelectedTags(value)}
-          selectedValue={selectedTags}
-          style={styles.styleTextDropdown}
-          prompt='Choose a tag'
+      <View
+        style={styles.form}
+      >
+        <View
+          style={styles.textAreaContainerTitle}
         >
-          <Picker.Item label='เลือก tag' value='เลือก tag'/>
-          <Picker.Item label='ปัญหาเรื่องเพศ' value='ปัญหาเรื่องเพศ'/>
-          <Picker.Item label='การเสพติด' value='การเสพติด'/>
-          <Picker.Item label='เพื่อน' value='เพื่อน'/>
-          <Picker.Item label='lgbt' value='lgbt'/>
-          <Picker.Item label='โรคซึมเศร้า' value='โรคซึมเศร้า'/>
-          <Picker.Item label='ความวิตกกังวล' value='ความวิตกกังวล'/>
-          <Picker.Item label='ไบโพลาร์' value='ไบโพลาร์'/>
-          <Picker.Item label='relationships' value='relationships'/>
-          <Picker.Item label='การทำงาน' value='การทำงาน'/>
-          <Picker.Item label='สุขภาพจิต' value='สุขภาพจิต'/>
-          <Picker.Item label='การรังแก' value='การรังแก'/>
-          <Picker.Item label='ครอบครัว' value='ครอบครัว'/>
-          <Picker.Item label='อื่นๆ' value='อื่นๆ'/>
-          <Picker.Item label='ความรัก' value='ความรัก'/>
-        </Picker>
+          <TextInput
+            style={styles.textAreaTitle}
+            multiline={false}
+            numberOfLines={1}
+            placeholder="พิมพ์หัวข้อที่นี่"
+            onChangeText={(t) => setTitle(t)}
+            placeholderTextColor='gray'
+            keyboardType="default"
+            returnKeyType="done"
+            onSubmitEditing={() => { Keyboard.dismiss(); }}
+            value={title}
+          />
         </View>
-        <View style={styles.afterForm}>
-          <Text style={styles.afterFormText}>ชื่อที่คุณใช้ล็อคอินจะไม่ปรากฏในคำถามของคุณ</Text>
-          <Button mode='contained' icon='text-box-plus' onPress={handleEditorSubmit} style={styles.submitPostButton}>
-            <Text style={styles.submitPostText}>
+
+        <View
+          style={styles.textAreaContainerQuestion}
+        >
+          <TextInput
+            style={styles.textAreaQuestion}
+            multiline
+            textAlignVertical="top"
+            numberOfLines={4}
+            placeholderTextColor='gray'
+            placeholder="พิมพ์รายละเอียดคำถามของคุณ"
+            onChangeText={(q) => setQuestion(q)}
+            keyboardType="default"
+            returnKeyType="done"
+            onSubmitEditing={() => { Keyboard.dismiss(); }}
+            blurOnSubmit
+            value={question}
+          />
+        </View>
+        <View
+          style={styles.picker}
+        >
+          <Picker
+            onValueChange={(value) => setSelectedTags(value)}
+            selectedValue={selectedTags}
+            style={styles.styleTextDropdown}
+            prompt='Choose a tag'
+          >
+            <Picker.Item
+              label='เลือก tag' value='เลือก tag'
+            />
+            <Picker.Item
+              label='ปัญหาเรื่องเพศ' value='ปัญหาเรื่องเพศ'
+            />
+            <Picker.Item
+              label='การเสพติด' value='การเสพติด'
+            />
+            <Picker.Item
+              label='เพื่อน' value='เพื่อน'
+            />
+            <Picker.Item
+              label='lgbt' value='lgbt'
+            />
+            <Picker.Item
+              label='โรคซึมเศร้า' value='โรคซึมเศร้า'
+            />
+            <Picker.Item
+              label='ความวิตกกังวล' value='ความวิตกกังวล'
+            />
+            <Picker.Item
+              label='ไบโพลาร์' value='ไบโพลาร์'
+            />
+            <Picker.Item
+              label='relationships' value='relationships'
+            />
+            <Picker.Item
+              label='การทำงาน' value='การทำงาน'
+            />
+            <Picker.Item
+              label='สุขภาพจิต' value='สุขภาพจิต'
+            />
+            <Picker.Item
+              label='การรังแก' value='การรังแก'
+            />
+            <Picker.Item
+              label='ครอบครัว' value='ครอบครัว'
+            />
+            <Picker.Item
+              label='อื่นๆ' value='อื่นๆ'
+            />
+            <Picker.Item
+              label='ความรัก' value='ความรัก'
+            />
+          </Picker>
+        </View>
+        <View
+          style={styles.afterForm}
+        >
+          <Text
+            style={styles.afterFormText}
+          >ชื่อที่คุณใช้ล็อคอินจะไม่ปรากฏในคำถามของคุณ
+          </Text>
+          <Button
+            mode='contained' icon='text-box-plus' onPress={handleEditorSubmit} style={styles.submitPostButton}
+          >
+            <Text
+              style={styles.submitPostText}
+            >
               ส่งคำถาม
             </Text>
           </Button>

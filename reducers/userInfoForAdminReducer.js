@@ -2,10 +2,10 @@ import userService from '../services/userService';
 
 const userInfoForAdminReducer = (state = [], action) => {
   switch (action.type) {
-    case 'INIT_ALL_USERS':
-      return action.data;
-    default:
-      return state;
+  case 'INIT_ALL_USERS':
+    return action.data;
+  default:
+    return state;
   }
 };
 

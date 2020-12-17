@@ -12,8 +12,12 @@ const LoginNavigate = () => (
       headerShown: false,
     }}
   >
-    <Stack.Screen name="LoginForm" component={LoginForm} options={{ title: 'Choose a Topic' }} />
-    <Stack.Screen name="RegisterForm" component={RegisterForm} />
+    <Stack.Screen
+      name="LoginForm" component={LoginForm} options={{ title: 'Choose a Topic' }}
+    />
+    <Stack.Screen
+      name="RegisterForm" component={RegisterForm}
+    />
   </Stack.Navigator>
 );
 export default LoginNavigate;

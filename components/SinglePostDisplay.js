@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useCallback, useMemo} from 'react';
+import React from 'react';
 import {createSelector} from 'reselect'
 import {
-  Text, View, ScrollView, StyleSheet, ToastAndroid, TouchableOpacity, ActivityIndicator
+  Text, View, StyleSheet, ToastAndroid,
 } from 'react-native';
-import { List, Chip, Surface, Menu, Provider, Avatar} from 'react-native-paper';
+import { List, Chip, Surface, Avatar} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import Icon from 'react-native-vector-icons/Ionicons'
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
-import {PacmanIndicator} from 'react-native-indicators'
 import {BigHead} from 'react-native-bigheads'
 import { heart } from '../reducers/forumReducer';
-import { setFlaggedComment } from '../reducers/forumReducer';
 import {timeSince} from './ForumDisplayAll'
+import Loading from './Loading'
 
 const tagOptions = [
   { tag: 'ปัญหาเรื่องเพศ', backgroundColor: '#ff5c4d', icon: 'gender-male-female' },
@@ -44,78 +42,15 @@ const chooseIcon = (passed) => {
   }
   return 'star'
 }
-const checkMention = (passed) => {
-  let regex = /\B@(\w+|[^\x00-\x7F]+)/g
-  let found = passed.match(regex)
-  if(found){
-    let start = passed.substring(0, passed.indexOf('@'))
-    let target = found.toString()
-    let after = passed.substring(start.length + target.length)
-
-    return <View style={styles.mentionContainer}><Text style={styles.replyWithMention}>{start}</Text><Text style={styles.replyWithMentionTarget}>{target}</Text><Text style={styles.replyWithMention}>{after}</Text></View>
-  }else{
-    return <View><Text style={styles.replyWithoutMention}>{passed}</Text></View>
-  }
-}
-
-const selectUser = createSelector(
-  state => state.activeUser,
-  activeUser => activeUser.user
-)
-
 const selectHeartedByUser = createSelector(
   state => state.forum,
   forum => forum.heartedByUser
 )
 
-const SinglePostDisplay = (props) => {
-  const { navigation, route } = props;
-  const { postId } = route.params;
-  const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
-  const user = useSelector(selectUser)
-  const post = useSelector(state => state.forum.answered.find(p => p._id === postId))
+const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
+
   const heartedByUser = useSelector(selectHeartedByUser)
-
-  const memoizedComments = useMemo(() => {
-    return post?.comments.sort((a, b) => new Date(a.date) - new Date(b.date))
-  }, [post])
-
-  useEffect(() => {
-    if(post && isLoading === true){
-      setIsLoading(false)
-    }
-    else{
-    }
-  }, [post, isLoading ])
-
-  const [visibleMenu, setVisibleMenu] = useState('');
-  const [showReplies, setShowReplies] = useState('');
-  const [showPac, setShowPac] = useState(false)
-
-  const openMenu = (id) => setVisibleMenu(id)
-  const closeMenu = () => setVisibleMenu('')
-
-  const openReplies = (id) => {
-    setShowPac(true)
-    setShowReplies(id)
-    setTimeout(() => {
-      setShowPac(false)
-    }, 1000);
-  }
-
-  const closeReplies = () => {
-    setShowReplies('')
-  }
-
-  const replies = useCallback((id) => {
-    let comment = memoizedComments.find(f => f._id === id)
-    return comment.replies.sort((a, b) => new Date(a.date) - new Date(b.date))
-  }, [memoizedComments])
-
-  const calcTime = useCallback((date) => {
-    return timeSince(date)
-  },[])
+  const dispatch = useDispatch()
 
   const submitHeart = async () => {
     if (user === null) {
@@ -123,7 +58,7 @@ const SinglePostDisplay = (props) => {
       navigation.navigate('LoginForm');
     } else {
       try {
-          dispatch(heart(post._id));
+        dispatch(heart(post._id));
       } catch (error) {
         console.log(error);
         ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
@@ -131,235 +66,128 @@ const SinglePostDisplay = (props) => {
     }
   };
 
-  const flag = (comment) => {
-    if (comment.isFlagged) {
-      setVisibleMenu('')
-      return ToastAndroid.show('ความคิดเห็นนี้มีผู้รายงานให้แอดมินทราบปัญหาเรียบร้อยแล้ว', ToastAndroid.SHORT);
-    }
-    setVisibleMenu('')
-    dispatch(setFlaggedComment(comment));
-  };
-
   if (isLoading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="pink" />
-      </View>
-    );
-  }
+      <Loading />
+    )}
+
 
   return (
-    <Provider>
-    {post &&
-    <ScrollView style={styles.container}>
-      <Surface style={styles.cardStylePost} key={post._id}>
-              <List.Item
-              title={post.title}
-              description={`Posted by ${post.user.avatarName} ${calcTime(post.date)} ago`}
-              left={() => <BigHead {...post.user.avatarProps} size={55}/>}
-              titleStyle={styles.headTitle}
-              descriptionStyle={styles.descriptionStyle}
-              titleNumberOfLines={10}
-              descriptionNumberOfLines={2}
-              titleEllipsizeMode='tail'
-              />
-            <View style={styles.questionContainer}>
-              <Text style={styles.questionText} selectable={true}>
-              {post.question}
-              </Text>
-            </View>
-            <List.Item
-              left={() => <Avatar.Image size={45} source={{uri: 'http://fern-counseling.herokuapp.com/static/media/fernhippie500.8ec92f3a.jpg'}}
-              style={styles.fernAvatar}/>}
-              title={post.answer.answer}
-              titleStyle={styles.answerHeadTitle}
-              titleNumberOfLines={100}
-              titleEllipsizeMode='tail'
-              />
-            <View style={styles.bottomTags}>
-              <Chip key={post._id} mode='outlined' icon={chooseIcon(post.tags[0])} style={styles.chip} textStyle={{ color: chooseTagColor(post.tags[0]), ...styles.chipText}}>{post.tags[0]}</Chip>
-            <Micon.Button
-            name='comment-plus'
-            size={28}
-            style={styles.commentMiconButton}
-            iconStyle={styles.miconIconStyle}
-            color='lightgray'
-            underlayColor='white'
-            backgroundColor='white'
-            activeOpacity={0.5} 
-            onPress={() => {
-              if(!user){
-                ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
-                navigation.navigate('LoginForm')
-              }else{
-              navigation.navigate('AddComment', {
-                postId: post._id,
-                postTitle: post.title,
-              });
-            };
-            }}
-            ><Text style={styles.miconText}>Comment</Text></Micon.Button>
-            {!user?.heartedPosts?.includes(post._id) && !heartedByUser.includes(post._id) ?
-            <Micon.Button
-              name="heart-plus-outline"
-              color="pink"
-              size={28}
-              style={styles.heartIconStyle}
-              backgroundColor='white'
-              underlayColor='white'
-              activeOpacity={0.5}
-              onPress={submitHeart}
-            >
-              <Text style={styles.likeTextStyle}>
-                {post.likes}
-              </Text>
-          </Micon.Button>
-          :
-          <Micon.Button
-          name="heart"
-          color="pink"
-          size={28}
-          style={styles.heartIconStyle}
-          backgroundColor='white'
-          underlayColor='white'
-          activeOpacity={0.5}
-          disabled={true}
+    <View
+      style={styles.container}
+    >
+      {post && (
+        <Surface
+          style={styles.cardStylePost} key={post._id}
         >
-          <Text style={styles.likeTextStyle}>
-            {post.likes}
-          </Text>
-      </Micon.Button>}  
-            </View>
-          </Surface>
-          
-          <View>
-            {memoizedComments.map(c =>
-            <View key={c._id}>
-                  <Surface style={styles.cardStyleComment} >
-                  <List.Item
-                  title={`${c.user.avatarName}`}
-                  description={`commented ${calcTime(c.date)} ago`}
-                  right={() => 
-                  <View style={styles.replyButtonView}>
-                    <Micon.Button 
-                    name='reply' 
-                    color='lightgray' 
-                    size={18}
-                    underlayColor='white'
-                    activeOpacity={0.5} 
-                    iconStyle={styles.miconIconStyle}
-                    style={styles.replyButton} 
-                    backgroundColor='white'
-                    onPress={() => {
-                      if(!user){
-                        navigation.navigate('LoginForm');
-                        ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
-                      }else{
-                      navigation.navigate('AddReply', {
-                        commentId: c._id,
-                        postId: post._id
-                      });
-                    }
-                    }}
-                    >
-                      <Text style={styles.replyButtonText}>Reply</Text>
-                      </Micon.Button>
-                      <Menu visible={visibleMenu === c._id ? true : false} 
-                      onDismiss={closeMenu} 
-                      anchor={ 
-                      <TouchableOpacity 
-                      onPress={() => openMenu(c._id)} style={styles.touchableOpacityEllipsis}>
-                        <Icon name='md-flag-outline' 
-                        size={14}
-                        color='gray'  
-                        style={styles.ellipsis}/>
-                        </TouchableOpacity>}>
-                    <Menu.Item 
-                    icon='flag-variant' 
-                    titleStyle={styles.flagMenuContent} 
-                    onPress={() => flag(c)} 
-                    title='Flag comment'/>
-                  </Menu>
-                  </View>}
-                  left={() => <BigHead {...c.user.avatarProps} size={38}/>}
-                  titleStyle={styles.commentHeadTitle}
-                  descriptionStyle={styles.commentDescriptionStyle}
-                  titleNumberOfLines={1}
-                  descriptionNumberOfLines={1}
-                  titleEllipsizeMode='tail'
-                  disabled={true}
-                  style={styles.commentListItem}
-                  onPress={() => console.log('pressed')}
-                  />
-                <View style={styles.contentContainerView}>
-                  <Text style={styles.commentContent} selectable={true}>
-                  {checkMention(c.content)}
-                  </Text>
-                {c.replies.length > 0 && showReplies !== c._id && !showPac &&
-                <Micon.Button 
-                name='dots-horizontal' 
-                size={25} 
-                color='lightgray'
-                underlayColor='white'
+          <List.Item
+            title={post.title}
+            description={`Posted by ${post.user.avatarName} ${timeSince(post.date)} ago`}
+            left={() => <BigHead
+              {...post.user.avatarProps} size={55}
+            />}
+            titleStyle={styles.headTitle}
+            descriptionStyle={styles.descriptionStyle}
+            titleNumberOfLines={10}
+            descriptionNumberOfLines={2}
+            titleEllipsizeMode='tail'
+            style={styles.questionListItem}
+          />
+          <View
+            style={styles.questionContainer}
+          >
+            <Text
+              style={styles.questionText} selectable
+            >
+              {post.question}
+            </Text>
+          </View>
+          <List.Item
+            left={() => (
+              <Avatar.Image
+                size={45}
+                source={{uri: 'http://fern-counseling.herokuapp.com/static/media/fernhippie500.8ec92f3a.jpg'}}
+                style={styles.fernAvatar}
+              />
+            )}
+            title={post.answer.answer}
+            titleStyle={styles.answerHeadTitle}
+            titleNumberOfLines={100}
+            titleEllipsizeMode='tail'
+          />
+          <View
+            style={styles.bottomTags}
+          >
+            <Chip
+              key={post._id} mode='outlined' icon={chooseIcon(post.tags[0])} style={styles.chip} textStyle={{ color: chooseTagColor(post.tags[0]), ...styles.chipText}}
+            >{post.tags[0]}
+            </Chip>
+            <Micon.Button
+              name='comment-plus'
+              size={28}
+              style={styles.commentMiconButton}
+              iconStyle={styles.miconIconStyle}
+              color='lightgray'
+              underlayColor='white'
+              backgroundColor='white'
+              activeOpacity={0.5} 
+              onPress={() => {
+                if(!user){
+                  ToastAndroid.show('คุณต้องเข้าสู่ระบบเพื่อส่งหัวใจ', ToastAndroid.SHORT);
+                  navigation.navigate('LoginForm')
+                }else{
+                  navigation.navigate('AddComment', {
+                    postId: post._id,
+                    postTitle: post.title,
+                  });
+                }
+              }}
+            >
+              <Text
+                style={styles.miconText}
+              >Comment
+              </Text>
+            </Micon.Button>
+            {!user?.heartedPosts?.includes(post._id) && !heartedByUser.includes(post._id) ? (
+              <Micon.Button
+                name="heart-plus-outline"
+                color="pink"
+                size={28}
+                style={styles.heartIconStyle}
                 backgroundColor='white'
-                activeOpacity={0.5}  
-                onPress={() => openReplies(c._id)} 
-                style={styles.replyDownArrow}
-                />}
-
-                {c.replies.length > 0 && showReplies !== c._id && showPac &&
-                <Micon.Button 
-                name='dots-horizontal' 
-                size={25} 
-                color='lightgray'
-                underlayColor='white'
-                backgroundColor='white'
-                activeOpacity={0.5}  
-                onPress={() => openReplies(c._id)} 
-                style={styles.replyDownArrow}
-                />}
-
-                {c.replies.length > 0 && showReplies === c._id && !showPac &&
-                <Micon.Button 
-                name='dots-horizontal' 
-                size={25} 
-                color='lightgray'
                 underlayColor='white'
                 activeOpacity={0.5}
-                backgroundColor='white'  
-                onPress={closeReplies} 
-                style={styles.replyDownArrow}/>}
-                </View>
-
-                {c.replies.length > 0 && showReplies === c._id && showPac &&
-                <PacmanIndicator color='lightgray' size={35} style={styles.replyDownArrow}/>
-                }
-              </Surface>
-              
-              {showReplies === c._id && c.replies.length > 0 && !showPac && replies(c._id).map(r => 
-              <View key={r._id}>
-                <List.Item
-                  title={`${r.user.avatarName}`}
-                  description={`replied ${calcTime(r.date)} ago`}
-                  left={() => <BigHead {...r.user.avatarProps} size={28} containerStyles={styles.bigHeadReplyContainer}/>
-                  }
-                  titleStyle={styles.replyHeadTitle}
-                  descriptionStyle={styles.replyDescriptionStyle}
-                  titleNumberOfLines={1}
-                  descriptionNumberOfLines={1}
-                  titleEllipsizeMode='tail'
-                  disabled={true}
-                  style={styles.replyListItem}
-                  onPress={() => console.log('pressed')}
-                  />
-                {checkMention(r.reply)}
-                </View>)}
-              </View>
-            )}
+                onPress={submitHeart}
+              >
+                <Text
+                  style={styles.likeTextStyle}
+                >
+                  {post.likes}
+                </Text>
+              </Micon.Button>
+            )
+        : (
+          <Micon.Button
+            name="heart"
+            color="pink"
+            size={28}
+            style={styles.heartIconStyle}
+            backgroundColor='white'
+            underlayColor='white'
+            activeOpacity={0.5}
+            disabled
+          >
+            <Text
+              style={styles.likeTextStyle}
+            >
+              {post.likes}
+            </Text>
+          </Micon.Button>
+              )}  
           </View>
-    </ScrollView>
-   }
-    </Provider>
+        </Surface>
+      )}
+    </View>
   );
 };
 
@@ -367,12 +195,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
-    marginBottom: 20
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    marginBottom: 20,
   },
   cardStylePost: {
     flex: 1,
@@ -384,36 +207,29 @@ const styles = StyleSheet.create({
     paddingRight: 0,
     marginBottom: 5,
   },
-  cardStyleComment: {
-    flex: 1,
-    marginTop: 5,
-    paddingLeft: 0,
-    paddingTop: 0,
-    paddingBottom: 4,
-    paddingRight: 0,
-    marginBottom: 5
+  questionListItem: {
+    paddingBottom: 0
   },
   fernAvatar: {
     marginLeft: 6,
     marginTop: 8
   },
   questionContainer: {
-    padding: 10
+    padding: 10,
   },
   questionText: {
-    fontSize: 14,
+    fontSize: 16,
     marginLeft: 62,
     marginRight: 5
   },
   answerHeadTitle: {
-    fontSize: 14,
+    fontSize: 16,
     color: 'gray',
     fontWeight: 'normal',
     marginLeft: 5,
     marginRight: 10
   },
   bottomTags: {
-    flex: 1,
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     paddingLeft: 5,
@@ -434,7 +250,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   descriptionStyle: {
-    color: 'gray'
+    color: 'black'
   },
   chip: {
     marginTop: 14,
@@ -462,116 +278,6 @@ const styles = StyleSheet.create({
     margin: 0,
     fontSize: 11
   },
-  commentHeadTitle: {
-    alignSelf: 'flex-start',
-    fontWeight: 'normal',
-    fontSize: 12,
-    color: 'gray',
-  },
-  commentDescriptionStyle: {
-    fontSize: 10,
-    alignSelf: 'flex-start',
-  },
-  commentListItem: {
-    paddingLeft: 13,
-  },
-  commentContent: {
-    color: 'gray',
-    fontSize: 13,
-    paddingLeft: 20,
-    paddingRight: 10,
-    marginRight: 10,
-    paddingBottom: 10,
-    alignSelf: 'stretch',
-  },
-  flagMenuContent: {
-    fontSize: 12,
-    color: '#cf4f46',
-  },
-  contentContainerView: {
-    flex: 1,
-  },
-  replyButtonView: {
-    flexDirection: 'row'
-  },
-  miconIconStyle: {
-    marginRight: 3
-  },
-  replyButton: {
-    backgroundColor: 'white',
-    borderRadius: 0,
-    borderColor: 'white',
-  },
-  replyButtonText: {
-    color: 'gray',
-    padding: 0,
-    margin: 0,
-    fontSize: 10
-  },
-  ellipsis: {
-    marginTop: 9,
-    marginLeft: 15
-  },
-  touchableOpacityEllipsis: {
-    width: 40
-  },
-  replyDownArrow: {
-    alignSelf: 'flex-end',
-    paddingRight: 3,
-    height: 25,
-    backgroundColor: 'white'
-  },
-  replyListItem: {
-    marginBottom: 9,
-    marginTop: 0,
-    padding: 0,
-  },
-  bigHeadReplyContainer: {
-    marginTop: 3
-  },
-  replyHeadTitle: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    fontSize: 10,
-    color: 'gray'
-  },
-  replyDescriptionStyle: {
-    position: 'absolute',
-    left: 0,
-    top: 14,
-    fontSize: 8,
-    color: 'gray',
-    padding: 0,
-    margin: 0
-  },
-  replyWithoutMention: {
-    marginLeft: 27,
-    marginBottom: 10,
-    marginRight: 20,
-    paddingTop: 0,
-    fontSize: 12,
-    color: 'gray',
-  },
-    mentionContainer: {
-    flex: 1, 
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginLeft: 27,
-    marginRight: 10
-  },
-    replyWithMentionTarget: {
-    color: 'black',
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginBottom: 10
-  },
-    replyWithMention: {
-    color: 'gray',
-    fontSize: 12,
-    marginBottom: 10,
-  },
-
 })
 
 export default SinglePostDisplay;

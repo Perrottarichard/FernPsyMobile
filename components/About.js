@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {
-  Text, View, ActivityIndicator, StyleSheet, ScrollView, Linking,
+  Text, View, StyleSheet, ScrollView, Linking,
 } from 'react-native';
 import { Switch } from 'react-native-switch';
-import { Image, Card } from 'react-native-elements';
+import { Card } from 'react-native-elements';
 import {Avatar} from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Fontisto';
 import CatFernGraphic from '../assets/undraw_friends_r511.svg';
@@ -30,7 +30,9 @@ const About = () => {
 
   return (
     <ScrollView>
-      <View style={styles.switchContainer}>
+      <View
+        style={styles.switchContainer}
+      >
         <Switch
           onValueChange={toggleLanguage}
           value={isEng}
@@ -41,69 +43,111 @@ const About = () => {
           switchLeftPx={5}
           switchRightPx={5}
           switchWidthMultiplier={2.5}
-          circleActiveColor={'lightgray'}
-          circleInActiveColor={'lightpink'}
-          backgroundActive={'lightpink'}
-          backgroundInactive={'lightgray'}
+          circleActiveColor="lightgray"
+          circleInActiveColor="lightpink"
+          backgroundActive="lightpink"
+          backgroundInactive="lightgray"
         />
       </View>
-      <View style={styles.imageContainer}>
-        <CatFernGraphic width={140} height={140} />
+      <View
+        style={styles.imageContainer}
+      >
+        <CatFernGraphic
+          width={140} height={140}
+        />
       </View>
       {!isEng
         ? (
-          <View style={styles.cardView}>
-            <Card containerStyle={styles.cardCard}>
-              <Text style={styles.titleText}>
+          <View
+            style={styles.cardView}
+          >
+            <Card
+              containerStyle={styles.cardCard}
+            >
+              <Text
+                style={styles.titleText}
+              >
                 เกี่ยวกับ Fern
               </Text>
-              <Text style={styles.bodyText}>
+              <Text
+                style={styles.bodyText}
+              >
                 ชื่อจริง นิลุบล สุขวณิช ชื่อเล่น เฟิร์น ปัจจุบันทำงานเป็นนักจิตวิทยาการปรึกษาของมหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา ประสบการณ์ทำงานในฐานะนักจิตวิทยาการปรึกษาเริ่มต้น พ.ศ. 2555
                 การศึกษา จบจากมหาวิทยาลัยเชียงใหม่ สาขาจิตวิทยาการปรึกษา ระดับปริญญาโท พ.ศ. 2559 และ สาขาจิตวิทยา(คลินิก) ระดับปริญญาตรี พ.ศ. 2548
               </Text>
             </Card>
-            <Card containerStyle={styles.cardCard}>
-              <Text style={styles.titleText}>
+            <Card
+              containerStyle={styles.cardCard}
+            >
+              <Text
+                style={styles.titleText}
+              >
                 เกี่ยวกับ App
               </Text>
-              <Text style={styles.bodyText}>
+              <Text
+                style={styles.bodyText}
+              >
                 แอปพลิเคชันที่ให้ผู้รับบริการสอบถามสิ่งที่ต้องการทราบเกี่ยวกับสุขภาพจิต โดยผู้ใช้งานทุกคนสามารถเข้ามาอ่านกระทู้ได้โดยไม่ต้องเข้าสู่ระบบ แต่ในการจะตั้งกระทู้ถามผู้ใช้งานจะต้องทำการเข้าสู่ระบบก่อนตั้งกระทู้ เพื่อป้องกันผู้ก่อกวนหรือสร้างความไม่สงบให้แก่ผู้ใช้งานคนอื่นๆ โดยที่ email ในการเข้าสู่ระบบจะไม่ถูกเปิดเผยต่อสาธารณะ ซึ่งเป็นวัตถุประสงค์ของการสร้างแอปพลิเคชันนี้ขึ้นมาก็คือการทำให้ผู้ใช้งานรู้สึกสบายใจที่จะถาม เพราะไม่มีการเปิดเผยตัวตนให้ผู้ใช้งานคนอื่นๆ ทราบ
               </Text>
             </Card>
           </View>
         )
         : (
-          <View style={styles.cardView}>
-            <Card containerStyle={styles.cardCard}>
-              <Text style={styles.titleText}>
+          <View
+            style={styles.cardView}
+          >
+            <Card
+              containerStyle={styles.cardCard}
+            >
+              <Text
+                style={styles.titleText}
+              >
                 About Fern
               </Text>
-              <Text style={styles.bodyText}>
+              <Text
+                style={styles.bodyText}
+              >
                 I'm Nilubon Sukawanich, but you can call me Fern. I work as a counselor at Rajamangala University of Technology Lanna.  I graduated from Chiang Mai University with a Bachelor's degree in Clinical Psychology in 2005, then I completed my Master's degree in Counseling Psychology from the same institution in 2016.  I have been working as a counselor since 2012.
               </Text>
             </Card>
-            <Card containerStyle={styles.cardCard}>
-              <Text style={styles.titleText}>
+            <Card
+              containerStyle={styles.cardCard}
+            >
+              <Text
+                style={styles.titleText}
+              >
                 About the App
               </Text>
-              <Text style={styles.bodyText}>
+              <Text
+                style={styles.bodyText}
+              >
                 AskFern provides a platform where people can ask questions and receive answers from an experienced counselor.  All users can access and read the forum, but in order to prevent spam and harassment, users must register before posting their own questions, as well as commenting on the posts of others.  The forum is anonymous; no user details will be displayed, and users should avoid including identifying information in their posts and comments.  My intention is to create a safe space for people to talk freely about their issues.
               </Text>
             </Card>
           </View>
         )}
-      <View style={styles.contactContainer}>
-        <View style={styles.bodySpacer} />
-        <Avatar.Image source={{uri: 'http://fern-counseling.herokuapp.com/static/media/fernhippie500.8ec92f3a.jpg'}} size={100}/>
+      <View
+        style={styles.contactContainer}
+      >
+        <View
+          style={styles.bodySpacer}
+        />
+        <Avatar.Image
+          source={{uri: 'http://fern-counseling.herokuapp.com/static/media/fernhippie500.8ec92f3a.jpg'}} size={100}
+        />
 
         {isEng
           ? (
-            <Text style={styles.contactText}>
+            <Text
+              style={styles.contactText}
+            >
               Contact Fern
             </Text>
           )
           : (
-            <Text style={styles.contactText}>
+            <Text
+              style={styles.contactText}
+            >
               ติดต่อ Fern
             </Text>
           )}
@@ -114,16 +158,24 @@ const About = () => {
           size={16}
           style={styles.lineButton}
         >
-          <Text style={styles.lineButtonText}>Add Official Line</Text>
+          <Text
+            style={styles.lineButtonText}
+          >Add Official Line
+          </Text>
         </Icon.Button>
-        <View style={styles.iconButtonSpacer} />
+        <View
+          style={styles.iconButtonSpacer}
+        />
         <Icon.Button
           onPress={() => Linking.openURL('https://www.facebook.com/NiluAcounselor/')}
           name="facebook"
           size={16}
           style={styles.fbButton}
         >
-          <Text style={styles.fbButtonText}>Add Facebook</Text>
+          <Text
+            style={styles.fbButtonText}
+          >Add Facebook
+          </Text>
         </Icon.Button>
       </View>
     </ScrollView>

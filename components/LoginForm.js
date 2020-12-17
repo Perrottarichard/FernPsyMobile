@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState} from 'react';
+import { useDispatch} from 'react-redux';
 import {
-  View, Text, ToastAndroid, StyleSheet, ScrollView, ActivityIndicator, TouchableHighlight,
+  View, Text, ToastAndroid, StyleSheet, ScrollView, ActivityIndicator,
 } from 'react-native';
 import { Input } from 'react-native-elements';
 import {Button} from 'react-native-paper'
@@ -13,6 +13,7 @@ import WelcomeCats from '../assets/undraw_welcome_cats_thqn.svg';
 
 const LoginForm = (props) => {
   const { navigation } = props;
+  // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,27 +47,47 @@ const LoginForm = (props) => {
     }
   };
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.cats}>
-        <WelcomeCats width={200} height={200} />
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+    >
+      <View
+        style={styles.cats}
+      >
+        <WelcomeCats
+          width={200} height={200}
+        />
       </View>
       <View>
-        <Input keyboardType="email-address" autoCompleteType="username" onChangeText={(text) => setEmail(text)} placeholder="Email" leftIcon={{ type: 'material-community-icons', name: 'email', color: 'lightgray' }} />
-        <Input autoCompleteType="password" onChangeText={(text) => setPassword(text)} placeholder="Password" secureTextEntry={hidePass} leftIcon={{ type: 'material-community-icons', name: 'lock-outline', color: 'lightgray' }} rightIcon={hidePass ? { type: 'font-awesome-5', name: 'eye-slash', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) } : { type: 'font-awesome-5', name: 'eye', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) }}/>
+        <Input
+          keyboardType="email-address" autoCompleteType="username" onChangeText={(text) => setEmail(text)} placeholder="Email" leftIcon={{ type: 'material-community-icons', name: 'email', color: 'lightgray' }}
+        />
+        <Input
+          autoCompleteType="password" onChangeText={(text) => setPassword(text)} placeholder="Password" secureTextEntry={hidePass} leftIcon={{ type: 'material-community-icons', name: 'lock-outline', color: 'lightgray' }} rightIcon={hidePass ? { type: 'font-awesome-5', name: 'eye-slash', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) } : { type: 'font-awesome-5', name: 'eye', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) }}
+        />
 
-        {isLoading ? <ActivityIndicator style={styles.activity} size="large" color='lightpink'/>
-            : 
-        <Button onPress={submitLogin} style={styles.loginButton} icon='login' mode='contained'>
-              <Text style={styles.loginButtonText}>
+        {isLoading ? <ActivityIndicator
+          style={styles.activity} size="large" color='lightpink'
+        />
+          : (
+            <Button
+              onPress={submitLogin} style={styles.loginButton} icon='login' mode='contained'
+            >
+              <Text
+                style={styles.loginButtonText}
+              >
                 เข้าสู่ระบบ
               </Text>
-        </Button>
-}
+            </Button>
+          )}
       </View>
       <View>
-        <Button style={styles.goToRegisterButton} mode='contained' icon='account-plus' onPress={() => navigation.navigate('RegisterForm')}>
-          <Text style={styles.openRegText}>
-           สมัครตอนนี้
+        <Button
+          style={styles.goToRegisterButton} mode='contained' icon='account-plus' onPress={() => navigation.navigate('RegisterForm')}
+        >
+          <Text
+            style={styles.openRegText}
+          >
+            สมัครตอนนี้
           </Text>
         </Button>
       </View>

@@ -8,10 +8,21 @@ import { store, persistor } from './store';
 import App from './App';
 
 const AppWrapper = () => (
-  <Provider store={store}>
-    <PersistGate loading={<View style={styles.loadingContainer}><ActivityIndicator size="large" color="pink" /></View>} persistor={persistor}>
+  <Provider
+    store={store}
+  >
+    <PersistGate
+      loading={<View
+        style={styles.loadingContainer}
+      >
+        <ActivityIndicator
+          size="large" 
+          color="pink"
+        />
+      </View>} persistor={persistor}
+    >
       <PaperProvider>
-      <App />
+        <App />
       </PaperProvider>
     </PersistGate>
   </Provider>

@@ -8,13 +8,23 @@ import AvatarPreview from './AvatarPreview';
 const Stack = createStackNavigator();
 
 const MyQuestionsNavigate = () => (
-  <Stack.Navigator screenOptions={{
-    headerShown: false,
-  }}>
-    <Stack.Screen name="MyQuestions" component={MyQuestions} options={{title: 'My Activity'}}/>
-    <Stack.Screen name="MyAnswered" component={MyAnswered} options={{ title: 'Answered' }} />
-    <Stack.Screen name="MyPending" component={MyPending} options={{ title: 'Pending' }}/>
-    <Stack.Screen name="EditAvatar" component={AvatarPreview} options={{title: 'Edit your Avatar'}}/>
+  <Stack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}
+  >
+    <Stack.Screen
+      name="MyQuestions" component={MyQuestions} options={{title: 'My Activity'}}
+    />
+    <Stack.Screen
+      name="MyAnswered" component={MyAnswered} options={{ title: 'Answered' }}
+    />
+    <Stack.Screen
+      name="MyPending" component={MyPending} options={{ title: 'Pending' }}
+    />
+    <Stack.Screen
+      name="EditAvatar" component={AvatarPreview} options={{title: 'Edit your Avatar'}}
+    />
   </Stack.Navigator>
 );
 

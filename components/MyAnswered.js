@@ -35,13 +35,16 @@ const MyAnswered = ({navigation, route}) => {
   return(
     <ScrollView>
       {myAnsweredPosts.myAnsweredPosts.map((f) => (
-        <View key={f._id}>
-          <Pressable onPress={() => {
-            navigation.navigate('SinglePostDisplay', {
-              postId: f._id,
-              postTitle: f.title,
-            });
-          }}
+        <View
+          key={f._id}
+        >
+          <Pressable
+            onPress={() => {
+              navigation.navigate('SinglePostDisplay', {
+                postId: f._id,
+                postTitle: f.title,
+              });
+            }}
           >
             <Card>
               <Card.Title>
@@ -56,13 +59,15 @@ const MyAnswered = ({navigation, route}) => {
                 {f.answer.answer}
               </Text>
               <View>
-                {f.tags.map((t) => <Badge key={t} badgeStyle={{ backgroundColor: chooseTagColor(t) }} value={t} />)}
+                {f.tags.map((t) => <Badge
+                  key={t} badgeStyle={{ backgroundColor: chooseTagColor(t) }} value={t}
+                />)}
               </View>
             </Card>
           </Pressable>
-        </View>))
-      }
-        </ScrollView>
+        </View>
+      ))}
+    </ScrollView>
   )
 }
 export default MyAnswered;

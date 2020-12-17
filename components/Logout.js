@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { TouchableHighlight, View, ToastAndroid, StyleSheet, Text } from 'react-native';
+import { View, ToastAndroid, StyleSheet, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { clearUser } from '../reducers/activeUserReducer';
 import {Button} from 'react-native-paper'
+import { clearUser } from '../reducers/activeUserReducer';
 
 const Logout = () => {
   const dispatch = useDispatch();
@@ -13,12 +13,16 @@ const Logout = () => {
     dispatch(clearUser());
   };
   return (
-    <View style={styles.view}>
-      <Button color='black' mode='text' onPress={logout} style={styles.button}>
+    <View
+      style={styles.view}
+    >
+      <Button
+        color='black' mode='text' onPress={logout} style={styles.button}
+      >
         <Text>
           ออกจากระบบ
         </Text>
-        </Button>
+      </Button>
     </View>
   );
 };

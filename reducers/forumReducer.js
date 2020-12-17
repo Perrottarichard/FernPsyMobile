@@ -7,59 +7,71 @@ const initialState = {
   tagFilter: '',
   flagged: [],
   loading: false,
-  heartedByUser: []
+  heartedByUser: [],
+  refresh: false
 };
 const forumReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'NEW_QUESTION':
-      return state;
-    case 'INIT_FORUM_PENDING':
-      return { ...state, pending: action.data };
-    case 'INIT_FORUM_ANSWERED':
-      return { ...state, answered: action.data };
-    case 'LOADING': {
-      return {...state, loading: true}
-    }
-    case 'CANCEL_LOADING': {
-      return {...state, loading: false}
-    }
-    case 'HEART':
-      const id = action.data.postId;
-      const questionToChange = state.answered.find((q) => q._id === id);
-      const changedQuestion = { ...questionToChange, likes: questionToChange.likes + 1 };
-      return { ...state, answered: state.answered.map((q) => (q._id === id ? changedQuestion : q)), heartedByUser: action.data.userHeartArray };
-    case 'POST_ANSWER':
-      const answerId = action.data._id;
-      const objectToModify = state.pending.find((s) => s._id === answerId);
-      const changedToAnswered = { ...objectToModify, isAnswered: true, answer: action.data.answer };
-      return { ...state, pending: state.pending.map((s) => (s._id === answerId ? changedToAnswered : s)) };
-    case 'EDIT_ANSWER':
-      const editedId = action.data._id;
-      const modifiedAnswer = state.answered.find((p) => p.answer._id === editedId);
-      const withNewAnswer = { ...modifiedAnswer, answer: action.data };
-      return { ...state, answered: state.answered.map((a) => (a.answer._id !== editedId ? a : withNewAnswer)) };
-    case 'ADD_COMMENT':
-      const commentedOnId = action.data._id;
-      const postToChange = state.answered.find((p) => p._id === commentedOnId);
-      const newPost = { ...postToChange, comments: postToChange.comments.concat(action.data.comments[action.data.comments.length - 1]) };
-      return { ...state, answered: state.answered.map((s) => (s._id === commentedOnId ? newPost : s)) };
-    case 'ADD_REPLY':
-      const postWithCommentToEdit = state.answered.find(p => p._id === action.data.postId)
-      const modifiedPost = {...postWithCommentToEdit, comments: postWithCommentToEdit.comments.filter(x => x._id !== action.data.commentObj._id).concat(action.data.commentObj).sort((a, b) => new Date(b.date) - new Date(a.date))}
-      return { ...state, answered: state.answered.map((s) => (s._id === action.data.postId ? modifiedPost : s)) };
-    case 'DELETE_QUESTION':
-      return { ...state, pending: state.pending.filter((q) => q._id !== action.data) };
-    case 'DELETE_COMMENT':
-      return { ...state, flagged: state.flagged.filter((c) => c._id !== action.data) };
-    case 'UNFLAG_COMMENT':
-      return { ...state, flagged: state.flagged.filter((c) => c._id !== action.data) };
-    case 'SET_TAG_FILTER':
-      return { ...state, tagFilter: action.data };
-    case 'FLAG_COMMENT':
-      return state;
-    case 'GET_FLAGGED':
-      return { ...state, flagged: action.data };
-    default: return state;
+  case 'NEW_QUESTION':
+    return state;
+  case 'INIT_FORUM_PENDING':
+    return { ...state, pending: action.data };
+  case 'INIT_FORUM_ANSWERED':
+    return { ...state, answered: action.data };
+  case 'LOADING': {
+    return {...state, loading: true}
+  }
+  case 'REFRESH': {
+    return {...state, refresh: !state.refresh}
+  }
+  case 'CANCEL_LOADING': {
+    return {...state, loading: false}
+  }
+  case 'HEART': {
+    const id = action.data.postId;
+    const questionToChange = state.answered.find((q) => q._id === id);
+    const changedQuestion = { ...questionToChange, likes: questionToChange.likes + 1 };
+    return { ...state, answered: state.answered.map((q) => (q._id === id ? changedQuestion : q)), heartedByUser: action.data.userHeartArray };
+  }
+  case 'POST_ANSWER': {
+    const answerId = action.data._id;
+    const objectToModify = state.pending.find((s) => s._id === answerId);
+    const changedToAnswered = { ...objectToModify, isAnswered: true, answer: action.data.answer };
+    return { ...state, pending: state.pending.map((s) => (s._id === answerId ? changedToAnswered : s)) };
+  }
+
+  case 'EDIT_ANSWER': {
+    const editedId = action.data._id;
+    const modifiedAnswer = state.answered.find((p) => p.answer._id === editedId);
+    const withNewAnswer = { ...modifiedAnswer, answer: action.data };
+    return { ...state, answered: state.answered.map((a) => (a.answer._id !== editedId ? a : withNewAnswer)) };
+  }
+
+  case 'ADD_COMMENT': {
+    const commentedOnId = action.data._id;
+    const postToChange = state.answered.find((p) => p._id === commentedOnId);
+    const newPost = { ...postToChange, comments: postToChange.comments.concat(action.data.comments[action.data.comments.length - 1]) };
+    return { ...state, answered: state.answered.map((s) => (s._id === commentedOnId ? newPost : s)) };
+  }
+
+  case 'ADD_REPLY': {
+    const postWithCommentToEdit = state.answered.find(p => p._id === action.data.postId)
+    const modifiedPost = {...postWithCommentToEdit, comments: postWithCommentToEdit.comments.filter(x => x._id !== action.data.commentObj._id).concat(action.data.commentObj).sort((a, b) => new Date(b.date) - new Date(a.date))}
+    return { ...state, answered: state.answered.map((s) => (s._id === action.data.postId ? modifiedPost : s)) };
+  }
+  case 'DELETE_QUESTION':
+    return { ...state, pending: state.pending.filter((q) => q._id !== action.data) };
+  case 'DELETE_COMMENT':
+    return { ...state, flagged: state.flagged.filter((c) => c._id !== action.data) };
+  case 'UNFLAG_COMMENT':
+    return { ...state, flagged: state.flagged.filter((c) => c._id !== action.data) };
+  case 'SET_TAG_FILTER':
+    return { ...state, tagFilter: action.data };
+  case 'FLAG_COMMENT':
+    return state;
+  case 'GET_FLAGGED':
+    return { ...state, flagged: action.data };
+  default: return state;
   }
 };
 export const loading = () => ({
@@ -68,12 +80,16 @@ export const loading = () => ({
 export const cancelLoading = () => ({
   type: 'CANCEL_LOADING'
 })
+export const shouldRefresh = () => ({
+  type: 'REFRESH'
+})
 export const heart = (postId) => async (dispatch) => {
   const userHeartArray = await forumService.heartUp(postId);
   dispatch({
     type: 'HEART',
-    data: {postId: postId, userHeartArray: userHeartArray}
+    data: {postId, userHeartArray}
   });
+  dispatch(shouldRefresh())
 };
 export const answerQuestion = (answer) => async (dispatch) => {
   try {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  ToastAndroid, View, Text, StyleSheet, ScrollView, TouchableHighlight,
+  ToastAndroid, View, Text, StyleSheet, ScrollView,
 } from 'react-native';
 import { Input } from 'react-native-elements';
 import {Button} from 'react-native-paper'
@@ -55,24 +55,46 @@ const RegisterForm = ({ navigation }) => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.graphicView}>
-        <Graphic width={200} height={200} />
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+    >
+      <View
+        style={styles.graphicView}
+      >
+        <Graphic
+          width={200} height={200}
+        />
       </View>
-      <View style={styles.formView}>
-        <Input keyboardType="email-address" placeholder="email" onChangeText={(email) => setEmail(email)} style={styles.input} />
+      <View
+        style={styles.formView}
+      >
+        <Input
+          keyboardType="email-address" placeholder="email" onChangeText={(email) => setEmail(email)} style={styles.input}
+        />
 
-        <Input placeholder="Password" autoCompleteType="password" secureTextEntry onChangeText={(pass) => setPassword(pass)} style={styles.input} />
+        <Input
+          placeholder="Password" autoCompleteType="password" secureTextEntry onChangeText={(pass) => setPassword(pass)} style={styles.input}
+        />
 
-        <Input onChangeText={(cpass) => setConfirmPassword(cpass)} type="password" placeholder="ยืนยัน Password" secureTextEntry style={styles.input} />
+        <Input
+          onChangeText={(cpass) => setConfirmPassword(cpass)} type="password" placeholder="ยืนยัน Password" secureTextEntry style={styles.input}
+        />
 
-        <Button onPress={submitRegister} icon='account-plus' mode='contained' style={styles.submitRegister}>
-          <Text style={styles.submitRegisterText}>
+        <Button
+          onPress={submitRegister} icon='account-plus' mode='contained' style={styles.submitRegister}
+        >
+          <Text
+            style={styles.submitRegisterText}
+          >
             สมัครเข้าใช้งาน
           </Text>
         </Button>
-        <Button mode='contained' icon='keyboard-backspace' onPress={() => navigation.navigate('LoginForm')} style={styles.cancelRegister}>
-          <Text style={styles.cancelRegisterText}>
+        <Button
+          mode='contained' icon='keyboard-backspace' onPress={() => navigation.navigate('LoginForm')} style={styles.cancelRegister}
+        >
+          <Text
+            style={styles.cancelRegisterText}
+          >
             ยกเลิก
           </Text>
         </Button>

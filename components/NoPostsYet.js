@@ -7,13 +7,19 @@ import EmptyStreet from '../assets/undraw_empty_street_sfxm.svg'
 const NoPostsYet = () => {
 
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+    >
       <View>
-        <Text style={styles.text}>
-        ยังไม่มีโพสต์
+        <Text
+          style={styles.text}
+        >
+          ยังไม่มีโพสต์
         </Text>
       </View>
-      <EmptyStreet width={200} height={200}/>
+      <EmptyStreet
+        width={200} height={200}
+      />
     </View>
   );
 };

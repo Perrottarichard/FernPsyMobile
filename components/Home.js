@@ -10,22 +10,32 @@ const Home = () => {
 
   if ((user && user.token) && !redirecting) {
     return (
-      <View style={styles.ifLoggedInContainer}>
-        <View style={styles.myQuestionsContainer}>
-        <MyQuestionsNavigate/>
+      <View
+        style={styles.ifLoggedInContainer}
+      >
+        <View
+          style={styles.myQuestionsContainer}
+        >
+          <MyQuestionsNavigate />
         </View>
-        </View>
+      </View>
     );
   }
   if (redirecting) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="pink" />
+      <View
+        style={styles.loadingContainer}
+      >
+        <ActivityIndicator
+          size="large" color="pink"
+        />
       </View>
     );
   }
   return (
-    <View style={styles.loginContainer}>
+    <View
+      style={styles.loginContainer}
+    >
       <LoginNavigate />
     </View>
   );

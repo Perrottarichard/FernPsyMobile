@@ -26,17 +26,21 @@ function TabNav() {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
-            <Icon name="home" color={color} size={26} />
+            <Icon
+              name="home" color={color} size={26}
+            />
           ),
         }}
       />
-           <Tab.Screen
+      <Tab.Screen
         name="View Forum"
         component={ForumNavigate}
         options={{
           tabBarLabel: 'Forum',
           tabBarIcon: ({ color }) => (
-            <Icon name="forum" color={color} size={26} />
+            <Icon
+              name="forum" color={color} size={26}
+            />
           ),
         }}
       />
@@ -46,7 +50,9 @@ function TabNav() {
         options={{
           tabBarLabel: 'Ask Fern',
           tabBarIcon: ({ color }) => (
-            <Icon name="post-add" color={color} size={26} />
+            <Icon
+              name="post-add" color={color} size={26}
+            />
           ),
         }}
       />
@@ -56,17 +62,21 @@ function TabNav() {
         options={{
           tabBarLabel: 'Articles',
           tabBarIcon: ({ color }) => (
-            <Ficons name="book-reader" color={color} size={26} />
+            <Ficons
+              name="book-reader" color={color} size={26}
+            />
           ),
         }}
       />
-       <Tab.Screen
+      <Tab.Screen
         name="About"
         component={About}
         options={{
           tabBarLabel: 'About',
           tabBarIcon: ({ color }) => (
-            <Icon name="info-outline" color={color} size={26} />
+            <Icon
+              name="info-outline" color={color} size={26}
+            />
           ),
         }}
       />

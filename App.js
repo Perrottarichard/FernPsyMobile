@@ -11,6 +11,7 @@ import TabNav from './components/TabNav';
 const App = () => {
   const user = useSelector((state) => state.activeUser.user);
   const dispatch = useDispatch();
+
   const getLoggedUser = async () => {
     const loggedUserJSON = await AsyncStorage.getItem('loggedForumUser');
     if (loggedUserJSON) {
@@ -30,7 +31,7 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log('App UF forumAnswered running')
+    console.log('App initForumAnswered')
     dispatch(initializeForumAnswered());
   }, []);
 

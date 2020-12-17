@@ -10,7 +10,6 @@ import {PacmanIndicator} from 'react-native-indicators'
 import {BigHead} from 'react-native-bigheads'
 import { heart } from '../reducers/forumReducer';
 import { setFlaggedComment } from '../reducers/forumReducer';
-// import {heartLock} from '../reducers/activeUserReducer'
 import {timeSince} from './ForumDisplayAll'
 
 const tagOptions = [

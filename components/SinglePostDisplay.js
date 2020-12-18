@@ -1,15 +1,17 @@
 import React from 'react';
 import {createSelector} from 'reselect'
 import {
-  Text, View, StyleSheet, ToastAndroid,
+   View, StyleSheet, ToastAndroid, Appearance
 } from 'react-native';
-import { List, Chip, Surface, Avatar} from 'react-native-paper';
+import { List, Chip, Surface, Avatar, Text, DefaultTheme, DarkTheme} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {BigHead} from 'react-native-bigheads'
 import { heart } from '../reducers/forumReducer';
 import {timeSince} from './ForumDisplayAll'
 import Loading from './Loading'
+
+const colorMode = Appearance.getColorScheme()
 
 const tagOptions = [
   { tag: 'ปัญหาเรื่องเพศ', backgroundColor: '#ff5c4d', icon: 'gender-male-female' },
@@ -74,7 +76,7 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
 
   return (
     <View
-      style={styles.container}
+      style={colorMode === 'light' ? styles.container : styles.containerDark}
     >
       {post && (
         <Surface
@@ -126,10 +128,9 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
               name='comment-plus'
               size={28}
               style={styles.commentMiconButton}
-              iconStyle={styles.miconIconStyle}
               color='lightgray'
-              underlayColor='white'
-              backgroundColor='white'
+              underlayColor='transparent'
+              backgroundColor='transparent'
               activeOpacity={0.5} 
               onPress={() => {
                 if(!user){
@@ -154,8 +155,8 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
                 color="pink"
                 size={28}
                 style={styles.heartIconStyle}
-                backgroundColor='white'
-                underlayColor='white'
+                backgroundColor='transparent'
+                underlayColor='transparent'
                 activeOpacity={0.5}
                 onPress={submitHeart}
               >
@@ -172,8 +173,8 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
             color="pink"
             size={28}
             style={styles.heartIconStyle}
-            backgroundColor='white'
-            underlayColor='white'
+            backgroundColor='transparent'
+            underlayColor='transparent'
             activeOpacity={0.5}
             disabled
           >
@@ -196,6 +197,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 5,
     marginBottom: 20,
+    backgroundColor: DefaultTheme.colors.background
+  },
+  containerDark: {
+    flex: 1,
+    padding: 5,
+    marginBottom: 20,
+    backgroundColor: DarkTheme.colors.background,
   },
   cardStylePost: {
     flex: 1,
@@ -220,11 +228,10 @@ const styles = StyleSheet.create({
   questionText: {
     fontSize: 16,
     marginLeft: 62,
-    marginRight: 5
+    marginRight: 5,
   },
   answerHeadTitle: {
     fontSize: 16,
-    color: 'gray',
     fontWeight: 'normal',
     marginLeft: 5,
     marginRight: 10
@@ -250,7 +257,6 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   descriptionStyle: {
-    color: 'black'
   },
   chip: {
     marginTop: 14,
@@ -265,9 +271,9 @@ const styles = StyleSheet.create({
     opacity: 0.7
   },
   commentMiconButton: {
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     borderRadius: 0,
-    borderColor: 'white',
+    borderColor: 'transparent',
     alignSelf: 'center',
     marginTop: 3,
     height: 40

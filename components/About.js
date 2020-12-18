@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import {
-  Text, View, StyleSheet, ScrollView, Linking,
+  View, StyleSheet, ScrollView, Linking,
 } from 'react-native';
 import { Switch } from 'react-native-switch';
-import { Card } from 'react-native-elements';
-import {Avatar} from 'react-native-paper'
+import {Avatar, Card, Text} from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Fontisto';
 import CatFernGraphic from '../assets/undraw_friends_r511.svg';
 
@@ -190,10 +189,13 @@ const styles = StyleSheet.create({
     marginTop: 10 
   },
   cardView: {
-    textAlign: 'left'
+    textAlign: 'left',
+    paddingLeft: 10,
+    paddingRight: 10
+
   },
   cardCard: {
-    borderRadius: 20
+    borderRadius: 20,
   },
   imageContainer: {
     justifyContent: 'center', alignItems: 'center', marginTop: 40,

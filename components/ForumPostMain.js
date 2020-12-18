@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Keyboard, Text, ToastAndroid, View, StyleSheet, TextInput, ScrollView, LogBox,
+  Keyboard, Text, TextInput, ToastAndroid, View, StyleSheet, ScrollView, LogBox,
 } from 'react-native';
-import {Button} from 'react-native-paper'
+import {Button, useTheme} from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux';
 import {Picker} from '@react-native-picker/picker'
 import { addQuestion } from '../reducers/forumReducer';
@@ -10,6 +10,7 @@ import PostGraphic from '../assets/undraw_add_post_64nu.svg';
 
 const ForumPostMain = (props) => {
   const { navigation } = props;
+  const theme = useTheme();
   const activeUser = useSelector((state) => state.activeUser);
   const [isLoading, setIsLoading] = useState(false);
   const [question, setQuestion] = useState('');
@@ -82,10 +83,10 @@ const ForumPostMain = (props) => {
         style={styles.form}
       >
         <View
-          style={styles.textAreaContainerTitle}
+          style={{...styles.textAreaContainerTitle, borderColor: theme.colors.onSurface}}
         >
           <TextInput
-            style={styles.textAreaTitle}
+            style={{...styles.textAreaTitle, color: theme.colors.onSurface}}
             multiline={false}
             numberOfLines={1}
             placeholder="พิมพ์หัวข้อที่นี่"
@@ -99,10 +100,10 @@ const ForumPostMain = (props) => {
         </View>
 
         <View
-          style={styles.textAreaContainerQuestion}
+          style={{...styles.textAreaContainerQuestion, borderColor: theme.colors.onSurface}}
         >
           <TextInput
-            style={styles.textAreaQuestion}
+            style={{...styles.textAreaQuestion, color: theme.colors.onSurface}}
             multiline
             textAlignVertical="top"
             numberOfLines={4}
@@ -117,12 +118,13 @@ const ForumPostMain = (props) => {
           />
         </View>
         <View
-          style={styles.picker}
+          style={{...styles.picker, borderColor: theme.colors.onSurface, color: theme.colors.onSurface, backgroundColor: theme.colors.surface}}
         >
           <Picker
             onValueChange={(value) => setSelectedTags(value)}
             selectedValue={selectedTags}
-            style={styles.styleTextDropdown}
+            style={{...styles.styleTextDropdown, backgroundColor: theme.colors.background, color: theme.colors.placeholder}}
+            itemStyle={{color: theme.colors.onSurface}}
             prompt='Choose a tag'
           >
             <Picker.Item
@@ -210,38 +212,40 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     padding: 5,
+    borderWidth: 0.25,
+    borderRadius: 10,
+    marginBottom: 10
   },
   textAreaContainerQuestion: {
     paddingLeft: 10,
     paddingRight: 10,
     padding: 5,
+    borderWidth: 0.25,
+    borderRadius: 10,
+    marginBottom: 10
   },
   textAreaTitle: {
     height: 50,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: 'white',
     justifyContent: 'flex-start',
     fontSize: 16,
-    color: 'gray'
   },
   textAreaQuestion: {
     height: 100,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: 'white',
     justifyContent: 'flex-start',
     fontSize: 16
   },
   picker: {
-    marginTop: 10,
     paddingLeft: 10,
     paddingRight: 10,
+    borderWidth: 0.25,
+    borderRadius: 10
   },
   styleTextDropdown: {
     paddingLeft: 10, 
-    color: 'gray',
-    backgroundColor: 'white',
   },
   submitPostButton: {
     alignSelf: 'center',

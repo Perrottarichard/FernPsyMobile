@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {useTheme} from 'react-native-paper'
 import { NavigationContainer } from '@react-navigation/native';
 import { setUser } from './reducers/activeUserReducer';
 import { initializeForumAnswered } from './reducers/forumReducer';
@@ -11,7 +12,7 @@ import TabNav from './components/TabNav';
 const App = () => {
   const user = useSelector((state) => state.activeUser.user);
   const dispatch = useDispatch();
-
+  const theme = useTheme()
   const getLoggedUser = useCallback(async () => {
     const loggedUserJSON = await AsyncStorage.getItem('loggedForumUser');
     if (loggedUserJSON) {
@@ -37,7 +38,9 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      theme={theme}
+    >
       <TabNav />
     </NavigationContainer>
   );

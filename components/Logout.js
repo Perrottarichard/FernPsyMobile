@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { View, ToastAndroid, StyleSheet, Text } from 'react-native';
+import { View, ToastAndroid, StyleSheet } from 'react-native';
+import {Text} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Button} from 'react-native-paper'
 import { clearUser } from '../reducers/activeUserReducer';
@@ -17,7 +18,7 @@ const Logout = () => {
       style={styles.view}
     >
       <Button
-        color='black' mode='text' onPress={logout} style={styles.button}
+        mode='text' onPress={logout} style={styles.button}
       >
         <Text>
           ออกจากระบบ

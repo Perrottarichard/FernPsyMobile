@@ -1,16 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
-  Text, View, FlatList, StyleSheet, ActivityIndicator, RefreshControl
+  View, FlatList, StyleSheet, ActivityIndicator, RefreshControl, Appearance
 } from 'react-native';
-import { Card } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import {BigHead} from 'react-native-bigheads'
-import { List, Chip, IconButton} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Ionicons'
-import {Picker} from '@react-native-picker/picker'
+import { List, Chip, Text, Card , Menu, Provider, Button, DefaultTheme, DarkTheme} from 'react-native-paper';
 import { initializeForumAnswered } from '../reducers/forumReducer';
 import NoPostsYet from './NoPostsYet'
-
+import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const tagOptions = [
   { tag: 'ปัญหาเรื่องเพศ', backgroundColor: '#ff5c4d', icon: 'gender-male-female' },
@@ -94,7 +91,7 @@ const applyFilterByTag = (allAnsweredPosts, filter) => {
 }
 const Item = ({ item, onPress}) => (
   <Card
-    containerStyle={styles.cardStyle} key={item._id}
+    style={styles.cardStyle} key={item._id}
   >
     <List.Item
       title={item.title}
@@ -108,7 +105,6 @@ const Item = ({ item, onPress}) => (
       descriptionNumberOfLines={2}
       underlayColor='white'
       rippleColor='#f2f2f2'
-      borderless
       titleEllipsizeMode='tail'
       onPress={onPress}
       style={styles.listItemStyle}
@@ -117,31 +113,37 @@ const Item = ({ item, onPress}) => (
       style={styles.bottomTags}
     >
       <Chip
-        key={item._id} mode='outlined' icon={chooseIcon(item.tags[0])} style={styles.chip} textStyle={{ color: chooseTagColor(item.tags[0]), ...styles.chipText}}
+        key={item._id} mode='outlined' backgroundColor='white' icon={chooseIcon(item.tags[0])} style={styles.chip} textStyle={{ color: chooseTagColor(item.tags[0]), ...styles.chipText}}
       >{item.tags[0]}
       </Chip>
-      <Text
-        style={styles.commentCountText}
-      >
-        {item.comments?.length}
-      </Text>
-      <IconButton
-        icon='comment'
-        size={22}
-        style={styles.commentIconButton}
-        color='lightgray'
-      />
-      <Icon
-        name="ios-heart-sharp"
-        color="pink"
+      <Micon.Button
+        name='comment'
         size={24}
-        style={styles.heartIconStyle}
-      />
-      <Text
-        style={styles.likeTextStyle}
+        style={styles.commentMiconButton}
+        color='lightgray'
+        underlayColor='transparent'
+        backgroundColor='transparent'
       >
-        {item.likes}
-      </Text>
+        <Text
+          style={styles.miconText}
+        >{item.comments.length}
+        </Text>
+      </Micon.Button>
+      <Micon.Button
+        name="heart"
+        color="pink"
+        size={26}
+        style={styles.commentMiconButton}
+        underlayColor='transparent'
+        backgroundColor='transparent'
+        iconStyle={styles.fixHeartPosition}
+      >
+        <Text
+          style={styles.miconText}
+        >
+          {item.likes}
+        </Text>
+      </Micon.Button>
     </View>
   </Card>
 );
@@ -152,9 +154,19 @@ const ForumDisplayAll = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   let forumAnswered = useSelector((state) => state.forum.answered);
   const [selectedFilterTag, setSelectedFilterTag] = useState('none')
+  const [filterMenuVisible, setFilterMenuVisible] = useState(false)
+
+  const colorMode = Appearance.getColorScheme()
 
   forumAnswered = applyFilterByTag(forumAnswered, selectedFilterTag)
   const DATA = forumAnswered.sort((a, b) => new Date(b.date) - new Date(a.date))
+
+  const handleSetFilter = (value) => {
+    setSelectedFilterTag(value)
+  }
+  const openMenu = () => setFilterMenuVisible(true);
+
+  const closeMenu = () => setFilterMenuVisible(false);
 
   const onRefresh = useCallback(() => {
     console.log('Callback Refresh init answered')
@@ -164,10 +176,10 @@ const ForumDisplayAll = ({navigation}) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(!forumAnswered){
+    if(forumAnswered.length === 0){
       dispatch(initializeForumAnswered());
-    } else {
-      setIsLoading(false);
+    }else{
+      setIsLoading(false)
     }
   }, [dispatch, forumAnswered]);
 
@@ -196,86 +208,94 @@ const ForumDisplayAll = ({navigation}) => {
     );
   }
   return (
-    <View
-      style={styles.container}
-    >
+    <Provider>
       <View
-        style={styles.filterContainer}
+        style={colorMode === 'light' ? styles.container : styles.containerDark}
       >
-        <Icon
-          name='ios-filter-outline' style={styles.filterIcon} size={24}
-        />
-        <Picker
-          onValueChange={(value) => setSelectedFilterTag(value)}
-          selectedValue={selectedFilterTag}
-          dropdownIconColor='#d896ac'
-          style={styles.picker}
+        <View
+          style={styles.filterContainer}
         >
-          <Picker.Item
-            label='Show all' value='none'
-          />
-          <Picker.Item
-            label='ปัญหาเรื่องเพศ' value='ปัญหาเรื่องเพศ'
-          />
-          <Picker.Item
-            label='การเสพติด' value='การเสพติด'
-          />
-          <Picker.Item
-            label='เพื่อน' value='เพื่อน'
-          />
-          <Picker.Item
-            label='lgbt' value='lgbt'
-          />
-          <Picker.Item
-            label='โรคซึมเศร้า' value='โรคซึมเศร้า'
-          />
-          <Picker.Item
-            label='ความวิตกกังวล' value='ความวิตกกังวล'
-          />
-          <Picker.Item
-            label='ไบโพลาร์' value='ไบโพลาร์'
-          />
-          <Picker.Item
-            label='relationships' value='relationships'
-          />
-          <Picker.Item
-            label='การทำงาน' value='การทำงาน'
-          />
-          <Picker.Item
-            label='สุขภาพจิต' value='สุขภาพจิต'
-          />
-          <Picker.Item
-            label='การรังแก' value='การรังแก'
-          />
-          <Picker.Item
-            label='ครอบครัว' value='ครอบครัว'
-          />
-          <Picker.Item
-            label='อื่นๆ' value='อื่นๆ'
-          />
-          <Picker.Item
-            label='ความรัก' value='ความรัก'
-          />
-        </Picker>
+          <Menu
+            style={styles.picker}
+            visible={filterMenuVisible}
+            onDismiss={closeMenu}
+            anchor={<Button
+              onPress={openMenu}
+            ><Text>Filter</Text></Button>}
+          >
+            <Menu.Item
+              title='Show all' onPress={() => handleSetFilter('none')}
+            />
+            <Menu.Item
+              title='ปัญหาเรื่องเพศ' value='ปัญหาเรื่องเพศ' onPress={() => handleSetFilter('ปัญหาเรื่องเพศ')}
+            />
+            <Menu.Item
+              title='การเสพติด' value='การเสพติด'
+            />
+            <Menu.Item
+              title='เพื่อน' value='เพื่อน'
+            />
+            <Menu.Item
+              title='lgbt' value='lgbt'
+            />
+            <Menu.Item
+              title='โรคซึมเศร้า' value='โรคซึมเศร้า'
+            />
+            <Menu.Item
+              title='ความวิตกกังวล' value='ความวิตกกังวล'
+            />
+            <Menu.Item
+              title='ไบโพลาร์' value='ไบโพลาร์'
+            />
+            <Menu.Item
+              title='relationships' value='relationships'
+            />
+            <Menu.Item
+              title='การทำงาน' value='การทำงาน'
+            />
+            <Menu.Item
+              title='สุขภาพจิต' value='สุขภาพจิต'
+            />
+            <Menu.Item
+              title='การรังแก' value='การรังแก'
+            />
+            <Menu.Item
+              title='ครอบครัว' value='ครอบครัว'
+            />
+            <Menu.Item
+              title='อื่นๆ' value='อื่นๆ'
+            />
+            <Menu.Item
+              title='ความรัก' value='ความรัก'
+            />
+          </Menu>
+        </View>
+      
+        <FlatList 
+          style={styles.scroll} 
+          refreshControl={<RefreshControl
+            refreshing={refreshing} onRefresh={onRefresh}
+          />}
+          data={DATA}
+          renderItem={renderItem}
+          keyExtractor={item => item._id}
+          ListEmptyComponent={<NoPostsYet />}
+        />
       </View>
-      <FlatList 
-        style={styles.scroll} 
-        refreshControl={<RefreshControl
-          refreshing={refreshing} onRefresh={onRefresh}
-        />}
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item._id}
-        ListEmptyComponent={<NoPostsYet />}
-      />
-    </View>
+    </Provider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 5
+    padding: 5,
+    backgroundColor: DefaultTheme.colors.background
+  },
+  containerDark: {
+    flex: 1,
+    padding: 5,
+    backgroundColor: DarkTheme.colors.background
   },
   loadingContainer: {
     flex: 1,
@@ -289,19 +309,19 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingBottom: 0,
   },
-  filterIcon: {
-    position: 'absolute',
-    left: 20,
-    color: 'gray',
-    top: 12,
-  },
-  picker: {
-    width: 200,
-    position: 'absolute',
-    left: 45,
-    top: 0,
-    color: 'gray',
-  },
+  // filterIcon: {
+  //   position: 'absolute',
+  //   left: 20,
+  //   color: 'gray',
+  //   top: 12,
+  // },
+  // picker: {
+  //   width: 200,
+  //   position: 'absolute',
+  //   left: 45,
+  //   top: 0,
+  //   color: 'gray',
+  // },
   scroll: {
     flex: 1,
   },
@@ -311,7 +331,8 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     paddingTop: 0,
     paddingBottom: 4,
-    paddingRight: 0
+    paddingRight: 0,
+    marginBottom: 14
   },
   listItemStyle: {
     paddingLeft: 5, 
@@ -320,20 +341,11 @@ const styles = StyleSheet.create({
   },
   bottomTags: {
     flexDirection: 'row-reverse',
-    justifyContent: 'center',
-    padding: 0,
-    margin: 0
-  },
-  heartIconStyle: {
-    position: 'absolute', 
-    right: 16,
-    bottom: 4
-  },
-  likeTextStyle: {
-    position: 'absolute',
-    right: 42,
-    bottom: 6,
-    color: 'gray'
+    justifyContent: 'space-between',
+    paddingLeft: 5,
+    paddingRight: 5,
+    alignItems: 'center',
+    height: 40,
   },
   headTitle: {
     fontWeight: 'bold',
@@ -343,30 +355,35 @@ const styles = StyleSheet.create({
     color: 'gray'
   },
   chip: {
-    position: 'absolute',
-    left: 10,
-    bottom: 7,
-    paddingLeft: 0,
-    paddingRight: 1,
+    marginTop: 10,
+    marginRight: 5,
+    height: 20,
     alignItems: 'center',
-    height: 20
+    alignSelf: 'flex-start'
   },
   chipText: {
-    padding: 0,
     fontSize: 10,
     marginLeft: 0,
     marginRight: 2,
     opacity: 0.7
   },
-  commentIconButton: {
-    margin: 0,
+  commentMiconButton: {
+    backgroundColor: 'transparent',
+    borderRadius: 0,
+    borderColor: 'white',
+    alignSelf: 'center',
+    marginTop: 3,
+    height: 40,
   },
-  commentCountText: {
-    position: 'absolute',
-    right: 172,
-    bottom: 7,
+  miconText: {
     color: 'gray',
-    fontSize: 14
-  }
+    padding: 0,
+    margin: 0,
+    fontSize: 11,
+    backgroundColor: 'transparent'
+  },
+  fixHeartPosition: {
+    paddingBottom: 2
+  },
 });
 export default ForumDisplayAll;

@@ -1,11 +1,19 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider as PaperProvider, DefaultTheme, DarkTheme} from 'react-native-paper';
 import { PersistGate } from 'redux-persist/integration/react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View, Appearance} from 'react-native';
 import { store, persistor } from './store';
 
 import App from './App';
+const colorMode = Appearance.getColorScheme()
+
+let theme;
+if(colorMode === 'light'){
+  theme = {...DefaultTheme}
+}else{
+  theme = {...DarkTheme}
+}
 
 const AppWrapper = () => (
   <Provider
@@ -13,7 +21,7 @@ const AppWrapper = () => (
   >
     <PersistGate
       loading={<View
-        style={styles.loadingContainer}
+        style={{...styles.loadingContainer, backgroundColor: theme.colors.background}}
       >
         <ActivityIndicator
           size="large" 
@@ -21,7 +29,9 @@ const AppWrapper = () => (
         />
       </View>} persistor={persistor}
     >
-      <PaperProvider>
+      <PaperProvider
+        theme={theme}
+      >
         <App />
       </PaperProvider>
     </PersistGate>

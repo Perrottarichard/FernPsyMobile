@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  View, Text, ScrollView, RefreshControl, StyleSheet,
+  View,  ScrollView, RefreshControl, StyleSheet,
 } from 'react-native';
-import {Button} from 'react-native-paper'
+import {Button, Text} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import { initializeForumPending, initializeForumAnswered } from '../reducers/forumReducer';
 import Logout from './Logout'
@@ -72,9 +72,7 @@ const MyQuestions = ({navigation}) => {
           <Button
             mode='text' icon='square-edit-outline' style={styles.showEditAvatarButton} onPress={() => navigation.navigate("EditAvatar")}
           >
-            <Text
-              style={styles.showEditAvatarText}
-            >
+            <Text >
               แก้ไข
             </Text>
           </Button>
@@ -137,7 +135,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray'
   },
   avatarIntro: {
-    color: 'black',
     alignSelf: 'center'
   },
   showEditAvatarButton: {
@@ -150,9 +147,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  showEditAvatarText: {
-    color: 'black'
   },
   showAnsweredText: {
     color: 'black',

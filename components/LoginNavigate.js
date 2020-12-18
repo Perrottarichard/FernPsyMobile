@@ -13,7 +13,7 @@ const LoginNavigate = () => (
     }}
   >
     <Stack.Screen
-      name="LoginForm" component={LoginForm} options={{ title: 'Choose a Topic' }}
+      name="LoginForm" component={LoginForm}
     />
     <Stack.Screen
       name="RegisterForm" component={RegisterForm}

@@ -1,13 +1,14 @@
 import React, { useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {View, Text, TextInput, StyleSheet, Keyboard, ScrollView, ToastAndroid, ActivityIndicator} from 'react-native'
-import {Button, Surface} from 'react-native-paper'
+import {View, TextInput, StyleSheet, Keyboard, ScrollView, ToastAndroid, ActivityIndicator} from 'react-native'
+import {Button, Surface, Text, useTheme} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
 import { addComment, shouldRefresh} from '../reducers/forumReducer';
 
 const AddComment = ({navigation, route}) => {
   const { postId} = route.params;
+  const theme = useTheme()
   const post = useSelector(state => state.forum.answered.find(p => p._id === postId))
   const user = useSelector(state => state.activeUser.user)
   const dispatch = useDispatch()
@@ -63,7 +64,7 @@ const AddComment = ({navigation, route}) => {
           name='quote-left' size={25} color='gray'
         />
         <TextInput
-          style={styles.textAreaComment}
+          style={{...styles.textAreaComment, color: theme.colors.onSurface }}
           multiline
           autoFocus
           textAlignVertical="center"

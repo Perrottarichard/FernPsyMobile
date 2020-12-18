@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useMemo} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import{FlatList, View, Text, StyleSheet, TouchableOpacity, ToastAndroid} from 'react-native'
+import{FlatList, View, StyleSheet, TouchableOpacity, ToastAndroid, Appearance} from 'react-native'
 import {BigHead} from 'react-native-bigheads'
-import { List, Surface, Menu, Provider} from 'react-native-paper';
+import { List, Surface, Menu, Provider, Text, DefaultTheme, DarkTheme} from 'react-native-paper';
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icon from 'react-native-vector-icons/Ionicons'
 import {createSelector} from 'reselect'
@@ -11,13 +11,17 @@ import {timeSince} from './ForumDisplayAll'
 import SinglePostDisplay from './SinglePostDisplay'
 import Loading from './Loading'
 
+const colorMode = Appearance.getColorScheme()
+
 const selectUser = createSelector(
   state => state.activeUser,
   activeUser => activeUser.user
 )
 
 const Item = ({ item, onPress, visibleMenu, openMenu, closeMenu, replies, flag}) => (
-  <View>
+  <View
+    style={colorMode === 'light' ? styles.container : styles.containerDark}
+  >
     <Surface
       style={styles.cardStyleComment}
     >
@@ -32,11 +36,11 @@ const Item = ({ item, onPress, visibleMenu, openMenu, closeMenu, replies, flag})
               name='reply' 
               color='lightgray' 
               size={18}
-              underlayColor='white'
+              underlayColor='transparent'
               activeOpacity={0.5} 
               iconStyle={styles.miconIconStyle}
               style={styles.replyButton} 
-              backgroundColor='white'
+              backgroundColor='transparent'
               onPress={onPress}
             >
               <Text
@@ -136,9 +140,6 @@ const DisplayComments = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [visibleMenu, setVisibleMenu] = useState('');
 
-  console.log(refresh)
-
-
   const memoizedComments = useMemo(() => {
     return post?.comments?.sort((a, b) => new Date(a.date) - new Date(b.date))
   }, [post])
@@ -202,7 +203,7 @@ const DisplayComments = ({navigation, route}) => {
   return(
     <Provider>
       <View
-        style={styles.container}
+        style={colorMode === 'light' ? styles.container : styles.containerDark}
       >
         <FlatList
           ListHeaderComponent={(
@@ -226,25 +227,35 @@ const DisplayComments = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    padding: 5,
+    paddingBottom: 20,
+    backgroundColor: DefaultTheme.colors.background
+  },
+  containerDark: {
+    flex: 1,
+    padding: 5,
+    paddingBottom: 20,
+    backgroundColor: DarkTheme.colors.background,
   },
   scroll: {
     flex: 1,
   },
   cardStyleComment: {
     flex: 1,
-    marginTop: 5,
+    marginTop: 0,
     paddingLeft: 0,
     paddingTop: 0,
     paddingBottom: 4,
     paddingRight: 0,
-    marginBottom: 5
+    marginBottom: 0,
+    borderTopColor: 'gray',
+    borderTopWidth: 0.5
   },
   commentHeadTitle: {
     alignSelf: 'flex-start',
     fontWeight: 'normal',
     fontSize: 14,
-    color: 'black',
   },
   commentDescriptionStyle: {
     fontSize: 10,
@@ -254,7 +265,6 @@ const styles = StyleSheet.create({
     paddingLeft: 13,
   },
   commentContent: {
-    color: 'black',
     fontSize: 14,
     paddingRight: 10,
     marginLeft: 18,
@@ -277,9 +287,9 @@ const styles = StyleSheet.create({
     marginRight: 3
   },
   replyButton: {
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     borderRadius: 0,
-    borderColor: 'white',
+    borderColor: 'transparent',
   },
   replyButtonText: {
     color: 'gray',
@@ -307,7 +317,6 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     fontSize: 10,
-    color: 'black'
   },
   replyDescriptionStyle: {
     position: 'absolute',
@@ -324,7 +333,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     paddingTop: 0,
     fontSize: 13,
-    color: 'black',
+    color: 'gray'
   },
 });
 

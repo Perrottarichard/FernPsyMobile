@@ -1,18 +1,20 @@
 import React, { useState} from 'react';
 import { useDispatch} from 'react-redux';
 import {
-  View, Text, ToastAndroid, StyleSheet, ScrollView, ActivityIndicator,
+  View, ToastAndroid, StyleSheet, ActivityIndicator
 } from 'react-native';
 import { Input } from 'react-native-elements';
-import {Button} from 'react-native-paper'
+import {Button, useTheme, Text} from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setUser, redirecting } from '../reducers/activeUserReducer';
 import loginService from '../services/loginService';
 import forumService from '../services/forumService';
 import WelcomeCats from '../assets/undraw_welcome_cats_thqn.svg';
 
+
 const LoginForm = (props) => {
   const { navigation } = props;
+  const theme = useTheme();
   // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -46,9 +48,10 @@ const LoginForm = (props) => {
       }
     }
   };
+
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
+    <View
+      style={{...styles.loginContainer, backgroundColor: theme.colors.background}}
     >
       <View
         style={styles.cats}
@@ -59,10 +62,10 @@ const LoginForm = (props) => {
       </View>
       <View>
         <Input
-          keyboardType="email-address" autoCompleteType="username" onChangeText={(text) => setEmail(text)} placeholder="Email" leftIcon={{ type: 'material-community-icons', name: 'email', color: 'lightgray' }}
+          keyboardType="email-address" autoCompleteType="username" onChangeText={(text) => setEmail(text)} placeholder="Email" leftIcon={{ type: 'material-community-icons', name: 'email', color: 'lightgray' }} inputStyle={{color: theme.colors.onBackground}}
         />
         <Input
-          autoCompleteType="password" onChangeText={(text) => setPassword(text)} placeholder="Password" secureTextEntry={hidePass} leftIcon={{ type: 'material-community-icons', name: 'lock-outline', color: 'lightgray' }} rightIcon={hidePass ? { type: 'font-awesome-5', name: 'eye-slash', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) } : { type: 'font-awesome-5', name: 'eye', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) }}
+          autoCompleteType="password" onChangeText={(text) => setPassword(text)} inputStyle={{color: theme.colors.onBackground}} placeholder="Password" secureTextEntry={hidePass} leftIcon={{ type: 'material-community-icons', name: 'lock-outline', color: 'lightgray' }} rightIcon={hidePass ? { type: 'font-awesome-5', name: 'eye-slash', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) } : { type: 'font-awesome-5', name: 'eye', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) }} 
         />
 
         {isLoading ? <ActivityIndicator
@@ -91,11 +94,14 @@ const LoginForm = (props) => {
           </Text>
         </Button>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  loginContainer: {
+    flex: 1
+  },
   loginButton: {
     alignSelf: 'center',
     borderRadius: 20,
@@ -124,11 +130,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: 300,
     backgroundColor: 'lightgray',
-    marginBottom: 20
+    marginBottom: 20,
   },
   cats: {
     paddingTop: 20,
-    alignSelf: 'center',
+    alignSelf: 'stretch',
+    alignItems: 'center'
   },
 });
 

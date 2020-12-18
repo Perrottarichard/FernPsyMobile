@@ -1,16 +1,17 @@
 import React from 'react'
-
 import {ActivityIndicator, View, StyleSheet} from 'react-native'
 
-const Loading = () => (
-  <View
-    style={styles.loadingContainer}
-  >
-    <ActivityIndicator
-      size="large" color="pink"
-    />
-  </View>
+const Loading = () => {
+  return(
+    <View
+      style={styles.loadingContainer}
+    >
+      <ActivityIndicator
+        size="large" color="pink"
+      />
+    </View>
 );
+  };
 
 const styles = StyleSheet.create({
   loadingContainer: {

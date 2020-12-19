@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  ToastAndroid, View, Text, StyleSheet, ScrollView,
+  ToastAndroid, View, Text, StyleSheet,ScrollView,
 } from 'react-native';
 import { Input } from 'react-native-elements';
 import {Button} from 'react-native-paper'
@@ -56,7 +56,7 @@ const RegisterForm = ({ navigation }) => {
 
   return (
     <ScrollView
-      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.registerContainer}
     >
       <View
         style={styles.graphicView}
@@ -66,10 +66,10 @@ const RegisterForm = ({ navigation }) => {
         />
       </View>
       <View
-        style={styles.formView}
+        style={styles.inputContainer}
       >
         <Input
-          keyboardType="email-address" placeholder="email" onChangeText={(email) => setEmail(email)} style={styles.input}
+          keyboardType="email-address" placeholder="Email" onChangeText={(email) => setEmail(email)} style={styles.input}
         />
 
         <Input
@@ -79,6 +79,10 @@ const RegisterForm = ({ navigation }) => {
         <Input
           onChangeText={(cpass) => setConfirmPassword(cpass)} type="password" placeholder="ยืนยัน Password" secureTextEntry style={styles.input}
         />
+      </View>
+      <View
+        style={styles.buttonContainer}
+      >
 
         <Button
           onPress={submitRegister} icon='account-plus' mode='contained' style={styles.submitRegister}
@@ -103,16 +107,27 @@ const RegisterForm = ({ navigation }) => {
   );
 };
 const styles = StyleSheet.create({
+  registerContainer: {
+    flex: 1
+  },
   graphicView: {
+    flex: 2 ,
+    alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 5
   },
-  formView: {
+  inputContainer: {
+    flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
   },
   input: {
     padding: 0
+  },
+  buttonContainer: {
+    flex: 2,
+    paddingTop: 10
   },
   submitRegister: {
     alignSelf: 'center',

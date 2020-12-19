@@ -71,7 +71,9 @@ const ForumPostMain = (props) => {
     }
   };
   return (
-    <ScrollView>
+    <ScrollView
+      contentContainerStyle={styles.postContainer}
+    >
       <View
         style={styles.graphicContainer}
       >
@@ -80,10 +82,10 @@ const ForumPostMain = (props) => {
         />
       </View>
       <View
-        style={styles.form}
+        style={styles.inputContainer}
       >
         <View
-          style={{...styles.textAreaContainerTitle, borderColor: theme.colors.onSurface}}
+          style={{...styles.textAreaContainerTitle, borderColor: theme.colors.onSurface, backgroundColor: theme.colors.surface}}
         >
           <TextInput
             style={{...styles.textAreaTitle, color: theme.colors.onSurface}}
@@ -100,7 +102,7 @@ const ForumPostMain = (props) => {
         </View>
 
         <View
-          style={{...styles.textAreaContainerQuestion, borderColor: theme.colors.onSurface}}
+          style={{...styles.textAreaContainerQuestion, borderColor: theme.colors.onSurface, backgroundColor: theme.colors.surface}}
         >
           <TextInput
             style={{...styles.textAreaQuestion, color: theme.colors.onSurface}}
@@ -123,7 +125,7 @@ const ForumPostMain = (props) => {
           <Picker
             onValueChange={(value) => setSelectedTags(value)}
             selectedValue={selectedTags}
-            style={{...styles.styleTextDropdown, backgroundColor: theme.colors.background, color: theme.colors.placeholder}}
+            style={{...styles.styleTextDropdown, color: theme.colors.placeholder}}
             itemStyle={{color: theme.colors.onSurface}}
             prompt='Choose a tag'
           >
@@ -174,44 +176,49 @@ const ForumPostMain = (props) => {
             />
           </Picker>
         </View>
-        <View
-          style={styles.afterForm}
+      </View>
+      <View
+        style={styles.buttonContainer}
+      >
+        <Text
+          style={styles.afterFormText}
+        >ชื่อที่คุณใช้ล็อคอินจะไม่ปรากฏในคำถามของคุณ
+        </Text>
+        <Button
+          mode='contained' icon='text-box-plus' onPress={handleEditorSubmit} style={styles.submitPostButton}
         >
           <Text
-            style={styles.afterFormText}
-          >ชื่อที่คุณใช้ล็อคอินจะไม่ปรากฏในคำถามของคุณ
-          </Text>
-          <Button
-            mode='contained' icon='text-box-plus' onPress={handleEditorSubmit} style={styles.submitPostButton}
+            style={styles.submitPostText}
           >
-            <Text
-              style={styles.submitPostText}
-            >
-              ส่งคำถาม
-            </Text>
-          </Button>
-        </View>
+            ส่งคำถาม
+          </Text>
+        </Button>
       </View>
+      
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  postContainer: {
+    flex: 1
+  },
   graphicContainer: {
-    flex: 1,
+    flex: 2,
     marginTop: 10,
     marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  form: {
-    flex: 1,
-    justifyContent: 'space-evenly'
+  inputContainer: {
+    flex: 4,
+    justifyContent: 'space-evenly',
+    marginLeft: 5,
+    marginRight: 5
   },
   textAreaContainerTitle: {
     paddingLeft: 10,
     paddingRight: 10,
-    padding: 5,
     borderWidth: 0.25,
     borderRadius: 10,
     marginBottom: 10
@@ -219,7 +226,6 @@ const styles = StyleSheet.create({
   textAreaContainerQuestion: {
     paddingLeft: 10,
     paddingRight: 10,
-    padding: 5,
     borderWidth: 0.25,
     borderRadius: 10,
     marginBottom: 10
@@ -239,26 +245,24 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   picker: {
+    borderWidth: 0.25,
+    borderRadius: 10,
     paddingLeft: 10,
     paddingRight: 10,
-    borderWidth: 0.25,
-    borderRadius: 10
   },
   styleTextDropdown: {
-    paddingLeft: 10, 
   },
   submitPostButton: {
     alignSelf: 'center',
     borderRadius: 20,
     width: 300,
     backgroundColor: 'lightpink',
-    marginBottom: 20
   },
   submitPostText: {
     color: 'black',
   },
-  afterForm: {
-    marginTop: 20,
+  buttonContainer: {
+    flex: 1,
   },
   afterFormText: {
     alignSelf: 'center',

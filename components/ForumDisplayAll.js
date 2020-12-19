@@ -23,7 +23,7 @@ const tagOptions = [
   { tag: 'การรังแก', backgroundColor: '#5e320f', icon: 'emoticon-angry-outline' },
   { tag: 'ครอบครัว', backgroundColor: '#ffa64d', icon: 'home-heart' },
   { tag: 'อื่นๆ', backgroundColor: '#707571', icon: 'head-question' },
-  { tag: 'การเสพติด', backgroundColor: '#40073d', icon: 'pill' },
+  { tag: 'การเสพติด', backgroundColor: '#eb4034', icon: 'pill' },
 ];
 const chooseTagColor = (passed) => {
   const color = tagOptions.find((t) => t.tag === passed);

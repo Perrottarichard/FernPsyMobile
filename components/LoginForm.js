@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 import { useDispatch} from 'react-redux';
 import {
-  View, ToastAndroid, StyleSheet, ActivityIndicator
+  View, ToastAndroid, StyleSheet, ActivityIndicator, ScrollView
 } from 'react-native';
 import { Input } from 'react-native-elements';
 import {Button, useTheme, Text} from 'react-native-paper'
@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setUser, redirecting } from '../reducers/activeUserReducer';
 import loginService from '../services/loginService';
 import forumService from '../services/forumService';
-import WelcomeCats from '../assets/undraw_welcome_cats_thqn.svg';
+import AskFernLogo2 from '../assets/askfernlogo2.svg'
 
 
 const LoginForm = (props) => {
@@ -50,27 +50,37 @@ const LoginForm = (props) => {
   };
 
   return (
-    <View
-      style={{...styles.loginContainer, backgroundColor: theme.colors.background}}
+    <ScrollView
+      contentContainerStyle={{...styles.loginContainer, backgroundColor: theme.colors.background}}
     >
       <View
-        style={styles.cats}
+        style={styles.askFernLogoContainer}
       >
-        <WelcomeCats
-          width={200} height={200}
+        <AskFernLogo2
+          width={100} height={100}
         />
+        <Text
+          style={styles.askFernText}
+        >
+          AskFern
+        </Text>
       </View>
-      <View>
+      <View
+        style={styles.inputContainer}
+      >
         <Input
           keyboardType="email-address" autoCompleteType="username" onChangeText={(text) => setEmail(text)} placeholder="Email" leftIcon={{ type: 'material-community-icons', name: 'email', color: 'lightgray' }} inputStyle={{color: theme.colors.onBackground}}
         />
         <Input
           autoCompleteType="password" onChangeText={(text) => setPassword(text)} inputStyle={{color: theme.colors.onBackground}} placeholder="Password" secureTextEntry={hidePass} leftIcon={{ type: 'material-community-icons', name: 'lock-outline', color: 'lightgray' }} rightIcon={hidePass ? { type: 'font-awesome-5', name: 'eye-slash', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) } : { type: 'font-awesome-5', name: 'eye', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) }} 
         />
-
+      </View>
+      <View
+        style={styles.buttonContainer}
+      >
         {isLoading ? <ActivityIndicator
           style={styles.activity} size="large" color='lightpink'
-        />
+                     />
           : (
             <Button
               onPress={submitLogin} style={styles.loginButton} icon='login' mode='contained'
@@ -82,8 +92,6 @@ const LoginForm = (props) => {
               </Text>
             </Button>
           )}
-      </View>
-      <View>
         <Button
           style={styles.goToRegisterButton} mode='contained' icon='account-plus' onPress={() => navigation.navigate('RegisterForm')}
         >
@@ -94,13 +102,35 @@ const LoginForm = (props) => {
           </Text>
         </Button>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   loginContainer: {
-    flex: 1
+    flex: 1,
+  },
+  askFernLogoContainer: {
+    flex: 3,
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  askFernText: {
+    fontFamily: 'Arizonia-Regular', 
+    marginTop: 20, 
+    padding: 0, 
+    color: 'gray', 
+    fontSize: 30,
+    marginBottom: 5,
+  },
+  inputContainer: {
+    flex: 2,
+    justifyContent:'center'
+  },
+  buttonContainer: {
+    flex: 2,
+    justifyContent: 'center',
   },
   loginButton: {
     alignSelf: 'center',
@@ -115,7 +145,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: 300,
     marginBottom: 20,
-    marginTop: 5
+    marginTop: 5,
   },
   loginButtonText: {
     color: 'black',
@@ -132,11 +162,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
     marginBottom: 20,
   },
-  cats: {
-    paddingTop: 20,
-    alignSelf: 'stretch',
-    alignItems: 'center'
-  },
+  
 });
 
 export default LoginForm;

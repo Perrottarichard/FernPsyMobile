@@ -1,9 +1,11 @@
-import React, {useState, useEffect} from 'react'
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState, useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {View, StyleSheet, ScrollView, ToastAndroid, ActivityIndicator} from 'react-native'
-import {RadioButton, Text, Surface, TextInput, Button} from 'react-native-paper'
+import {View, StyleSheet, FlatList, ToastAndroid, ActivityIndicator, Animated, Dimensions} from 'react-native'
+import {RadioButton, Text, Card, TextInput, Button,} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import {updateUserAvatar} from '../reducers/activeUserReducer'
+import {ExpandingDot} from 'react-native-animated-pagination-dots'
 
 const accessoryButtons = [
   {name: "ไม่มี", value: "none"},
@@ -111,6 +113,100 @@ const mouthButtons = [
   {name: "แลบลิ้น", value: "piercedTongue"},
 ]
 
+const DATA = [
+  {
+    type: 'accessory',
+    buttons: accessoryButtons,
+    title: 'เครื่องประดับ'
+  },
+  {
+    type: 'bgColor',
+    buttons: bgColorButtons,
+    title: 'สีพื้นหลัง'
+  },
+  {
+    type: 'body',
+    buttons: bodyButtons,
+    title: 'รูปร่าง'
+  },
+  {
+    type: 'clothing',
+    buttons: clothingButtons,
+    title: 'เสื้อผ้า'
+  },
+  {
+    type: 'graphic',
+    buttons: graphicButtons,
+    title: 'ลายเสื้อ'
+  },
+  {
+    type: 'clothingColor',
+    buttons: clothingColorButtons,
+    title: 'สีเสื้อผ้า'
+  },
+  {
+    type: 'mouth',
+    buttons: mouthButtons,
+    title: 'ปาก'
+  },
+  {
+    type: 'skinTone',
+    buttons: skinToneButtons,
+    title: 'สีผิว'
+  },
+  {
+    type: 'eyes',
+    buttons: eyesButtons,
+    title: 'ตา'
+  },
+  {
+    type: 'eyebrows',
+    buttons: eyebrowsButtons,
+    title: 'คิ้ว'
+  },
+  {
+    type: 'facialHair',
+    buttons: facialHairButtons,
+    title: 'หนวด'
+  },
+  {
+    type: 'hair',
+    buttons: hairButtons,
+    title: 'ทรงผม'
+  },
+  {
+    type: 'hairColor',
+    buttons: hairColorButtons,
+    title: 'สีผม'
+  }
+]
+
+const Item = ({item, handleValueChange, initTypes, index}) => (
+  <Card
+    style={styles.surface}
+  >
+    <Text
+      style={styles.groupCategoryText}
+    >
+      {item.title}
+    </Text>
+    <RadioButton.Group
+      onValueChange={newValue => handleValueChange(item.type, newValue)}
+      value={initTypes[index]}
+    >
+      {item.buttons.map(b => (
+        <Card.Content
+          key={b.value} style={styles.innerChoices}
+        >
+          <RadioButton.Item
+            label={b.name} value={b.value} style={styles.radioButtonItems}
+          />
+        </Card.Content>
+            ))}
+    </RadioButton.Group>
+  </Card>
+)
+const ITEM_HEIGHT = Dimensions.get('screen').width
 
 const AvatarPreview = ({navigation}) => {
 
@@ -133,6 +229,8 @@ const AvatarPreview = ({navigation}) => {
   const [skinTone, setSkinTone] = useState(avatarProps.skinTone ? avatarProps.skinTone :'brown')
   const [mouth, setMouth] = useState(avatarProps.mouth ? avatarProps.mouth : 'lips')
   const [name, setName] = useState(avatarName || 'anonymous')
+
+  const scrollX = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if(user){
@@ -175,6 +273,79 @@ const AvatarPreview = ({navigation}) => {
       }
     }
   }
+  const handleValueChange = (type, newValue) => {
+    switch(type) {
+      case 'accessory':
+        setAccessory(newValue);
+        break;
+      case 'bgColor':
+        setBgColor(newValue);
+        break;
+      case 'body':
+        setBody(newValue);
+        break;
+      case 'clothing':
+        setClothing(newValue);
+        break;
+      case 'clothingColor':
+        setClothingColor(newValue)
+        break;
+      case 'eyebrows':
+        setEyebrows(newValue);
+        break
+      case 'eyes':
+        setEyes(newValue);
+        break;
+      case 'facialHair':
+        setFacialHair(newValue);
+        break;
+      case 'graphic':
+        setGraphic(newValue);
+        break;
+      case 'hair':
+        setHair(newValue);
+        break;
+      case 'hairColor':
+        setHairColor(newValue);
+        break;
+      case 'mouth':
+        setMouth(newValue);
+        break;
+      case 'skinTone':
+        setSkinTone(newValue)
+      }
+  }
+
+  const renderItem = ({ item, index }) => {
+    const initTypes =  [
+      accessory,
+      bgColor,
+      body,
+      clothing,
+      clothingColor,
+      eyebrows,
+      eyes,
+      facialHair,
+      graphic,
+      hair,
+      hairColor,
+      skinTone,
+      mouth,
+    ]
+    return (
+      <View
+        style={styles.eachItemContainer}
+      >
+        <Item
+          item={item}
+          index={index}
+          handleValueChange={handleValueChange}
+          initTypes={initTypes}
+        />
+      </View>
+    );
+  };
+
   if(isLoading) {
     return(
       <View
@@ -191,17 +362,17 @@ const AvatarPreview = ({navigation}) => {
     <View
       style={styles.container}
     >
-      <TextInput
-        style={styles.textInput}
-        mode='outlined'
-        label="ชื่อ"
-        value={name}
-        dense
-        onChangeText={text => setName(text)}
-      />
       <View
-        styles={styles.previewContainer}
+        style={styles.previewContainer}
       >
+        <TextInput
+          style={styles.textInput}
+          mode='outlined'
+          label="ชื่อ"
+          value={name}
+          dense
+          onChangeText={text => setName(text)}
+        />
         <BigHead
           accessory={accessory}
           bgColor={bgColor}
@@ -226,334 +397,59 @@ const AvatarPreview = ({navigation}) => {
           containerStyles={styles.avatarPreview}
         />
       </View>
-      <ScrollView
-        horizontal showsHorizontalScrollIndicator={false}
+      <View
+        style={styles.flatListContainer}
       >
-
-        <Surface
-          style={styles.surface}
+        <FlatList
+          data={DATA}
+          keyExtractor={item => item.type}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          initialNumToRender={3}
+          maxToRenderPerBatch={5}
+          getItemLayout={(data, index) => ({length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index})}
+          pagingEnabled={true}
+          decelerationRate={'normal'}
+          scrollEventThrottle={16}
+          // onEndReached={() => ToastAndroid.show('Lookin Good! Don`t forget to save', ToastAndroid.SHORT)}
+          renderItem={(item, index) => renderItem(item, index)}
+          onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          {
+            useNativeDriver: false,
+          }
+        )}
         >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            สีผิว
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setSkinTone(newValue)}
-            value={skinTone}
-          >
-            {skinToneButtons.map(b => (
-              <View
-                key={b.value} style={styles.innerChoices}
-              >
- 
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-  
-              </View>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-        <Surface
-          style={styles.surface}
-        >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            ปาก
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setMouth(newValue)}
-            value={mouth}
-          >
-            {mouthButtons.map(b => (
-              <ScrollView
-                key={b.value} style={styles.innerChoices}
-              >
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-              </ScrollView>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-        <Surface
-          style={styles.surface}
-        >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            เครื่องประดับ
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setAccessory(newValue)}
-            value={accessory}
-          >
-            {accessoryButtons.map(b => (
-              <View
-                key={b.value} style={styles.innerChoices}
-              >
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-              </View>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-        <Surface
-          style={styles.surface}
-        >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            สีพื้นหลัง
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setBgColor(newValue)}
-            value={bgColor}
-          >
-            {bgColorButtons.map(b => (
-              <View
-                key={b.value} style={styles.innerChoices}
-              >
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-              </View>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-        <Surface
-          style={styles.surface}
-        >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            รูปร่าง
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setBody(newValue)}
-            value={body}
-          >
-            {bodyButtons.map(b => (
-              <View
-                key={b.value} style={styles.innerChoices}
-              >
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-              </View>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-        <Surface
-          style={styles.surface}
-        >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            เสื้อผ้า
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setClothing(newValue)}
-            value={clothing}
-          >
-            {clothingButtons.map(b => (
-              <View
-                key={b.value} style={styles.innerChoices}
-              >
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-              </View>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-        <Surface
-          style={styles.surface}
-        >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            สีเสื้อผ้า
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setClothingColor(newValue)}
-            value={clothingColor}
-          >
-            {clothingColorButtons.map(b => (
-              <View
-                key={b.value} style={styles.innerChoices}
-              >
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-              </View>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-        <Surface
-          style={styles.surface}
-        >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            คิ้ว
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setEyebrows(newValue)}
-            value={eyebrows}
-          >
-            {eyebrowsButtons.map(b => (
-              <View
-                key={b.value} style={styles.innerChoices}
-              >
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-              </View>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-        <Surface
-          style={styles.surface}
-        >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            ตา
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setEyes(newValue)}
-            value={eyes}
-          >
-            {eyesButtons.map(b => (
-              <View
-                key={b.value} style={styles.innerChoices}
-              >
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-              </View>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-        <Surface
-          style={styles.surface}
-        >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            หนวด
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setFacialHair(newValue)}
-            value={facialHair}
-          >
-            {facialHairButtons.map(b => (
-              <View
-                key={b.value} style={styles.innerChoices}
-              >
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-              </View>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-        <Surface
-          style={styles.surface}
-        >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            ลายเสื้อ
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setGraphic(newValue)}
-            value={graphic}
-          >
-            {graphicButtons.map(b => (
-              <View
-                key={b.value} style={styles.innerChoices}
-              >
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-              </View>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-        <Surface
-          style={styles.surface}
-        >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            ทรงผม
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setHair(newValue)}
-            value={hair}
-          >
-            {hairButtons.map(b => (
-              <View
-                key={b.value} style={styles.innerChoices}
-              >
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-              </View>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-        <Surface
-          style={styles.surface}
-        >
-          <Text
-            style={styles.groupCategoryText}
-          >
-            สีผม
-          </Text>
-          <RadioButton.Group
-            onValueChange={newValue => setHairColor(newValue)}
-            value={hairColor}
-          >
-            {hairColorButtons.map(b => (
-              <View
-                key={b.value} style={styles.innerChoices}
-              >
-                <RadioButton.Item
-                  label={b.name} value={b.value} style={styles.radioButtonItems}
-                />
-              </View>
-            ))}
-          </RadioButton.Group>
-        </Surface>
-
-      </ScrollView>
-      <Button
-        mode='contained' style={styles.submitButton} onPress={submitUpdate}
+        </FlatList>
+      </View>
+      <View
+        style={styles.dotAndButtonContainer}
       >
-        <Text
-          style={styles.submitButtonText}
+        <ExpandingDot
+          data={DATA}
+          expandingDotWidth={30}
+          dotSize={26}
+          scrollX={scrollX}
+          inActiveDotOpacity={0.3}
+          dotStyle={{
+        width: 10,
+        height: 10,
+        backgroundColor: 'gray',
+        borderRadius: 5,
+        marginHorizontal: 5
+    }}
+          containerStyle={{position: 'relative'}}
+        />
+        <Button
+          mode='contained' style={styles.submitButton} onPress={submitUpdate}
         >
-          บันทึก
-        </Text>
-      </Button>
+          <Text
+            style={styles.submitButtonText}
+          >
+            บันทึก
+          </Text>
+        </Button>
+      </View>
     </View>
   )
 }
@@ -569,24 +465,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  flatListContainer: {
+    flex: 2,
+  },
+  eachItemContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: Dimensions.get('screen').width,
+  },
   surface: {
     padding: 0,
     elevation: 4,
     marginTop: 0,
-    marginLeft: 10,
-    marginRight:10,
-    borderRadius: 10,
-    height: 220,
-    width: 200
+    height: 240,
+    width: 300
   },
-  previewContainer : {
+  previewContainer: {
     flex: 1,
+    paddingBottom: 20
   },
   avatarPreview: {
     alignSelf: 'center',
-    marginBottom: 20,
     marginTop: 0,
-    paddingTop: 0
+    paddingTop: 0,
   },
   textInput: {
     marginTop: 10,
@@ -595,21 +498,17 @@ const styles = StyleSheet.create({
     marginBottom: 0
   },
   groupCategoryText: {
-    fontWeight: 'bold',
     fontSize: 16,
-    backgroundColor: '#474747',
-    color: 'white',
-    paddingLeft: 15,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    fontVariant: ['small-caps'],
+    alignSelf: 'center',
     height: 30
-  },
-  innerChoices: {
-    // color: 'gray'
   },
   radioButtonItems: {
-    height: 30
+    height: 34,
+  },
+  dotAndButtonContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   submitButton: {
     backgroundColor: 'pink',
@@ -620,7 +519,6 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     alignSelf: 'center',
-    fontWeight: 'bold'
   }
 })
 export default AvatarPreview;

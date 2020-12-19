@@ -36,22 +36,11 @@ const Home = () => {
     );
   }
   return (
-    <View
-      style={{...styles.loginContainer, backgroundColor: theme.colors.background}}
-    >
-      <LoginNavigate />
-    </View>
+    <LoginNavigate />
   );
 };
 
 const styles = StyleSheet.create({
-  loginContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',

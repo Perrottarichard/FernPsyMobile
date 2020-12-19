@@ -2,7 +2,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {View, StyleSheet, FlatList, ToastAndroid, ActivityIndicator, Animated, Dimensions} from 'react-native'
-import {RadioButton, Text, Card, TextInput, Button,} from 'react-native-paper'
+import {RadioButton, Text, Card, TextInput, Button,useTheme} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import {updateUserAvatar} from '../reducers/activeUserReducer'
 import {ExpandingDot} from 'react-native-animated-pagination-dots'
@@ -181,18 +181,19 @@ const DATA = [
   }
 ]
 
-const Item = ({item, handleValueChange, initTypes, index}) => (
+const Item = ({item, handleValueChange, index, initTypes}) => (
   <Card
     style={styles.surface}
   >
+    {console.log('rend')}
     <Text
       style={styles.groupCategoryText}
     >
       {item.title}
     </Text>
     <RadioButton.Group
-      onValueChange={newValue => handleValueChange(item.type, newValue)}
-      value={initTypes[index]}
+      onValueChange={newValue => handleValueChange(item.type, newValue, index)}
+      value={initTypes[`${item.type}`]}
     >
       {item.buttons.map(b => (
         <Card.Content
@@ -211,10 +212,14 @@ const ITEM_HEIGHT = Dimensions.get('screen').width
 const AvatarPreview = ({navigation}) => {
 
   const user = useSelector(state => state.activeUser.user)
+  const theme = useTheme()
   const {avatarProps} = user
   const {avatarName} = user
+  const [name, setName] = useState(avatarName || 'anonymous')
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
+
+
   const [accessory, setAccessory] = useState(avatarProps.accessory ? avatarProps.accessory : 'none')
   const [bgColor, setBgColor] = useState(avatarProps.bgColor ? avatarProps.bgColor : 'blue')
   const [body, setBody] = useState(avatarProps.body ? avatarProps.body :'breasts')
@@ -228,7 +233,6 @@ const AvatarPreview = ({navigation}) => {
   const [hairColor, setHairColor] = useState(avatarProps.hairColor ? avatarProps.hairColor :'brown')
   const [skinTone, setSkinTone] = useState(avatarProps.skinTone ? avatarProps.skinTone :'brown')
   const [mouth, setMouth] = useState(avatarProps.mouth ? avatarProps.mouth : 'lips')
-  const [name, setName] = useState(avatarName || 'anonymous')
 
   const scrollX = useRef(new Animated.Value(0)).current;
 
@@ -237,7 +241,6 @@ const AvatarPreview = ({navigation}) => {
       setIsLoading(false)
     }
   }, [user])
-
   const submitUpdate = async () => {
     if(!name) {
       ToastAndroid.show('Your avatar must have a name', ToastAndroid.SHORT)
@@ -273,7 +276,9 @@ const AvatarPreview = ({navigation}) => {
       }
     }
   }
+
   const handleValueChange = (type, newValue) => {
+
     switch(type) {
       case 'accessory':
         setAccessory(newValue);
@@ -292,7 +297,7 @@ const AvatarPreview = ({navigation}) => {
         break;
       case 'eyebrows':
         setEyebrows(newValue);
-        break
+        break;
       case 'eyes':
         setEyes(newValue);
         break;
@@ -312,12 +317,12 @@ const AvatarPreview = ({navigation}) => {
         setMouth(newValue);
         break;
       case 'skinTone':
-        setSkinTone(newValue)
+        setSkinTone(newValue);
       }
   }
 
-  const renderItem = ({ item, index }) => {
-    const initTypes =  [
+  const renderItem = ({ item, index}) => {
+    const initTypes = [
       accessory,
       bgColor,
       body,
@@ -331,7 +336,7 @@ const AvatarPreview = ({navigation}) => {
       hairColor,
       skinTone,
       mouth,
-    ]
+  ]
     return (
       <View
         style={styles.eachItemContainer}
@@ -339,8 +344,8 @@ const AvatarPreview = ({navigation}) => {
         <Item
           item={item}
           index={index}
-          handleValueChange={handleValueChange}
           initTypes={initTypes}
+          handleValueChange={handleValueChange}
         />
       </View>
     );
@@ -406,13 +411,12 @@ const AvatarPreview = ({navigation}) => {
           horizontal
           showsHorizontalScrollIndicator={false}
           initialNumToRender={3}
-          maxToRenderPerBatch={5}
           getItemLayout={(data, index) => ({length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index})}
           pagingEnabled={true}
           decelerationRate={'normal'}
-          scrollEventThrottle={16}
+          scrollEventThrottle={0}
           // onEndReached={() => ToastAndroid.show('Lookin Good! Don`t forget to save', ToastAndroid.SHORT)}
-          renderItem={(item, index) => renderItem(item, index)}
+          renderItem={(item, index, initTypes) => renderItem(item, index, initTypes)}
           onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {x: scrollX}}}],
           {
@@ -434,7 +438,7 @@ const AvatarPreview = ({navigation}) => {
           dotStyle={{
         width: 10,
         height: 10,
-        backgroundColor: 'gray',
+        backgroundColor: theme.colors.primary,
         borderRadius: 5,
         marginHorizontal: 5
     }}
@@ -512,6 +516,7 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     backgroundColor: 'pink',
+    color: 'black',
     borderRadius: 20,
     width: 300,
     alignSelf: 'center',

@@ -2,7 +2,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {View, StyleSheet, FlatList, ToastAndroid, ActivityIndicator, Animated, Dimensions} from 'react-native'
-import {RadioButton, Text, Card, TextInput, Button,useTheme} from 'react-native-paper'
+import {RadioButton, Text, Card, TextInput, Button} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import {updateUserAvatar} from '../reducers/activeUserReducer'
 import {ExpandingDot} from 'react-native-animated-pagination-dots'
@@ -181,11 +181,10 @@ const DATA = [
   }
 ]
 
-const Item = ({item, handleValueChange, index, initTypes}) => (
+const Item = ({item, handleValueChange, index, avatarPropsLocal}) => (
   <Card
     style={styles.surface}
   >
-    {console.log('rend')}
     <Text
       style={styles.groupCategoryText}
     >
@@ -193,7 +192,7 @@ const Item = ({item, handleValueChange, index, initTypes}) => (
     </Text>
     <RadioButton.Group
       onValueChange={newValue => handleValueChange(item.type, newValue, index)}
-      value={initTypes[`${item.type}`]}
+      value={avatarPropsLocal[item.type]}
     >
       {item.buttons.map(b => (
         <Card.Content
@@ -212,27 +211,27 @@ const ITEM_HEIGHT = Dimensions.get('screen').width
 const AvatarPreview = ({navigation}) => {
 
   const user = useSelector(state => state.activeUser.user)
-  const theme = useTheme()
   const {avatarProps} = user
   const {avatarName} = user
   const [name, setName] = useState(avatarName || 'anonymous')
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
-
-  const [accessory, setAccessory] = useState(avatarProps.accessory ? avatarProps.accessory : 'none')
-  const [bgColor, setBgColor] = useState(avatarProps.bgColor ? avatarProps.bgColor : 'blue')
-  const [body, setBody] = useState(avatarProps.body ? avatarProps.body :'breasts')
-  const [clothing, setClothing] = useState(avatarProps.clothing ? avatarProps.clothing :'shirt')
-  const [clothingColor, setClothingColor] = useState(avatarProps.clothingColor ? avatarProps.clothingColor :'white')
-  const [eyebrows, setEyebrows] = useState(avatarProps.eyebrows ? avatarProps.eyebrows :'leftLowered')
-  const [eyes, setEyes] = useState(avatarProps.eyes ? avatarProps.eyes :'normal')
-  const [facialHair, setFacialHair] = useState(avatarProps.facialHair ? avatarProps.facialHair :'none')
-  const [graphic, setGraphic] = useState(avatarProps.graphic ? avatarProps.graphic :'none')
-  const [hair, setHair] = useState(avatarProps.hair ? avatarProps.hair :'none')
-  const [hairColor, setHairColor] = useState(avatarProps.hairColor ? avatarProps.hairColor :'brown')
-  const [skinTone, setSkinTone] = useState(avatarProps.skinTone ? avatarProps.skinTone :'brown')
-  const [mouth, setMouth] = useState(avatarProps.mouth ? avatarProps.mouth : 'lips')
+  const [avatarPropsLocal, setAvatarPropsLocal] = useState({
+    accessory: avatarProps.accessory ? avatarProps.accessory : 'none',
+      bgColor:avatarProps.bgColor ? avatarProps.bgColor : 'blue',
+      body:avatarProps.body ? avatarProps.body :'breasts',
+      clothing:avatarProps.clothing ? avatarProps.clothing :'shirt',
+      clothingColor:avatarProps.clothingColor ? avatarProps.clothingColor :'white',
+      eyebrows:avatarProps.eyebrows ? avatarProps.eyebrows :'leftLowered',
+      eyes:avatarProps.eyes ? avatarProps.eyes :'normal',
+      facialHair:avatarProps.facialHair ? avatarProps.facialHair :'none',
+      graphic:avatarProps.graphic ? avatarProps.graphic :'none',
+      hair:avatarProps.hair ? avatarProps.hair :'none',
+      hairColor:avatarProps.hairColor ? avatarProps.hairColor :'brown',
+      skinTone:avatarProps.skinTone ? avatarProps.skinTone :'brown',
+      mouth:avatarProps.mouth ? avatarProps.mouth : 'lips',
+  })
 
   const scrollX = useRef(new Animated.Value(0)).current;
 
@@ -253,19 +252,19 @@ const AvatarPreview = ({navigation}) => {
         lipColor: 'pink',
         showBackground: true,
         bgShape: 'squircle',
-        accessory,
-        bgColor,
-        body,
-        clothing,
-        clothingColor,
-        eyebrows,
-        eyes,
-        facialHair,
-        graphic,
-        hair,
-        hairColor,
-        skinTone,
-        mouth,
+        accessory: avatarPropsLocal.accessory,
+        bgColor: avatarPropsLocal.bgColor,
+        body: avatarPropsLocal.body,
+        clothing: avatarPropsLocal.clothing,
+        clothingColor: avatarPropsLocal.clothingColor,
+        eyebrows: avatarPropsLocal.eyebrows,
+        eyes: avatarPropsLocal.eyes,
+        facialHair: avatarPropsLocal.facialHair,
+        graphic: avatarPropsLocal.graphic,
+        hair: avatarPropsLocal.hair,
+        hairColor: avatarPropsLocal.hairColor,
+        skinTone: avatarPropsLocal.skinTone,
+        mouth: avatarPropsLocal.mouth,
       }
       const avatarName = name
       try {
@@ -281,62 +280,47 @@ const AvatarPreview = ({navigation}) => {
 
     switch(type) {
       case 'accessory':
-        setAccessory(newValue);
+        setAvatarPropsLocal({...avatarPropsLocal, accessory: newValue});
         break;
       case 'bgColor':
-        setBgColor(newValue);
+        setAvatarPropsLocal({...avatarPropsLocal, bgColor: newValue});
         break;
       case 'body':
-        setBody(newValue);
+        setAvatarPropsLocal({...avatarPropsLocal, body: newValue});
         break;
       case 'clothing':
-        setClothing(newValue);
+        setAvatarPropsLocal({...avatarPropsLocal, clothing: newValue});
         break;
       case 'clothingColor':
-        setClothingColor(newValue)
+        setAvatarPropsLocal({...avatarPropsLocal, clothingColor: newValue});
         break;
       case 'eyebrows':
-        setEyebrows(newValue);
+        setAvatarPropsLocal({...avatarPropsLocal, eyebrows: newValue});
         break;
       case 'eyes':
-        setEyes(newValue);
+        setAvatarPropsLocal({...avatarPropsLocal, eyes: newValue});
         break;
       case 'facialHair':
-        setFacialHair(newValue);
+        setAvatarPropsLocal({...avatarPropsLocal,facialHair: newValue});
         break;
       case 'graphic':
-        setGraphic(newValue);
+        setAvatarPropsLocal({...avatarPropsLocal, graphic: newValue});
         break;
       case 'hair':
-        setHair(newValue);
+        setAvatarPropsLocal({...avatarPropsLocal, hair: newValue});
         break;
       case 'hairColor':
-        setHairColor(newValue);
+        setAvatarPropsLocal({...avatarPropsLocal, hairColor: newValue});
         break;
       case 'mouth':
-        setMouth(newValue);
+        setAvatarPropsLocal({...avatarPropsLocal, mouth: newValue});
         break;
       case 'skinTone':
-        setSkinTone(newValue);
+        setAvatarPropsLocal({...avatarPropsLocal,skinTone: newValue});
       }
   }
 
   const renderItem = ({ item, index}) => {
-    const initTypes = [
-      accessory,
-      bgColor,
-      body,
-      clothing,
-      clothingColor,
-      eyebrows,
-      eyes,
-      facialHair,
-      graphic,
-      hair,
-      hairColor,
-      skinTone,
-      mouth,
-  ]
     return (
       <View
         style={styles.eachItemContainer}
@@ -344,7 +328,7 @@ const AvatarPreview = ({navigation}) => {
         <Item
           item={item}
           index={index}
-          initTypes={initTypes}
+          avatarPropsLocal={avatarPropsLocal}
           handleValueChange={handleValueChange}
         />
       </View>
@@ -379,26 +363,26 @@ const AvatarPreview = ({navigation}) => {
           onChangeText={text => setName(text)}
         />
         <BigHead
-          accessory={accessory}
-          bgColor={bgColor}
+          accessory={avatarPropsLocal.accessory}
+          bgColor={avatarPropsLocal.bgColor}
           bgShape="squircle"
-          body={body}
-          clothing={clothing}
-          clothingColor={clothingColor}
-          eyebrows={eyebrows}
-          eyes={eyes}
-          facialHair={facialHair}
-          graphic={graphic}
-          hair={hair}
-          hairColor={hairColor}
+          body={avatarPropsLocal.body}
+          clothing={avatarPropsLocal.clothing}
+          clothingColor={avatarPropsLocal.clothingColor}
+          eyebrows={avatarPropsLocal.eyebrows}
+          eyes={avatarPropsLocal.eyes}
+          facialHair={avatarPropsLocal.facialHair}
+          graphic={avatarPropsLocal.graphic}
+          hair={avatarPropsLocal.hair}
+          hairColor={avatarPropsLocal.hairColor}
           hat="none"
           hatColor="green"
           lashes
           lipColor="pink"
-          mouth={mouth}
+          mouth={avatarPropsLocal.mouth}
           showBackground
           size={140}
-          skinTone={skinTone}
+          skinTone={avatarPropsLocal.skinTone}
           containerStyles={styles.avatarPreview}
         />
       </View>
@@ -410,11 +394,11 @@ const AvatarPreview = ({navigation}) => {
           keyExtractor={item => item.type}
           horizontal
           showsHorizontalScrollIndicator={false}
-          initialNumToRender={3}
+          initialNumToRender={5}
           getItemLayout={(data, index) => ({length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index})}
           pagingEnabled={true}
           decelerationRate={'normal'}
-          scrollEventThrottle={0}
+          scrollEventThrottle={10}
           // onEndReached={() => ToastAndroid.show('Lookin Good! Don`t forget to save', ToastAndroid.SHORT)}
           renderItem={(item, index, initTypes) => renderItem(item, index, initTypes)}
           onScroll={Animated.event(
@@ -432,13 +416,13 @@ const AvatarPreview = ({navigation}) => {
         <ExpandingDot
           data={DATA}
           expandingDotWidth={30}
-          dotSize={26}
+          dotSize={20}
           scrollX={scrollX}
           inActiveDotOpacity={0.3}
           dotStyle={{
         width: 10,
         height: 10,
-        backgroundColor: theme.colors.primary,
+        backgroundColor: 'lightgray',
         borderRadius: 5,
         marginHorizontal: 5
     }}
@@ -480,7 +464,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width,
   },
   surface: {
-    padding: 0,
+    paddingTop: 5,
     elevation: 4,
     marginTop: 0,
     height: 240,
@@ -524,6 +508,7 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     alignSelf: 'center',
+    color: 'black'
   }
 })
 export default AvatarPreview;

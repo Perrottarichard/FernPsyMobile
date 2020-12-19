@@ -10,7 +10,12 @@ import forumService from './services/forumService';
 import TabNav from './components/TabNav';
 
 const App = () => {
-  const user = useSelector((state) => state.activeUser.user);
+  let user = useSelector(state => state.activeUser)
+  if(user !== null){
+    user = user.user;
+  }else{
+    user = null;
+  }
   const dispatch = useDispatch();
   const theme = useTheme()
   const getLoggedUser = useCallback(async () => {

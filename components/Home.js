@@ -7,11 +7,11 @@ import MyQuestionsNavigate from './MyQuestionsNavigate';
 
 
 const Home = () => {
-  const user = useSelector((state) => state.activeUser.user);
-  const redirecting = useSelector(state => state.activeUser.redirecting)
+  const user = useSelector((state) => state.activeUser?.user);
+  const redirecting = useSelector(state => state.activeUser?.redirecting)
   const theme = useTheme()
 
-  if ((user && user.token) && !redirecting) {
+  if ((user && user?.token) && !redirecting) {
     return (
       <View
         style={{...styles.ifLoggedInContainer, backgroundColor: theme.colors.background}}

@@ -6,6 +6,7 @@ const initialState = {
   pending: [],
   tagFilter: '',
   flagged: [],
+  articles: [],
   loading: false,
   heartedByUser: [],
   refresh: false
@@ -18,6 +19,8 @@ const forumReducer = (state = initialState, action) => {
     return { ...state, pending: action.data };
   case 'INIT_FORUM_ANSWERED':
     return { ...state, answered: action.data };
+  case 'GET_ARTICLES':
+      return {...state, articles: action.data}
   case 'LOADING': {
     return {...state, loading: true}
   }
@@ -200,6 +203,15 @@ export const initializeForumAnswered = () => async (dispatch) => {
     data: answered,
   });
 };
+export const getAllArticles = () => {
+  return async dispatch => {
+    const articles = await forumService.getArticles()
+    dispatch({
+      type: 'GET_ARTICLES',
+      data: articles
+    })
+  }
+}
 export const setTagFilter = (tag) => ({
   type: 'SET_TAG_FILTER',
   data: tag,

@@ -3,11 +3,12 @@ import {
   ToastAndroid, View, Text, StyleSheet,ScrollView,
 } from 'react-native';
 import { Input } from 'react-native-elements';
-import {Button} from 'react-native-paper'
+import {Button, useTheme} from 'react-native-paper'
 import userService from '../services/userService';
 import Graphic from '../assets/undraw_mobile_login_ikmv.svg';
 
 const RegisterForm = ({ navigation }) => {
+  const theme = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -69,15 +70,15 @@ const RegisterForm = ({ navigation }) => {
         style={styles.inputContainer}
       >
         <Input
-          keyboardType="email-address" placeholder="Email" onChangeText={(email) => setEmail(email)} style={styles.input}
+          keyboardType="email-address" placeholder="Email" onChangeText={(email) => setEmail(email)} style={{...styles.input, color: theme.colors.onSurface}}
         />
 
         <Input
-          placeholder="Password" autoCompleteType="password" secureTextEntry onChangeText={(pass) => setPassword(pass)} style={styles.input}
+          placeholder="Password" autoCompleteType="password" secureTextEntry onChangeText={(pass) => setPassword(pass)} style={{...styles.input, color: theme.colors.onSurface}}
         />
 
         <Input
-          onChangeText={(cpass) => setConfirmPassword(cpass)} type="password" placeholder="ยืนยัน Password" secureTextEntry style={styles.input}
+          onChangeText={(cpass) => setConfirmPassword(cpass)} type="password" placeholder="ยืนยัน Password" secureTextEntry style={{...styles.input, color: theme.colors.onSurface}}
         />
       </View>
       <View

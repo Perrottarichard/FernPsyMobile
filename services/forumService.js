@@ -21,6 +21,10 @@ const getAnswered = async () => {
   const response = await axios.get(`${baseUrl}/answered`);
   return response.data;
 };
+const getArticles = async () => {
+  const response = await axios.get(`${baseUrl}/getAllArticles`)
+  return response.data
+}
 
 const create = async (newObject) => {
   const config = {
@@ -90,5 +94,5 @@ const flagComment = async (c) => {
 };
 
 export default {
-  getPending, getAnswered, create, update, setToken, remove, heartUp, addComment, addReply, flagComment, getFlagged, removeComment, unflag, updateEditedAnswer,
+  getPending, getAnswered, getArticles, create, update, setToken, remove, heartUp, addComment, addReply, flagComment, getFlagged, removeComment, unflag, updateEditedAnswer,
 };

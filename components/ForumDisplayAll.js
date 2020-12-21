@@ -98,7 +98,7 @@ const Item = ({ item, onPress}) => (
       description={`Posted by ${item.user?.avatarName} ${timeSince(item.date)} ago`}
       left={() => <BigHead
         {...item.user?.avatarProps} size={50}
-      />}
+                  />}
       titleStyle={styles.headTitle}
       descriptionStyle={styles.descriptionStyle}
       titleNumberOfLines={3}
@@ -221,7 +221,7 @@ const ForumDisplayAll = ({navigation}) => {
             onDismiss={closeMenu}
             anchor={<Button
               onPress={openMenu}
-            ><Text>Filter</Text></Button>}
+                    ><Text>Filter</Text></Button>}
           >
             <Menu.Item
               title='Show all' onPress={() => handleSetFilter('none')}
@@ -275,7 +275,7 @@ const ForumDisplayAll = ({navigation}) => {
           style={styles.scroll} 
           refreshControl={<RefreshControl
             refreshing={refreshing} onRefresh={onRefresh}
-          />}
+                          />}
           data={DATA}
           renderItem={renderItem}
           keyExtractor={item => item._id}

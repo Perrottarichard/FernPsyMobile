@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {useTheme} from 'react-native-paper'
 import { NavigationContainer } from '@react-navigation/native';
 import { setUser } from './reducers/activeUserReducer';
-import { initializeForumAnswered } from './reducers/forumReducer';
+import { initializeForumAnswered, getAllArticles } from './reducers/forumReducer';
 import forumService from './services/forumService';
 import TabNav from './components/TabNav';
 
@@ -40,6 +40,11 @@ const App = () => {
   useEffect(() => {
     console.log('App initForumAnswered')
     dispatch(initializeForumAnswered());
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log('App initArticles')
+    dispatch(getAllArticles());
   }, [dispatch]);
 
   return (

@@ -18,6 +18,8 @@ const App = () => {
   }
   const dispatch = useDispatch();
   const theme = useTheme()
+  const articles = useSelector(state => state.forum.articles)
+  const forumAnswered = useSelector(state => state.forum.answered)
   const getLoggedUser = useCallback(async () => {
     const loggedUserJSON = await AsyncStorage.getItem('loggedForumUser');
     if (loggedUserJSON) {

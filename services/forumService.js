@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'https://fern-counseling.herokuapp.com/api/forum';
+const baseUrl = 'https://askfern.app/api/forum';
 
 let token = null;
 const setToken = (newToken) => {

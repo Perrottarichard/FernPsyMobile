@@ -1,7 +1,15 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {useSelector} from 'react-redux';
-import { View, FlatList, StyleSheet } from 'react-native';
-import {Text, Card} from 'react-native-paper';
+import { View, FlatList, StyleSheet} from 'react-native';
+import {Card, Text, useTheme} from 'react-native-paper';
+import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+  const prettyDate = (dateString) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    let dateToChange = new Date(dateString).toLocaleDateString('th-TH', options)
+    return dateToChange;
+  }
 
 const Item = ({item}) => (
   <Card
@@ -9,9 +17,24 @@ const Item = ({item}) => (
   >
     <Card.Cover
       style={styles.coverImage}
-      source={{uri: `https://fern-counseling.herokuapp.com/${item.image}`}}
+      source={{uri: item.image}}
     />
-    <Text>{item.title}</Text>
+    <Card.Title
+      style={styles.cardTitleStyle}
+      title={item.title}
+      titleStyle={styles.cardTitleTextStyle}
+      subtitle={`posted on ${prettyDate(item.date)}`}
+      subtitleStyle={{fontSize: 10, paddingLeft: 3}}
+      right={() => 
+        <Micon.Button
+          name='eye'
+          backgroundColor='transparent'
+          color='gray'
+          size={16}
+        ><Text
+          style={{color: 'gray', fontSize: 12}}
+        >{item.likes}</Text></Micon.Button>}
+    />
   </Card>
 ) 
 
@@ -51,8 +74,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   coverImage: {
-    width: "100%",
-    height: 200
+    width: '100%',
+    resizeMode: 'cover'
+  },
+  // cardContentStyle: {
+  //   paddingLeft: 0
+  // },
+  cardTitleStyle: {
+    paddingLeft: 0
+  },
+  cardTitleTextStyle: {
+    fontSize: 14,
+    paddingLeft: 3
   }
 })
   

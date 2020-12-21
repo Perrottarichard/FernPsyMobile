@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'https://fern-counseling.herokuapp.com/api/login';
+const baseUrl = 'https://askfern.app/api/login';
 
 const userlogin = async (user) => {
   const response = await axios.post(baseUrl, user);

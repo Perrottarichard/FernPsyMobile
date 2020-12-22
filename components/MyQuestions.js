@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import {Button, Text} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
-import { initializeForumPending, initializeForumAnswered } from '../reducers/forumReducer';
+import { initializeForumPending, initializeForumAnswered, getAllArticles } from '../reducers/forumReducer';
 import Logout from './Logout'
 
 const wait = (timeout) => new Promise((resolve) => {
@@ -40,10 +40,11 @@ const MyQuestions = ({navigation}) => {
   }, [dispatch, pending.length]);
 
   const onRefresh = useCallback(() => {
-    console.log('callback MQ init')
+    console.log('callback MQ init - pending, answered, articles')
     setRefreshing(true);
     dispatch(initializeForumAnswered());
     dispatch(initializeForumPending());
+    dispatch(getAllArticles())
     wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
 

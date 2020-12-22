@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {useSelector} from 'react-redux';
-import { View, FlatList, StyleSheet} from 'react-native';
-import {Card, Text, useTheme} from 'react-native-paper';
+import { View, FlatList, StyleSheet, Dimensions} from 'react-native';
+import {Card, Text} from 'react-native-paper';
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
 
   const prettyDate = (dateString) => {
@@ -10,6 +10,12 @@ import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
     let dateToChange = new Date(dateString).toLocaleDateString('th-TH', options)
     return dateToChange;
   }
+
+//pre-define 3:4 aspect ratio for images  
+const screenWidth = (Dimensions.get('screen').width);
+
+const screenHeight = Math.floor(screenWidth * 3/4);
+
 
 const Item = ({item}) => (
   <Card
@@ -68,14 +74,14 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    margin: 10
   },
   scroll: {
     flex: 1,
   },
   coverImage: {
-    width: '100%',
-    resizeMode: 'cover'
+    width: screenWidth,
+    resizeMode: 'cover',
+    height: screenHeight
   },
   // cardContentStyle: {
   //   paddingLeft: 0

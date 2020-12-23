@@ -6,8 +6,8 @@ import Ficons from 'react-native-vector-icons/FontAwesome5';
 import About from './About';
 import Home from './Home';
 import ForumPostMain from './ForumPostMain';
-import Articles from './Articles';
 import ForumNavigate from './ForumNavigate';
+import ArticleNavigate from './ArticleNavigate';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -58,7 +58,7 @@ function TabNav() {
       />
       <Tab.Screen
         name="Articles"
-        component={Articles}
+        component={ArticleNavigate}
         options={{
           tabBarLabel: 'Articles',
           tabBarIcon: ({ color }) => (

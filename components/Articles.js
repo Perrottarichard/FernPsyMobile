@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {useSelector} from 'react-redux';
-import { View, FlatList, StyleSheet, Dimensions} from 'react-native';
+import { View, FlatList, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -14,43 +14,57 @@ import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
 //pre-define 3:4 aspect ratio for images  
 const screenWidth = (Dimensions.get('screen').width);
 
-const screenHeight = Math.floor(screenWidth * 3/4);
+const screenHeight = Math.floor(screenWidth * 2/3);
 
 
-const Item = ({item}) => (
+const Item = ({item, onPress}) => (
   <Card
     style={styles.card}
   >
-    <Card.Cover
-      style={styles.coverImage}
-      source={{uri: item.image}}
+    <TouchableOpacity
+      onPress={onPress}
+      underlayColor='transparent'
+      activeOpacity={0.7}
+      >
+      <Card.Cover
+        style={styles.coverImage}
+        source={{uri: item.image}}
     />
-    <Card.Title
-      style={styles.cardTitleStyle}
-      title={item.title}
-      titleStyle={styles.cardTitleTextStyle}
-      subtitle={`posted on ${prettyDate(item.date)}`}
-      subtitleStyle={{fontSize: 10, paddingLeft: 3}}
-      right={() => 
-        <Micon.Button
-          name='eye'
-          backgroundColor='transparent'
-          color='gray'
-          size={16}
+    </TouchableOpacity>
+    <Card.Actions>
+      <Card.Title
+        style={styles.cardTitleStyle}
+        title={item.title}
+        titleStyle={styles.cardTitleTextStyle}
+        subtitle={`posted on ${prettyDate(item.date)}`}
+        subtitleStyle={{fontSize: 10, paddingLeft: 3}}
+        right={() => 
+          <Micon.Button
+            name='eye'
+            backgroundColor='transparent'
+            color='gray'
+            size={16}
         ><Text
           style={{color: 'gray', fontSize: 12}}
         >{item.likes}</Text></Micon.Button>}
     />
+    </Card.Actions>
   </Card>
 ) 
 
-const Articles = () => {
+const Articles = ({navigation}) => {
   //get articles
   const DATA = useSelector(state => state.forum.articles)
 
   const renderItem = ({item}) => (
     <Item 
       item={item}
+      onPress={() => {
+        navigation.navigate('SingleArticleDisplay', {
+          article: item,
+          message: 'hi'
+        });
+      }}
     />
   );
 
@@ -74,6 +88,8 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
+    marginBottom: 8, 
+    marginTop: 8
   },
   scroll: {
     flex: 1,
@@ -81,17 +97,24 @@ const styles = StyleSheet.create({
   coverImage: {
     width: screenWidth,
     resizeMode: 'cover',
-    height: screenHeight
+    height: screenHeight,
+    marginBottom: 0
   },
   // cardContentStyle: {
   //   paddingLeft: 0
   // },
   cardTitleStyle: {
-    paddingLeft: 0
+    paddingLeft: 0,
+    marginTop: 0,
+    paddingTop: 0,
   },
   cardTitleTextStyle: {
-    fontSize: 14,
-    paddingLeft: 3
+    fontSize: 16,
+    paddingLeft: 3,
+    paddingTop: 0,
+    marginTop: 0,
+    marginBottom: 0,
+    paddingBottom: 0
   }
 })
   

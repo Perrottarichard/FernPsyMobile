@@ -2,8 +2,8 @@
 import React, {useState, useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {View, StyleSheet, FlatList, ToastAndroid, ActivityIndicator, Animated, Dimensions} from 'react-native'
-import {RadioButton, Text, Card, TextInput, Button} from 'react-native-paper'
-import {BigHead} from 'react-native-bigheads'
+import {RadioButton, Text, Card, TextInput, Button, Divider} from 'react-native-paper'
+import {BigHead, theme} from 'react-native-bigheads'
 import {updateUserAvatar} from '../reducers/activeUserReducer'
 import {ExpandingDot} from 'react-native-animated-pagination-dots'
 
@@ -190,6 +190,8 @@ const Item = ({item, handleValueChange, index, avatarPropsLocal}) => (
     >
       {item.title}
     </Text>
+    <Divider
+      style={{margin: 3}}/>
     <RadioButton.Group
       onValueChange={newValue => handleValueChange(item.type, newValue, index)}
       value={avatarPropsLocal[item.type]}
@@ -199,7 +201,7 @@ const Item = ({item, handleValueChange, index, avatarPropsLocal}) => (
           key={b.value} style={styles.innerChoices}
         >
           <RadioButton.Item
-            label={b.name} value={b.value} style={styles.radioButtonItems}
+            label={b.name} value={b.value} style={styles.radioButtonItems} labelStyle={{fontSize: 14}}
           />
         </Card.Content>
             ))}
@@ -486,12 +488,13 @@ const styles = StyleSheet.create({
     marginBottom: 0
   },
   groupCategoryText: {
-    fontSize: 16,
+    fontSize: 14,
     alignSelf: 'center',
-    height: 30
+    height: 24
   },
   radioButtonItems: {
-    height: 34,
+    height: 33,
+    paddingBottom: 10
   },
   dotAndButtonContainer: {
     flex: 1,

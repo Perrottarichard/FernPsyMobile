@@ -84,6 +84,7 @@ const MyQuestions = ({navigation}) => {
       >
         <Button
           icon='checkbox-marked-circle-outline' mode='contained' style={styles.showAnsweredButton} onPress={() => navigation.navigate("MyAnswered", {myAnsweredPosts})}
+          disabled={myAnsweredPosts.length === 0}
         >
           <Text
             style={styles.showAnsweredText}
@@ -95,6 +96,7 @@ const MyQuestions = ({navigation}) => {
         </Button>
         <Button
           icon='timer-sand' mode='contained' style={styles.showPendingButton} onPress={() => navigation.navigate("MyPending", {myPendingPosts})}
+          disabled={myPendingPosts.length === 0}
         >
           <Text
             style={styles.showPendingText}

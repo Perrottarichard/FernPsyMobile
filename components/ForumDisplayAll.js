@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
-  View, FlatList, StyleSheet, ActivityIndicator, RefreshControl, Appearance
+  View, FlatList, StyleSheet, ActivityIndicator, RefreshControl,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {BigHead} from 'react-native-bigheads'
-import { List, Chip, Text, Card , Menu, Provider, Button, DefaultTheme, DarkTheme} from 'react-native-paper';
+import { List, Chip, Text, Card , Menu, Provider, Button, useTheme} from 'react-native-paper';
 import { initializeForumAnswered } from '../reducers/forumReducer';
 import NoPostsYet from './NoPostsYet'
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -150,23 +150,25 @@ const Item = ({ item, onPress}) => (
 
 const ForumDisplayAll = ({navigation}) => {
   const dispatch = useDispatch();
+  const theme = useTheme()
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   let forumAnswered = useSelector((state) => state.forum.answered);
   const [selectedFilterTag, setSelectedFilterTag] = useState('none')
   const [filterMenuVisible, setFilterMenuVisible] = useState(false)
 
-  const colorMode = Appearance.getColorScheme()
-
   forumAnswered = applyFilterByTag(forumAnswered, selectedFilterTag)
   const DATA = forumAnswered.sort((a, b) => new Date(b.date) - new Date(a.date))
 
-  const handleSetFilter = (value) => {
-    setSelectedFilterTag(value)
-  }
+ 
   const openMenu = () => setFilterMenuVisible(true);
 
   const closeMenu = () => setFilterMenuVisible(false);
+
+  const handleSetFilter = (value) => {
+    setSelectedFilterTag(value)
+    closeMenu(  )
+  }
 
   const onRefresh = useCallback(() => {
     console.log('Callback Refresh init answered')
@@ -210,7 +212,7 @@ const ForumDisplayAll = ({navigation}) => {
   return (
     <Provider>
       <View
-        style={colorMode === 'light' ? styles.container : styles.containerDark}
+        style={{...styles.container, backgroundColor: theme.colors.background}}
       >
         <View
           style={styles.filterContainer}
@@ -220,53 +222,56 @@ const ForumDisplayAll = ({navigation}) => {
             visible={filterMenuVisible}
             onDismiss={closeMenu}
             anchor={<Button
+              mode='text'
               onPress={openMenu}
-                    ><Text>Filter</Text></Button>}
+                    ><Text
+                      style={{color: theme.colors.accent}}>Filter: </Text><Text
+                        > {selectedFilterTag}</Text></Button>}
           >
             <Menu.Item
-              title='Show all' onPress={() => handleSetFilter('none')}
+              title='none' onPress={() => handleSetFilter('none')}
             />
             <Menu.Item
               title='ปัญหาเรื่องเพศ' value='ปัญหาเรื่องเพศ' onPress={() => handleSetFilter('ปัญหาเรื่องเพศ')}
             />
             <Menu.Item
-              title='การเสพติด' value='การเสพติด'
+              title='การเสพติด' value='การเสพติด' onPress={() => handleSetFilter('การเสพติด')}
             />
             <Menu.Item
-              title='เพื่อน' value='เพื่อน'
+              title='เพื่อน' value='เพื่อน' onPress={() => handleSetFilter('เพื่อน')}
             />
             <Menu.Item
-              title='lgbt' value='lgbt'
+              title='lgbt' value='lgbt' onPress={() => handleSetFilter('lgbt')}
             />
             <Menu.Item
-              title='โรคซึมเศร้า' value='โรคซึมเศร้า'
+              title='โรคซึมเศร้า' value='โรคซึมเศร้า' onPress={() => handleSetFilter('โรคซึมเศร้า')}
             />
             <Menu.Item
-              title='ความวิตกกังวล' value='ความวิตกกังวล'
+              title='ความวิตกกังวล' value='ความวิตกกังวล' onPress={() => handleSetFilter('ความวิตกกังวล')}
             />
             <Menu.Item
-              title='ไบโพลาร์' value='ไบโพลาร์'
+              title='ไบโพลาร์' value='ไบโพลาร์' onPress={() => handleSetFilter('ไบโพลาร์')}
             />
             <Menu.Item
-              title='relationships' value='relationships'
+              title='relationships' value='relationships' onPress={() => handleSetFilter('relationships')}
             />
             <Menu.Item
-              title='การทำงาน' value='การทำงาน'
+              title='การทำงาน' value='การทำงาน' onPress={() => handleSetFilter('การทำงาน')}
             />
             <Menu.Item
-              title='สุขภาพจิต' value='สุขภาพจิต'
+              title='สุขภาพจิต' value='สุขภาพจิต' onPress={() => handleSetFilter('สุขภาพจิต')}
             />
             <Menu.Item
-              title='การรังแก' value='การรังแก'
+              title='การรังแก' value='การรังแก' onPress={() => handleSetFilter('การรังแก')}
             />
             <Menu.Item
-              title='ครอบครัว' value='ครอบครัว'
+              title='ครอบครัว' value='ครอบครัว' onPress={() => handleSetFilter('ครอบครัว')}
             />
             <Menu.Item
-              title='อื่นๆ' value='อื่นๆ'
+              title='อื่นๆ' value='อื่นๆ' onPress={() => handleSetFilter('อื่นๆ')}
             />
             <Menu.Item
-              title='ความรัก' value='ความรัก'
+              title='ความรัก' value='ความรัก' onPress={() => handleSetFilter('ความรัก')}
             />
           </Menu>
         </View>
@@ -290,12 +295,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
-    backgroundColor: DefaultTheme.colors.background
-  },
-  containerDark: {
-    flex: 1,
-    padding: 5,
-    backgroundColor: DarkTheme.colors.background
   },
   loadingContainer: {
     flex: 1,
@@ -306,22 +305,16 @@ const styles = StyleSheet.create({
     flex: 0.05,
     flexDirection: 'row',
     marginBottom: 0,
-    padding: 15,
-    paddingBottom: 0,
+    paddingBottom: 10,
+    paddingTop: 0,
+    width: '100%',
+    justifyContent: 'flex-start'
   },
-  // filterIcon: {
-  //   position: 'absolute',
-  //   left: 20,
-  //   color: 'gray',
-  //   top: 12,
-  // },
-  // picker: {
-  //   width: 200,
-  //   position: 'absolute',
-  //   left: 45,
-  //   top: 0,
-  //   color: 'gray',
-  // },
+  picker: {
+    flex: 1,
+    width: 200,
+    justifyContent: 'center'
+  },
   scroll: {
     flex: 1,
   },

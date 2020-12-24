@@ -3,11 +3,12 @@ import {
    ScrollView, StyleSheet, Image, View, Dimensions
 } from 'react-native';
 import {useTheme, Paragraph, Headline, Caption} from 'react-native-paper';
+import {DateTime} from 'luxon'
 // import Loading from './Loading'
 
 const prettyDate = (dateString) => {
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  let dateToChange = new Date(dateString).toLocaleDateString('th-TH', options)
+  let dateToChange = DateTime.fromISO(dateString).setLocale('th-TH').toLocaleString(options)
   return dateToChange;
 }
 

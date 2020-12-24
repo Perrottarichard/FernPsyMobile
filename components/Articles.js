@@ -4,12 +4,13 @@ import {useSelector} from 'react-redux';
 import { View, FlatList, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {DateTime} from 'luxon';
 
-  const prettyDate = (dateString) => {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    let dateToChange = new Date(dateString).toLocaleDateString('th-TH', options)
-    return dateToChange;
-  }
+const prettyDate = (dateString) => {
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  let dateToChange = DateTime.fromISO(dateString).toLocaleString(options)
+  return dateToChange;
+}
 
 //pre-define 3:4 aspect ratio for images  
 const screenWidth = (Dimensions.get('screen').width);
@@ -36,7 +37,7 @@ const Item = ({item, onPress}) => (
         style={styles.cardTitleStyle}
         title={item.title}
         titleStyle={styles.cardTitleTextStyle}
-        subtitle={`posted on ${prettyDate(item.date)}`}
+        subtitle={prettyDate(item.date)}
         subtitleStyle={{fontSize: 10, paddingLeft: 3}}
         right={() => 
           <Micon.Button

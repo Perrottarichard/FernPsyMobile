@@ -27,7 +27,7 @@ const tagOptions = [
   { tag: 'การรังแก', backgroundColor: '#5e320f', icon: 'emoticon-angry-outline' },
   { tag: 'ครอบครัว', backgroundColor: '#ffa64d', icon: 'home-heart' },
   { tag: 'อื่นๆ', backgroundColor: '#707571', icon: 'head-question' },
-  { tag: 'การเสพติด', backgroundColor: '#40073d', icon: 'pill' },
+  { tag: 'การเสพติด', backgroundColor: '#eb4034', icon: 'pill' },
 ];
 const chooseTagColor = (passed) => {
   const color = tagOptions.find((t) => t.tag === passed);
@@ -84,7 +84,7 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
         >
           <List.Item
             title={post.title}
-            description={`Posted by ${post.user.avatarName} ${timeSince(post.date)} ago`}
+            description={post.answer !== null ? `Posted by ${post.user.avatarName} ${timeSince(post.date)} ago` : '...pending'}
             left={() => <BigHead
               {...post.user.avatarProps} size={55}
             />}
@@ -105,14 +105,14 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
             </Text>
           </View>
           <List.Item
-            left={() => (
+            left={post.answer?.answer ? () => (
               <Avatar.Image
                 size={45}
                 source={{uri: 'http://fern-counseling.herokuapp.com/static/media/fernhippie500.8ec92f3a.jpg'}}
                 style={styles.fernAvatar}
               />
-            )}
-            title={post.answer.answer}
+            ) : null}
+            title={post.answer?.answer}
             titleStyle={styles.answerHeadTitle}
             titleNumberOfLines={100}
             titleEllipsizeMode='tail'
@@ -129,6 +129,7 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
               size={28}
               style={styles.commentMiconButton}
               color='lightgray'
+              disabled={post.answer === null}
               underlayColor='transparent'
               backgroundColor='transparent'
               activeOpacity={0.5} 
@@ -154,6 +155,7 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
                 name="heart-plus-outline"
                 color="pink"
                 size={28}
+                disabled={post.answer === null}
                 style={styles.heartIconStyle}
                 backgroundColor='transparent'
                 underlayColor='transparent'

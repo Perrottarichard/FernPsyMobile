@@ -1,10 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { View, FlatList, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {DateTime} from 'luxon';
+import { upView } from '../reducers/forumReducer';
 
 const prettyDate = (dateString) => {
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -36,6 +37,7 @@ const Item = ({item, onPress}) => (
       <Card.Title
         style={styles.cardTitleStyle}
         title={item.title}
+        titleNumberOfLines={3}
         titleStyle={styles.cardTitleTextStyle}
         subtitle={prettyDate(item.date)}
         subtitleStyle={{fontSize: 10, paddingLeft: 3}}
@@ -44,10 +46,10 @@ const Item = ({item, onPress}) => (
             name='eye'
             backgroundColor='transparent'
             color='gray'
-            size={16}
+            size={18}
         ><Text
           style={{color: 'gray', fontSize: 12}}
-        >{item.likes}</Text></Micon.Button>}
+        >{item.views}</Text></Micon.Button>}
     />
     </Card.Actions>
   </Card>
@@ -56,14 +58,15 @@ const Item = ({item, onPress}) => (
 const Articles = ({navigation}) => {
   //get articles
   const DATA = useSelector(state => state.forum.articles)
+  const dispatch = useDispatch()
 
   const renderItem = ({item}) => (
     <Item 
       item={item}
       onPress={() => {
+        dispatch(upView(item._id))
         navigation.navigate('SingleArticleDisplay', {
           article: item,
-          message: 'hi'
         });
       }}
     />

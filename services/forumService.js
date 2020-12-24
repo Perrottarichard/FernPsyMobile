@@ -88,11 +88,15 @@ const heartUp = async (postId) => {
   const response = await axios.put(`${baseUrl}/heart/${postId}`, postId, config);
   return response.data;
 };
+const incView = async (articleId) => {
+  const response = await axios.put(`${baseUrl}/uparticleviews/${articleId}`, articleId);
+  return response.data;
+};
 const flagComment = async (c) => {
   const response = await axios.put(`${baseUrl}/flag/${c._id}`);
   return response.data;
 };
 
 export default {
-  getPending, getAnswered, getArticles, create, update, setToken, remove, heartUp, addComment, addReply, flagComment, getFlagged, removeComment, unflag, updateEditedAnswer,
+  getPending, getAnswered, getArticles, create, update, setToken, remove, heartUp, addComment, addReply, flagComment, getFlagged, removeComment, unflag, updateEditedAnswer, incView
 };

@@ -36,6 +36,12 @@ const forumReducer = (state = initialState, action) => {
     const changedQuestion = { ...questionToChange, likes: questionToChange.likes + 1 };
     return { ...state, answered: state.answered.map((q) => (q._id === id ? changedQuestion : q)), heartedByUser: action.data.userHeartArray };
   }
+  case 'UP_VIEW': {
+    const id = action.data._id;
+    const articleToChange = state.articles.find((q) => q._id === id);
+    const changedArticle = { ...articleToChange, views: articleToChange.views + 1 };
+    return { ...state, articles: state.articles.map((q) => (q._id === id ? changedArticle : q))};
+  }
   case 'POST_ANSWER': {
     const answerId = action.data._id;
     const objectToModify = state.pending.find((s) => s._id === answerId);
@@ -93,6 +99,13 @@ export const heart = (postId) => async (dispatch) => {
     data: {postId, userHeartArray}
   });
   dispatch(shouldRefresh())
+};
+export const upView = (articleId) => async (dispatch) => {
+  const newArticle = await forumService.incView(articleId);
+  dispatch({
+    type: 'UP_VIEW',
+    data: newArticle
+  });
 };
 export const answerQuestion = (answer) => async (dispatch) => {
   try {

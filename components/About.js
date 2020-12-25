@@ -132,7 +132,7 @@ const About = () => {
           style={styles.bodySpacer}
         />
         <Avatar.Image
-          source={{uri: 'http://fern-counseling.herokuapp.com/static/media/fernhippie500.8ec92f3a.jpg'}} size={100}
+          source={{uri: 'https://storage.googleapis.com/askfern.appspot.com/1608721517709fernhippie.jpg'}} size={100}
         />
 
         {isEng

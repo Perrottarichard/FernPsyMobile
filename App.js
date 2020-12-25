@@ -3,23 +3,33 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {useTheme} from 'react-native-paper'
+import {ToastAndroid} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import {useNetInfo} from '@react-native-community/netinfo';
 import { setUser } from './reducers/activeUserReducer';
 import { initializeForumAnswered, getAllArticles } from './reducers/forumReducer';
 import forumService from './services/forumService';
 import TabNav from './components/TabNav';
 
+
 const App = () => {
+  const netInfo = useNetInfo();
+
+  useCallback(() => {
+  if(netInfo.isConnected === false) {
+    ToastAndroid.show('Looks like you`re not connected to the internet.  Some features might not work', ToastAndroid.LONG)
+  }
+  }, [netInfo.isConnected])
+  
   let user = useSelector(state => state.activeUser)
   if(user !== null){
     user = user.user;
   }else{
     user = null;
   }
+
   const dispatch = useDispatch();
   const theme = useTheme()
-  const articles = useSelector(state => state.forum.articles)
-  const forumAnswered = useSelector(state => state.forum.answered)
   const getLoggedUser = useCallback(async () => {
     const loggedUserJSON = await AsyncStorage.getItem('loggedForumUser');
     if (loggedUserJSON) {

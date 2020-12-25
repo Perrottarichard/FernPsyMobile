@@ -108,7 +108,7 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
             left={post.answer?.answer ? () => (
               <Avatar.Image
                 size={45}
-                source={{uri: 'http://fern-counseling.herokuapp.com/static/media/fernhippie500.8ec92f3a.jpg'}}
+                source={{uri: 'https://storage.googleapis.com/askfern.appspot.com/1608721517709fernhippie.jpg'}}
                 style={styles.fernAvatar}
               />
             ) : null}

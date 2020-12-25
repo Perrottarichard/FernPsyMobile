@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { View, StyleSheet, ActivityIndicator} from 'react-native';
 import {useTheme} from 'react-native-paper'
 import LoginNavigate from './LoginNavigate';
-import MyQuestionsNavigate from './MyQuestionsNavigate';
+import MyQuestionsOrMoodNavigate from './MyQuestionsOrMoodNavigate';
 
 
 const Home = () => {
@@ -19,7 +19,7 @@ const Home = () => {
         <View
           style={{...styles.myQuestionsContainer, backgroundColor: theme.colors.background}}
         >
-          <MyQuestionsNavigate />
+          <MyQuestionsOrMoodNavigate />
         </View>
       </View>
     );

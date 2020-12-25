@@ -152,11 +152,6 @@ const DisplayComments = ({navigation, route}) => {
     }
   }, [post, isLoading ])
 
-  // const replies = useCallback((id) => {
-  //   let comment = memoizedComments.find(f => f._id === id)
-  //   return comment.replies.sort((a, b) => new Date(a.date) - new Date(b.date))
-  // }, [memoizedComments])
-
   const openMenu = (id) => setVisibleMenu(id)
   const closeMenu = () => setVisibleMenu('')
 
@@ -248,7 +243,7 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     paddingBottom: 4,
     paddingRight: 0,
-    marginBottom: 0,
+    marginBottom: 5,
     borderTopColor: 'gray',
     borderTopWidth: 0.5
   },
@@ -278,7 +273,7 @@ const styles = StyleSheet.create({
   },
   contentContainerView: {
     padding: 0,
-    flex: 1
+    flex: 1,
   },
   replyButtonView: {
     flexDirection: 'row'
@@ -310,7 +305,8 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   bigHeadReplyContainer: {
-    marginTop: 3
+    marginTop: 3,
+    marginLeft: 35
   },
   replyHeadTitle: {
     position: 'absolute',
@@ -328,7 +324,7 @@ const styles = StyleSheet.create({
     margin: 0
   },
   replyWithoutMention: {
-    marginLeft: 13,
+    marginLeft: 20,
     marginBottom: 10,
     marginRight: 10,
     paddingTop: 0,

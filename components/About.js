@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import {
-  View, StyleSheet, ScrollView, Linking,
+  View, StyleSheet, ScrollView, Linking, LogBox
 } from 'react-native';
 import { Switch } from 'react-native-switch';
 import {Avatar, Card, Text} from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Fontisto';
 import CatFernGraphic from '../assets/undraw_friends_r511.svg';
+
+LogBox.ignoreLogs(['Animated'])
 
 const About = () => {
   const [isEng, setIsEng] = useState(false);

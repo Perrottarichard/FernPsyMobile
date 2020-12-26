@@ -10,6 +10,7 @@ import { setUser } from './reducers/activeUserReducer';
 import { initializeForumAnswered, getAllArticles } from './reducers/forumReducer';
 import forumService from './services/forumService';
 import TabNav from './components/TabNav';
+import userService from './services/userService';
 
 LogBox.ignoreLogs(['Require cycles are allowed'])
 
@@ -41,6 +42,7 @@ const App = () => {
       const existingUser = JSON.parse(loggedUserJSON);
       dispatch(setUser(existingUser));
       forumService.setToken(existingUser.token);
+      userService.setToken(existingUser.token);
     } else {
       console.log('no user');
     }
@@ -51,6 +53,7 @@ const App = () => {
       getLoggedUser();
     } else {
       forumService.setToken(user.token);
+      userService.setToken(user.token);
     }
   }, [dispatch, getLoggedUser, user]);
 

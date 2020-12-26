@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import ForumDisplayAll from './ForumDisplayAll';
-import SingleTagDisplay from './SingleTagDisplay';
 import AddComment from './AddComment';
 import AddReply from './AddReply';
 import DisplayComments from './DisplayComments';
@@ -16,9 +15,6 @@ const ForumNavigate = () => (
   >
     <Stack.Screen
       name="ForumDisplayAll" component={ForumDisplayAll}
-    />
-    <Stack.Screen
-      name="SingleTagDisplay" component={SingleTagDisplay} options={({ route }) => ({ title: route.params.tag })}
     />
     <Stack.Screen
       name="SinglePostDisplay" component={DisplayComments}

@@ -50,9 +50,9 @@ export const updateUserAvatar = (id, avatarProps, avatarName) => async (dispatch
 
 };
 
-export const addMood = (moodObj) => async (dispatch) => {
+export const addMood = (moodNum) => async (dispatch) => {
   try {
-    const updated = await userService.recordMood(moodObj);
+    const updated = await userService.recordMood(moodNum);
     dispatch({
       type: 'ADD_MOOD',
       data: updated

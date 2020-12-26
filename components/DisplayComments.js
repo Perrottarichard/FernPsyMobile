@@ -27,7 +27,7 @@ const Item = ({ item, onPress, visibleMenu, openMenu, closeMenu, replies, flag})
     >
       <List.Item
         title={`${item.user.avatarName}`}
-        description={`commented ${timeSince(item.date)} ago`}
+        description={`แสดงความคิดเห็น ${timeSince(item.date)} ที่ผ่านมา`}
         right={() => (
           <View
             style={styles.replyButtonView}
@@ -45,7 +45,7 @@ const Item = ({ item, onPress, visibleMenu, openMenu, closeMenu, replies, flag})
             >
               <Text
                 style={styles.replyButtonText}
-              >Reply
+              >ตอบ
               </Text>
             </Micon.Button>
             <Menu
@@ -69,13 +69,13 @@ const Item = ({ item, onPress, visibleMenu, openMenu, closeMenu, replies, flag})
                 icon='flag-variant' 
                 titleStyle={styles.flagMenuContent} 
                 onPress={() => flag(item)} 
-                title='Flag comment'
+                title='รายงานความไม่เหมาะสม'
               />
             </Menu>
           </View>
         )}
         left={() => <BigHead
-          {...item.user.avatarProps} size={38}
+          {...item.user.avatarProps} size={38} style={styles.commentBigHead}
         />}
         titleStyle={styles.commentHeadTitle}
         descriptionStyle={styles.commentDescriptionStyle}
@@ -102,7 +102,7 @@ const Item = ({ item, onPress, visibleMenu, openMenu, closeMenu, replies, flag})
       >
         <List.Item
           title={`${r.user.avatarName}`}
-          description={`replied ${timeSince(r.date)} ago`}
+          description={`ตอบ ${timeSince(r.date)} ที่ผ่านมา`}
           left={() => <BigHead
             {...r.user.avatarProps} size={28} containerStyles={styles.bigHeadReplyContainer}
           />}
@@ -239,7 +239,6 @@ const styles = StyleSheet.create({
   cardStyleComment: {
     flex: 1,
     marginTop: 0,
-    paddingLeft: 0,
     paddingTop: 0,
     paddingBottom: 4,
     paddingRight: 0,
@@ -247,14 +246,19 @@ const styles = StyleSheet.create({
     borderTopColor: 'gray',
     borderTopWidth: 0.5
   },
+  commentBigHead: {
+    marginLeft: 10
+  },
   commentHeadTitle: {
     alignSelf: 'flex-start',
     fontWeight: 'normal',
     fontSize: 14,
+    marginLeft: 2
   },
   commentDescriptionStyle: {
     fontSize: 10,
     alignSelf: 'flex-start',
+    marginLeft: 2
   },
   commentListItem: {
     paddingLeft: 13,
@@ -262,7 +266,7 @@ const styles = StyleSheet.create({
   commentContent: {
     fontSize: 14,
     paddingRight: 10,
-    marginLeft: 18,
+    marginLeft: 30,
     marginRight: 10,
     paddingBottom: 10,
     alignSelf: 'stretch',

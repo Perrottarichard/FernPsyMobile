@@ -84,7 +84,7 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
         >
           <List.Item
             title={post.title}
-            description={post.answer !== null ? `Posted by ${post.user.avatarName} ${timeSince(post.date)} ago` : '...pending'}
+            description={post.answer !== null ? `โพสต์ของ ${post.user.avatarName} ${timeSince(post.date)} ที่ผ่านมา` : '...pending'}
             left={() => <BigHead
               {...post.user.avatarProps} size={55}
             />}
@@ -147,7 +147,7 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
             >
               <Text
                 style={styles.miconText}
-              >Comment
+              >ความคิดเห็น
               </Text>
             </Micon.Button>
             {!user?.heartedPosts?.includes(post._id) && !heartedByUser.includes(post._id) ? (
@@ -259,6 +259,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   descriptionStyle: {
+    fontSize: 10
   },
   chip: {
     marginTop: 14,

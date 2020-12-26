@@ -50,26 +50,26 @@ export const timeSince = (date) => {
 
   let interval = Math.floor(seconds / 31536000);
   if (interval >= 1) {
-    intervalType = 'y';
+    intervalType = 'ปี';
   } else {
     interval = Math.floor(seconds / 2592000);
     if (interval >= 1) {
-      intervalType = 'mo';
+      intervalType = 'เดือน';
     } else {
       interval = Math.floor(seconds / 86400);
       if (interval >= 1) {
-        intervalType = 'd';
+        intervalType = 'วัน';
       } else {
         interval = Math.floor(seconds / 3600);
         if (interval >= 1) {
-          intervalType = "h";
+          intervalType = "ชั่วโมง";
         } else {
           interval = Math.floor(seconds / 60);
           if (interval >= 1) {
-            intervalType = "min";
+            intervalType = "นาที";
           } else {
             interval = seconds;
-            intervalType = "s";
+            intervalType = "วินาที";
           }
         }
       }
@@ -83,11 +83,10 @@ const wait = (timeout) => new Promise((resolve) => {
 });
 
 const applyFilterByTag = (allAnsweredPosts, filter) => {
-  if(filter === 'none'){
+  if(filter === 'แสดงทั้งหมด'){
     return allAnsweredPosts;
   }
   return allAnsweredPosts.filter(f => f.tags.includes(filter))
-  
 }
 const Item = ({ item, onPress}) => (
   <Card
@@ -95,7 +94,7 @@ const Item = ({ item, onPress}) => (
   >
     <List.Item
       title={item.title}
-      description={`Posted by ${item.user?.avatarName} ${timeSince(item.date)} ago`}
+      description={`โพสต์ของ ${item.user?.avatarName} ${timeSince(item.date)} ที่ผ่านมา`}
       left={() => <BigHead
         {...item.user?.avatarProps} size={50}
                   />}
@@ -154,7 +153,7 @@ const ForumDisplayAll = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   let forumAnswered = useSelector((state) => state.forum.answered);
-  const [selectedFilterTag, setSelectedFilterTag] = useState('none')
+  const [selectedFilterTag, setSelectedFilterTag] = useState('แสดงทั้งหมด')
   const [filterMenuVisible, setFilterMenuVisible] = useState(false)
 
   forumAnswered = applyFilterByTag(forumAnswered, selectedFilterTag)
@@ -225,11 +224,11 @@ const ForumDisplayAll = ({navigation}) => {
               mode='text'
               onPress={openMenu}
                     ><Text
-                      style={{color: theme.colors.accent}}>Filter: </Text><Text
+                      style={{color: theme.colors.accent}}>ตัวกรอง: </Text><Text
                         > {selectedFilterTag}</Text></Button>}
           >
             <Menu.Item
-              title='none' onPress={() => handleSetFilter('none')}
+              title='แสดงทั้งหมด' onPress={() => handleSetFilter('แสดงทั้งหมด')}
             />
             <Menu.Item
               title='ปัญหาเรื่องเพศ' value='ปัญหาเรื่องเพศ' onPress={() => handleSetFilter('ปัญหาเรื่องเพศ')}
@@ -345,7 +344,8 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   descriptionStyle: {
-    color: 'gray'
+    color: 'gray',
+    fontSize: 10
   },
   chip: {
     marginTop: 10,

@@ -47,7 +47,7 @@ const wait = (timeout) => new Promise((resolve) => {
 });
 
 const applyFilterByTag = (allAnsweredPosts, filter) => {
-  if(filter === 'none'){
+  if(filter === 'แสดงทั้งหมด'){
     return allAnsweredPosts;
   }
   return allAnsweredPosts.filter(f => f.tags.includes(filter))
@@ -59,7 +59,7 @@ const Item = ({ item, onPress}) => (
   >
     <List.Item
       title={item.title}
-      description={`Posted by ${item.user.avatarName} ${timeSince(item.date)} ago`}
+      description={`โพสต์ของ ${item.user.avatarName} ${timeSince(item.date)} ที่ผ่านมา`}
       left={() => <BigHead
         {...item.user?.avatarProps} size={50}
                   />}
@@ -121,7 +121,7 @@ const MyAnswered = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   let myAnsweredFiltered = myAnsweredPosts;
-  const [selectedFilterTag, setSelectedFilterTag] = useState('none')
+  const [selectedFilterTag, setSelectedFilterTag] = useState('แสดงทั้งหมด')
   const [filterMenuVisible, setFilterMenuVisible] = useState(false)
 
   myAnsweredFiltered = applyFilterByTag(myAnsweredFiltered, selectedFilterTag)
@@ -194,7 +194,7 @@ const MyAnswered = ({navigation, route}) => {
                         > {selectedFilterTag}</Text></Button>}
           >
             <Menu.Item
-              title='none' onPress={() => handleSetFilter('none')}
+              title='แสดงทั้งหมด' onPress={() => handleSetFilter('แสดงทั้งหมด')}
             />
             <Menu.Item
               title='ปัญหาเรื่องเพศ' value='ปัญหาเรื่องเพศ' onPress={() => handleSetFilter('ปัญหาเรื่องเพศ')}

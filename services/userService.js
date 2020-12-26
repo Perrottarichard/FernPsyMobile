@@ -14,4 +14,8 @@ const createAvatar = async (id, avatarProps, avatarName) => {
   const response = await axios.post(`${baseUrl}/createAvatar`, {id, avatarProps, avatarName})
   return response.data;
 }
-export default { registerUser, getAllUsers, createAvatar };
+const recordMood = async (moodObj) => {
+  const response = await axios.put(`${baseUrl}/addmood`, moodObj)
+  return response.data;
+}
+export default { registerUser, getAllUsers, createAvatar, recordMood };

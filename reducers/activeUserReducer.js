@@ -11,6 +11,8 @@ const activeUserReducer = (state = {user: null, redirecting: false}, action) => 
     return {...state, user: action.data};
   case 'UPDATE_AVATAR':
     return {...state, user: {...state.user, avatarProps: action.data.avatarProps, avatarName: action.data.avatarName}}
+  case 'ADD_MOOD':
+    return {...state, user: action.data}
   case 'UPDATE_USER':
     return {...state, user: action.data};
   default:
@@ -38,6 +40,21 @@ export const updateUserAvatar = (id, avatarProps, avatarName) => async (dispatch
     })
     dispatch({
       type: 'UPDATE_USER',
+      data: updated
+    })
+    ToastAndroid.show('บันทึกสำเร็จ', ToastAndroid.SHORT)
+  } catch (error) {
+    console.log(error)
+    ToastAndroid.show('มีบางอย่างผิดพลาดกรุณาตรวจสอบ', ToastAndroid.SHORT)
+  }
+
+};
+
+export const addMood = (moodObj) => async (dispatch) => {
+  try {
+    const updated = await userService.recordMood(moodObj);
+    dispatch({
+      type: 'ADD_MOOD',
       data: updated
     })
     ToastAndroid.show('บันทึกสำเร็จ', ToastAndroid.SHORT)

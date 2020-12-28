@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {View, ScrollView, Dimensions, ToastAndroid, StyleSheet} from 'react-native'
 import {Text, useTheme, Button, RadioButton} from 'react-native-paper'
 import Slider from '@react-native-community/slider'
-import {LineChart} from 'react-native-chart-kit'
+import {LineChart, PieChart} from 'react-native-chart-kit'
 import {addMood} from '../reducers/activeUserReducer'
 import { DateTime } from 'luxon'
 import DataGraphic from '../assets/undraw_visual_data_b1wx.svg'
@@ -18,35 +18,53 @@ const moodsDaily = (moods) => {
   }
 }
 
-const moodsWeekly = (moods) => {
-  let monthArr = []
+const getPieData = (moods) => {
   let tempMoods = [...moods]
-  for(let i = 0; i < 36; i++){
-    if(tempMoods[i] === undefined){
-      tempMoods[i] = {mood: 0}
-    }
-  }
-  let sum = 0;
-  for(let i = tempMoods.length - 1; i > tempMoods.length - 36; i--){
-    sum += tempMoods[i].mood
-    if(i === 0 || i % 5 === 0){
-      let av = sum / 5
-      monthArr.push(av)
-      av = 0
-      sum = 0
-    }
-  }
-  monthArr.forEach(n => Number(n))
-  return monthArr;
-}
+  let veryGoodMoodObjs = tempMoods.filter(m => m.mood === 5).length
+  let goodMoodObjs = tempMoods.filter(m => m.mood === 4).length
+  let normalMoodObjs = tempMoods.filter(m => m.mood === 3).length
+  let notGoodMoodObjs = tempMoods.filter(m => m.mood === 2).length
+  let badMoodObjs = tempMoods.filter(m => m.mood === 1).length
 
-const moodsMonthly = (moods) => {
-  let yearArr = []
-  for(let i = moods.length - 1; i > moods.length - 366; i--){
-    yearArr.push(moods[i])
-  }
-  return yearArr.filter(d => d?.mood).reverse()
-}
+  const pieDataArray = [
+    {
+      name: "Very Good",
+      count: veryGoodMoodObjs,
+      color: "#f5586f",
+      legendFontColor: "gray",
+      legendFontSize: 12 
+    },
+    {
+      name: "Good",
+      count: goodMoodObjs,
+      color: "#ff8592",
+      legendFontColor: "gray",
+      legendFontSize: 12 
+    },
+    {
+      name: "Normal",
+      count: normalMoodObjs,
+      color: "#FFB6C1",
+      legendFontColor: "gray",
+      legendFontSize: 12 
+    },
+    {
+      name: "Not Good",
+      count: notGoodMoodObjs,
+      color: "#c2a9ab",
+      legendFontColor: "gray",
+      legendFontSize: 12 
+    },
+    {
+      name: "Bad",
+      count: badMoodObjs,
+      color: "#42393a",
+      legendFontColor: "gray",
+      legendFontSize: 12 
+    }
+  ];
+  return pieDataArray;
+};
 
 const daysThisWeek = (moods) => {
   let tempMoods = [...moods]
@@ -58,71 +76,35 @@ const daysThisWeek = (moods) => {
   }
 }
 
-const weeksThisMonth = () => {
-  let weeksArr = []
-  let today = DateTime.local()
-  let weekNum = today.weekNumber
-  for(let i = 0; i < 7; i++) {
-    weeksArr[i] = `${weekNum - i}`
-  }
-  return weeksArr.reverse()
-}
-
-const monthsThisYear = () => {
-  let monthsArr = []
-  let today = DateTime.local()
-  for(let i = 0; i < 7; i++) {
-    monthsArr[i] = today.minus({months: i}).monthShort
-  }
-  return monthsArr.reverse()
-}
-
 const MoodTracker = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const user = useSelector(state => state.activeUser.user);
   let moodsForChart = user.moods
-  const [moodValue, setMoodValue] = useState(2.5)
-  const [displayInterval, setDisplayInterval] = useState('week')
+  const [moodValue, setMoodValue] = useState(3)
+
+  //for line display 'This week'
+  const [displayType, setDisplayType] = useState('This week')
   const [timesToShow, setTimesToShow] = useState(daysThisWeek(moodsForChart)) 
 
   const dailyM = React.useCallback(() => {
     return moodsDaily(moodsForChart)
   }, [moodsForChart])
 
-  const weeklyM = React.useCallback(() => {
-    return moodsWeekly(moodsForChart)
-  }, [moodsForChart])
-
-  const monthlyM = React.useCallback(() => {
-   return moodsMonthly(moodsForChart)
-  }, [moodsForChart])
-
   const [dataToShow, setDataToShow] = useState(dailyM())
 
-  const chosenInterval = (interval) => {
-    switch(interval){
-      case 'month':
-        if(user.moods.length < 30){
-          return ToastAndroid.show('Not enough data yet', ToastAndroid.SHORT)
-        }else{
-        setDisplayInterval('month');
-        setDataToShow(weeklyM())
-        setTimesToShow(weeksThisMonth())
-        }
-        break;
-      case 'year':
-        if(user.moods.length < 90){
-          return ToastAndroid.show('Not enough data yet', ToastAndroid.SHORT)
-        }
-        setDisplayInterval('year');
-        setDataToShow(monthlyM())
-        setTimesToShow(monthsThisYear())
+  //for pie display 'All'
+  getPieData(moodsForChart)
+
+  const chosenType = (type) => {
+    switch(type){
+      case 'This week':
+        setDisplayType('This week')
+        setDataToShow(dailyM())
+        setTimesToShow(daysThisWeek(moodsForChart))
         break;
       default:
-        setDisplayInterval('week')
-        setDataToShow(dailyM())
-        setTimesToShow(daysThisWeek())
+        setDisplayType('All')
     }
   }
 
@@ -148,13 +130,84 @@ const MoodTracker = () => {
       }
     }
   }
+  if(user.moods.length === 0) {
+    return(
+      <ScrollView
+        contentContainerStyle={styles.container}>
+        <View
+          style={styles.chartContainer}><Text
+            style={styles.noDataYetDailyText}>Not enough data yet</Text>
+          <DataGraphic
+            height={180} width={180}/>
+        </View>
+        <View
+          style={styles.radioContainer}>
+          <RadioButton.Group
+            onValueChange={newValue => chosenType(newValue)} 
+            value={displayType}
+        >
+            <View
+              style={styles.radioButtons}>
+              <View
+                style={styles.eachRadioButton}>
+                <Text
+                  style={styles.radioText}>This week</Text>
+                <RadioButton
+                  value="This week" />
+              </View>
+              <View
+                style={styles.eachRadioButton}>
+                <Text
+                  style={styles.radioText}>All</Text>
+                <RadioButton
+                  value="All" />
+              </View>
+            </View>
+          </RadioButton.Group>
+        </View>
+        <View
+          style={styles.howDoYouFeel}>
+          <Text
+            style={styles.howDoYouFeelText}>How do you feel today?</Text>
+        </View>
+        <View
+          style={{...styles.moodValueContainer, borderColor: theme.colors.onSurface}}>
+          <Text
+            style={styles.moodValueText}>{moodValue}</Text>
+        </View>
+        <View
+          style={styles.sliderContainer}>
+          <Slider
+      // eslint-disable-next-line react-native/no-inline-styles
+            style={{width: 300, height: 40, alignSelf: 'center'}}
+            minimumValue={1}
+            maximumValue={5}
+            step={1}
+            minimumTrackTintColor={'lightpink'}
+            maximumTrackTintColor={'lightgray'}
+            onValueChange={value => setMoodValue(value)}
+            thumbTintColor={theme.colors.accent}
+            value={3}
+    />
+          <Button
+            onPress={submitMood}
+            style={styles.sliderButton}>
+            <Text
+              style={styles.sliderButtonText}>
+              Save
+            </Text>
+          </Button>
+        </View>
+      </ScrollView>
+    )
+  }
 
   return(
     <ScrollView
       contentContainerStyle={styles.container}>
       <View
         style={styles.chartContainer}>
-        {user.moods.length > 0 ?
+        {displayType === 'This week' ?
           <LineChart
             data={{
       labels: timesToShow,
@@ -167,15 +220,30 @@ const MoodTracker = () => {
             width={Dimensions.get("window").width}
             height={220}
             withInnerLines={false}
-            fromZero={true}
-          // yAxisLabel="$"
-          // yAxisSuffix="k"
-            yAxisInterval={1} // optional, defaults to 1
+            yLabelsOffset={8}
+            formatYLabel={(num) => {
+              if(num === '5.0'){
+                return 'Very Good'
+              }else if(num === '4.0'){
+                return 'Good'
+              }else if (num === '3.0') {
+                return 'Normal'
+              }else if(num === '2.0') {
+                return 'Not Good'
+              }else if(num === '1.0'){
+                return 'Bad'
+              }else{
+                return ''
+              }
+            }}
+            yAxisInterval={1}
             chartConfig={{
       backgroundColor: 'lightpink',
       backgroundGradientFrom: theme.colors.background,
       backgroundGradientTo: theme.colors.surface,
       decimalPlaces: 1,
+      propsForHorizontalLabels: {fontSize: 10},
+      propsForVerticalLabels: {fontSize: 10},
       color: () => 'lightpink',
       labelColor: () => theme.colors.onSurface,
       style: {
@@ -186,42 +254,52 @@ const MoodTracker = () => {
         fill: theme.colors.accent
       }
     }}
-            bezier
           // eslint-disable-next-line react-native/no-inline-styles
             style={{
       marginVertical: 8,
       borderRadius: 16
     }}
   />
-: <View
-    style={styles.chartContainer}><Text
-      style={styles.noDataYetDailyText}>Not enough data yet</Text>
-  <DataGraphic
-    height={180} width={180}/>
-</View>}
+: <PieChart
+    data={getPieData(moodsForChart)}
+    width={Dimensions.get("window").width}
+    height={220}
+    chartConfig={{
+      color: () => 'lightpink',
+      labelColor: () => theme.colors.onSurface,
+    }}
+    accessor={'count'}
+    backgroundColor={"transparent"}
+    paddingLeft={"15"}
+    center={[10, 0]}
+    absolute
+/>}
 
       </View>
       <View
         style={styles.radioContainer}>
         <RadioButton.Group
-          onValueChange={newValue => chosenInterval(newValue)} 
-          value={displayInterval}
-           
+          onValueChange={newValue => chosenType(newValue)} 
+          value={displayType}
           >
           <View
             style={styles.radioButtons}>
-            <Text
-              style={styles.radioText}>Daily</Text>
-            <RadioButton
-              value="week" />
-            <Text
-              style={styles.radioText}>Weekly</Text>
-            <RadioButton
-              value="month" />
-            <Text
-              style={styles.radioText}>Monthly</Text>
-            <RadioButton
-              value="year" />
+            <View
+              style={styles.eachRadioButton}>
+              <Text
+                style={styles.radioText}>This week</Text>
+              <RadioButton
+                color={theme.colors.primary}
+                value="This week" />
+            </View>
+            <View
+              style={styles.eachRadioButton}>
+              <Text
+                style={styles.radioText}>All</Text>
+              <RadioButton
+                color={theme.colors.primary}
+                value="All" />
+            </View>
           </View>
         </RadioButton.Group>
       </View>
@@ -240,14 +318,14 @@ const MoodTracker = () => {
         <Slider
         // eslint-disable-next-line react-native/no-inline-styles
           style={{width: 300, height: 40, alignSelf: 'center'}}
-          minimumValue={0}
+          minimumValue={1}
           maximumValue={5}
-          step={0.5}
+          step={1}
           minimumTrackTintColor={'lightpink'}
           maximumTrackTintColor={'lightgray'}
           onValueChange={value => setMoodValue(value)}
           thumbTintColor={theme.colors.accent}
-          value={2.5}
+          value={3}
       />
         <Button
           onPress={submitMood}
@@ -276,16 +354,21 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   radioContainer: {
-    flex: 0.6
+    flex: 0.6,
+    width: '100%'
   },
   radioButtons: {
-    flexDirection: 'row', 
-    justifyContent: 'space-evenly',
+    flexDirection: 'row',
+    alignItems: 'stretch', 
+    justifyContent: 'center',
+  },
+  eachRadioButton: {
+    flexDirection: 'row',
+    marginRight: 30,
+    marginTop: 10
   },
   radioText: {
     marginTop: 7,
-    paddingLeft: 20,
-    marginRight: 0,
     fontSize: 12,
   },
   howDoYouFeel: {

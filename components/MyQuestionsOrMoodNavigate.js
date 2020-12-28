@@ -1,24 +1,23 @@
 import React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import {useTheme} from 'react-native-paper'
 import MyQuestionsNavigate from './MyQuestionsNavigate';
 import MoodTracker from './MoodTracker';
 
 const Tab = createMaterialTopTabNavigator();
 
 const MyQuestionsOrMoodNavigate = () => {
-  const theme = useTheme()
+
   return (
     <Tab.Navigator
       tabBarOptions={{
         tabStyle: {
-          height: 30, 
+          height: 38, 
           paddingTop: 0, 
           marginTop: 0, 
           marginBottom: 3
           },
           indicatorStyle: {
-            backgroundColor: theme.colors.primary,
+            backgroundColor: 'lightpink',
             height: 0.25
           }
         }} >

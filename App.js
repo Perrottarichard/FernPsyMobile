@@ -6,7 +6,7 @@ import {useTheme} from 'react-native-paper'
 import {ToastAndroid, LogBox} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {useNetInfo} from '@react-native-community/netinfo';
-import { setUser } from './reducers/activeUserReducer';
+import { initStats, setUser } from './reducers/activeUserReducer';
 import { initializeForumAnswered, getAllArticles } from './reducers/forumReducer';
 import forumService from './services/forumService';
 import TabNav from './components/TabNav';
@@ -40,9 +40,11 @@ const App = () => {
     const loggedUserJSON = await AsyncStorage.getItem('loggedForumUser');
     if (loggedUserJSON) {
       const existingUser = JSON.parse(loggedUserJSON);
+      console.log(existingUser)
       dispatch(setUser(existingUser));
       forumService.setToken(existingUser.token);
       userService.setToken(existingUser.token);
+      dispatch(initStats(existingUser._id))
     } else {
       console.log('no user');
     }
@@ -54,6 +56,7 @@ const App = () => {
     } else {
       forumService.setToken(user.token);
       userService.setToken(user.token);
+      dispatch(initStats(user._id))
     }
   }, [dispatch, getLoggedUser, user]);
 

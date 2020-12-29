@@ -177,7 +177,7 @@ const ForumDisplayAll = ({navigation}) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(forumAnswered.length === 0){
+    if(!forumAnswered){
       dispatch(initializeForumAnswered());
     }else{
       setIsLoading(false)

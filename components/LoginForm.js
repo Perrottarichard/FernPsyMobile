@@ -6,7 +6,7 @@ import {
 import { Input } from 'react-native-elements';
 import {Button, useTheme, Text} from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setUser, redirecting } from '../reducers/activeUserReducer';
+import { setUser, redirecting, initStats } from '../reducers/activeUserReducer';
 import loginService from '../services/loginService';
 import forumService from '../services/forumService';
 import AskFernLogo2 from '../assets/askfernlogo2.svg'
@@ -33,6 +33,7 @@ const LoginForm = (props) => {
           'loggedForumUser', JSON.stringify(user),
         );
         dispatch(setUser(user));
+        dispatch(initStats(user._id))
         forumService.setToken(user.token);
         dispatch(redirecting(false))
         ToastAndroid.show(`ยินดีต้อนรับ คุณ ${user.email}`, ToastAndroid.SHORT);

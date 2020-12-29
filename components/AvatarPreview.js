@@ -3,7 +3,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {View, StyleSheet, FlatList, ToastAndroid, ActivityIndicator, Animated, Dimensions} from 'react-native'
 import {RadioButton, Text, Card, TextInput, Button, Divider} from 'react-native-paper'
-import {BigHead, theme} from 'react-native-bigheads'
+import {BigHead} from 'react-native-bigheads'
 import {updateUserAvatar} from '../reducers/activeUserReducer'
 import {ExpandingDot} from 'react-native-animated-pagination-dots'
 
@@ -463,6 +463,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 10,
     width: Dimensions.get('screen').width,
   },
   surface: {

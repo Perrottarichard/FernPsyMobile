@@ -15,8 +15,9 @@ const wait = (timeout) => new Promise((resolve) => {
 const MyQuestions = ({navigation}) => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
-
   const user = useSelector((state) => state.activeUser.user);
+  const userPoints = useSelector((state) => state.activeUser?.userPoints)
+  const userLevel = useSelector((state) => state.activeUser?.userLevel)
   const {avatarProps} = user
   const {avatarName} = user
   const id = user._id;
@@ -80,6 +81,13 @@ const MyQuestions = ({navigation}) => {
         </View>
       </View>
       <View
+        style={styles.statsContainer}>
+        <Text
+          style={styles.pointsText}>Points: {userPoints}</Text>
+        <Text
+          style={styles.levelText}>Level: {userLevel}</Text>
+      </View>
+      <View
         style={styles.answerPendingContainer}
       >
         <Button
@@ -118,6 +126,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  statsContainer: {
+    flex: 0.5,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    alignItems: 'center'
+  },
+  pointsText: {
+    fontSize: 20
+  },
+  levelText: {
+    fontSize: 20
   },
   answerPendingContainer: {
     flex: 1,

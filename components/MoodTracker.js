@@ -84,7 +84,7 @@ const MoodTracker = () => {
   const [moodValue, setMoodValue] = useState(3)
 
   //for line display 'This week'
-  const [displayType, setDisplayType] = useState('This week')
+  const [displayType, setDisplayType] = useState('All')
   const [timesToShow, setTimesToShow] = useState(daysThisWeek(moodsForChart)) 
 
   const dailyM = React.useCallback(() => {
@@ -110,10 +110,7 @@ const MoodTracker = () => {
 
   const submitMood = () => {
     let today = DateTime.local();
-    let getDayNumber = DateTime.fromISO(moodsForChart[moodsForChart.length - 1].date).day
-    if(today.day === getDayNumber){
-      ToastAndroid.show('You already added your mood today', ToastAndroid.SHORT)
-    }else{
+    if(moodsForChart.length === 0){
       dispatch(addMood(moodValue))
       let moodDataCopy = [...dataToShow, moodValue]
       if(moodDataCopy.length <= 7){
@@ -128,7 +125,27 @@ const MoodTracker = () => {
       }else{
         setTimesToShow(weekDisplayCopy.slice(weekDisplayCopy.length - 7))
       }
+    }else{
+        let getDayNumber = DateTime.fromISO(moodsForChart[moodsForChart.length - 1].date).day
+        if(today.day === getDayNumber){
+      ToastAndroid.show('You already added your mood today', ToastAndroid.SHORT)
+      }else{
+        dispatch(addMood(moodValue))
+        let moodDataCopy = [...dataToShow, moodValue]
+      if(moodDataCopy.length <= 7){
+        setDataToShow(moodDataCopy)
+      }else{
+        setDataToShow(moodDataCopy.slice(moodDataCopy.length - 7))
+      }
+      let newDayFormatted = `${today.day}/${today.month}`
+      let weekDisplayCopy = [...timesToShow, newDayFormatted]
+      if(weekDisplayCopy.length <= 7){
+        setTimesToShow(weekDisplayCopy)
+      }else{
+        setTimesToShow(weekDisplayCopy.slice(weekDisplayCopy.length - 7))
+      }
     }
+  }
   }
   if(user.moods.length === 0) {
     return(

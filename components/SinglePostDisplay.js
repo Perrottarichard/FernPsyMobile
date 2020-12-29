@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
 import {createSelector} from 'reselect'
 import {
    View, StyleSheet, ToastAndroid, Appearance
@@ -10,6 +11,7 @@ import {BigHead} from 'react-native-bigheads'
 import { heart } from '../reducers/forumReducer';
 import {timeSince} from './ForumDisplayAll'
 import Loading from './Loading'
+import LottieView from 'lottie-react-native'
 
 const colorMode = Appearance.getColorScheme()
 
@@ -52,6 +54,7 @@ const selectHeartedByUser = createSelector(
 const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
 
   const heartedByUser = useSelector(selectHeartedByUser)
+  const [showHeartAnimation, setShowHeartAnimation] = useState(false)
   const dispatch = useDispatch()
 
   const submitHeart = async () => {
@@ -61,6 +64,10 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
     } else {
       try {
         dispatch(heart(post._id));
+        setShowHeartAnimation(true)
+        setTimeout(() => {
+          setShowHeartAnimation(false)
+        }, 2000);
       } catch (error) {
         console.log(error);
         ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
@@ -78,9 +85,14 @@ const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
     <View
       style={colorMode === 'light' ? styles.container : styles.containerDark}
     >
+      {showHeartAnimation ?
+        <LottieView
+          source={require('../assets/heartUpAnimation.json')} autoPlay
+          style={{zIndex: 99}}/>
+      : null}
       {post && (
         <Surface
-          style={styles.cardStylePost} key={post._id}
+          style={{...styles.cardStylePost, opacity: showHeartAnimation ? 0.3 : 1}} key={post._id}
         >
           <List.Item
             title={post.title}
@@ -199,7 +211,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 5,
     marginBottom: 20,
-    backgroundColor: DefaultTheme.colors.background
+    backgroundColor: DefaultTheme.colors.background,
   },
   containerDark: {
     flex: 1,

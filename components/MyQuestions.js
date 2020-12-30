@@ -170,7 +170,8 @@ const styles = StyleSheet.create({
   editAvatarContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 10
   },
   showAnsweredText: {
     color: 'black',

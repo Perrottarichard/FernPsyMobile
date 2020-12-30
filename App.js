@@ -37,7 +37,6 @@ const App = () => {
   }else{
     user = null;
   }
-
   const dispatch = useDispatch();
   const theme = useTheme()
   const getLoggedUser = useCallback(async () => {

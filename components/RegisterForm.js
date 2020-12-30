@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
+import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setUser, redirecting} from '../reducers/activeUserReducer';
+import forumService from '../services/forumService';
+import userService from '../services/userService';
+
 import {
   ToastAndroid, View, Text, StyleSheet,ScrollView,
 } from 'react-native';
 import { Input } from 'react-native-elements';
 import {Button, useTheme} from 'react-native-paper'
-import userService from '../services/userService';
 import Graphic from '../assets/undraw_mobile_login_ikmv.svg';
 
 const RegisterForm = ({ navigation }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,14 +48,19 @@ const RegisterForm = ({ navigation }) => {
     } else {
       setIsLoading(true);
       try {
-        await userService.registerUser({ password, email: email.toLowerCase() });
-        ToastAndroid.show('สำเร็จแล้ว คุณสามารถล็อคอินและตั้งกระทู้ถามได้เลยค่ะ', ToastAndroid.SHORT);
-        setPassword('');
-        setConfirmPassword('');
-        setEmail('');
+        dispatch(redirecting(true))
+        const user = await userService.registerUser({ password, email: email.toLowerCase() });
+        await AsyncStorage.setItem(
+          'loggedForumUser', JSON.stringify(user),
+        );
+        dispatch(setUser(user));
+        forumService.setToken(user.token);
+        dispatch(redirecting(false))
+        ToastAndroid.show(`ยินดีต้อนรับ คุณ ${user.email}`, ToastAndroid.SHORT);
         navigation.navigate('LoginForm');
       } catch (error) {
         console.log(error);
+        dispatch(redirecting(false))
         ToastAndroid.show('มีข้อผิดพลาด กรุณาลองใหม่ค่ะ', ToastAndroid.SHORT);
       }
     }

@@ -68,7 +68,7 @@ const SinglePostDisplay = ({user, navigation, isLoading}) => {
         setShowHeartAnimation(true)
         setTimeout(() => {
           setShowHeartAnimation(false)
-        }, 2000);
+        }, 2500);
       } catch (error) {
         console.log(error);
         ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);

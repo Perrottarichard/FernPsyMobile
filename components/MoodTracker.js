@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       borderRadius: 20,
       width: 300,
-      backgroundColor: 'lightpink',
+      backgroundColor: 'lightgray',
       marginBottom: 10,
       marginTop: 15
     },

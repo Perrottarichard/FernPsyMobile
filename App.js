@@ -11,11 +11,14 @@ import { initializeForumAnswered, getAllArticles } from './reducers/forumReducer
 import forumService from './services/forumService';
 import TabNav from './components/TabNav';
 import userService from './services/userService';
+import reactotron from './ReactotronConfig';
 
 LogBox.ignoreLogs(['Require cycles are allowed'])
 if(__DEV__) {
   import('./ReactotronConfig').then(() => console.log('Reactotron Configured'))
+  reactotron.connect()
 }
+
 
 const App = () => {
   const netInfo = useNetInfo();

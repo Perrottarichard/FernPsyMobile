@@ -131,12 +131,12 @@ const Item = ({ item, onPress, visibleMenu, openMenu, closeMenu, replies, flag})
 );
 
 
-const DisplayComments = ({navigation, route}) => {
+const DisplayComments = ({navigation}) => {
 
   const dispatch = useDispatch()
   const user = useSelector(selectUser)
   const refresh = useSelector(state => state.forum.refresh)
-  const { post } = route.params;
+  const post = useSelector(state => state.forum.activePost);
   const [isLoading, setIsLoading] = useState(true);
   const [visibleMenu, setVisibleMenu] = useState('');
 

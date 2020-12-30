@@ -9,7 +9,7 @@ import { addReply} from '../reducers/forumReducer';
 const AddReply = ({navigation, route}) => {
   const { commentId, postId} = route.params;
   const theme = useTheme()
-  const post = useSelector(state => state.forum.answered.find(p => p._id === postId))
+  const post = useSelector(state => state.forum.activePost)
   const comment = post.comments.find(c => c._id === commentId)
   const user = useSelector(state => state.activeUser.user)
   const loading = useSelector(state => state.forum.loading)

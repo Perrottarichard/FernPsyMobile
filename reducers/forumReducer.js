@@ -58,15 +58,15 @@ const forumReducer = (state = initialState, action) => {
 
   case 'ADD_COMMENT': {
     const commentedOnId = action.data._id;
-    const postToChange = state.answered.find((p) => p._id === commentedOnId);
+    const postToChange = state.activePost;
     const newPost = { ...postToChange, comments: [...postToChange.comments, action.data.comments[action.data.comments.length - 1]] };
-    return { ...state, answered: state.answered.map((s) => (s._id === commentedOnId ? newPost : s)) };
+    return { ...state, answered: state.answered.map((s) => (s._id === commentedOnId ? newPost : s)), activePost: {...newPost} };
   }
 
   case 'ADD_REPLY': {
-    const postWithCommentToEdit = state.answered.find(p => p._id === action.data.postId)
+    const postWithCommentToEdit = state.activePost
     const modifiedPost = {...postWithCommentToEdit, comments: postWithCommentToEdit.comments.filter(x => x._id !== action.data.commentObj._id).concat(action.data.commentObj).sort((a, b) => new Date(b.date) - new Date(a.date))}
-    return { ...state, answered: state.answered.map((s) => (s._id === action.data.postId ? modifiedPost : s)) };
+    return { ...state, answered: state.answered.map((s) => (s._id === action.data.postId ? modifiedPost : s)), activePost: {...modifiedPost} };
   }
   case 'DELETE_QUESTION':
     return { ...state, pending: state.pending.filter((q) => q._id !== action.data) };

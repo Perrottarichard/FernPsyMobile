@@ -6,17 +6,16 @@ import {BigHead} from 'react-native-bigheads'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
 import { addComment} from '../reducers/forumReducer';
 
-const AddComment = ({navigation, route}) => {
-  const { postId} = route.params;
+const AddComment = ({navigation}) => {
   const theme = useTheme()
-  const post = useSelector(state => state.forum.answered.find(p => p._id === postId))
+  const post = useSelector(state => state.forum.activePost)
   const user = useSelector(state => state.activeUser.user)
   const dispatch = useDispatch()
   const loading = useSelector(state => state.forum.loading)
   const [comment, setComment] = useState('')
 
   const submitComment = async () => {
-    const postToModifyId = post;
+    const postToModify = post;
     if (user === null) {
       ToastAndroid.show('คุณต้องลงชื่อเพื่อแสดงความคิดเห็น', ToastAndroid.SHORT);
       navigation.navigate('LoginForm');
@@ -24,11 +23,9 @@ const AddComment = ({navigation, route}) => {
       ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT);
     }else {
       try {
-        dispatch(addComment(comment, postToModifyId));
+        dispatch(addComment(comment, postToModify));
         setTimeout(() => {
-          navigation.navigate('SinglePostDisplay', {
-            postId,
-          });
+          navigation.navigate('SinglePostDisplay');
         }, 2000);
       } catch (error) {
         console.log(error);

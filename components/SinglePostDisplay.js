@@ -51,9 +51,10 @@ const selectHeartedByUser = createSelector(
   forum => forum.heartedByUser
 )
 
-const SinglePostDisplay = ({user, navigation, isLoading, post}) => {
+const SinglePostDisplay = ({user, navigation, isLoading}) => {
 
   const heartedByUser = useSelector(selectHeartedByUser)
+  const post = useSelector(state => state.forum.activePost)
   const [showHeartAnimation, setShowHeartAnimation] = useState(false)
   const dispatch = useDispatch()
 

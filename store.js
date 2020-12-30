@@ -1,5 +1,6 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
+import Reactotron from './ReactotronConfig'
 import thunk from 'redux-thunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import forumReducer from './reducers/forumReducer';
@@ -26,6 +27,6 @@ const persistConfig = {
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = createStore(persistedReducer, applyMiddleware(thunk));
+export const store = createStore(persistedReducer, compose(applyMiddleware(thunk), Reactotron.createEnhancer()));
 
 export const persistor = persistStore(store);

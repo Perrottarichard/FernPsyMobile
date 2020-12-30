@@ -9,7 +9,7 @@ const initialState = {
   articles: [],
   loading: false,
   heartedByUser: [],
-  refresh: false
+  activePost: undefined
 };
 const forumReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -24,17 +24,17 @@ const forumReducer = (state = initialState, action) => {
   case 'LOADING': {
     return {...state, loading: true}
   }
-  case 'REFRESH': {
-    return {...state, refresh: !state.refresh}
-  }
   case 'CANCEL_LOADING': {
     return {...state, loading: false}
   }
+  case 'ACTIVE_POST': {
+    return {...state, activePost: action.data}
+  }
   case 'HEART': {
     const id = action.data.postId;
-    const questionToChange = state.answered.find((q) => q._id === id);
+    const questionToChange = state.activePost
     const changedQuestion = { ...questionToChange, likes: questionToChange.likes + 1 };
-    return { ...state, answered: state.answered.map((q) => (q._id === id ? changedQuestion : q)), heartedByUser: action.data.userHeartArray };
+    return { ...state, answered: state.answered.map((q) => (q._id === id ? changedQuestion : q)), heartedByUser: action.data.userHeartArray, activePost: {...changedQuestion} };
   }
   case 'UP_VIEW': {
     const id = action.data._id;
@@ -59,7 +59,7 @@ const forumReducer = (state = initialState, action) => {
   case 'ADD_COMMENT': {
     const commentedOnId = action.data._id;
     const postToChange = state.answered.find((p) => p._id === commentedOnId);
-    const newPost = { ...postToChange, comments: postToChange.comments.concat(action.data.comments[action.data.comments.length - 1]) };
+    const newPost = { ...postToChange, comments: [...postToChange.comments, action.data.comments[action.data.comments.length - 1]] };
     return { ...state, answered: state.answered.map((s) => (s._id === commentedOnId ? newPost : s)) };
   }
 
@@ -89,8 +89,9 @@ export const loading = () => ({
 export const cancelLoading = () => ({
   type: 'CANCEL_LOADING'
 })
-export const shouldRefresh = () => ({
-  type: 'REFRESH'
+export const activePost = (post) => ({
+  type: 'ACTIVE_POST',
+  data: post
 })
 export const heart = (postId) => async (dispatch) => {
   const userHeartArray = await forumService.heartUp(postId);
@@ -98,7 +99,6 @@ export const heart = (postId) => async (dispatch) => {
     type: 'HEART',
     data: {postId, userHeartArray}
   });
-  dispatch(shouldRefresh())
 };
 export const upView = (articleId) => async (dispatch) => {
   const newArticle = await forumService.incView(articleId);

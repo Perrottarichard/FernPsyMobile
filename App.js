@@ -13,8 +13,9 @@ import TabNav from './components/TabNav';
 import userService from './services/userService';
 
 LogBox.ignoreLogs(['Require cycles are allowed'])
-
-
+if(__DEV__) {
+  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'))
+}
 
 const App = () => {
   const netInfo = useNetInfo();

@@ -5,7 +5,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import {BigHead} from 'react-native-bigheads'
 import { List, Chip, Text, Card , Menu, Provider, Button, useTheme} from 'react-native-paper';
-import { initializeForumAnswered } from '../reducers/forumReducer';
+import { initializeForumAnswered, activePost } from '../reducers/forumReducer';
 import NoPostsYet from './NoPostsYet'
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -189,6 +189,7 @@ const ForumDisplayAll = ({navigation}) => {
       <Item
         item={item}
         onPress={() => {
+          dispatch(activePost(item))
           navigation.navigate('SinglePostDisplay', {
             post: item,
           });

@@ -91,7 +91,7 @@ const MyQuestions = ({navigation}) => {
         style={styles.answerPendingContainer}
       >
         <Button
-          icon='checkbox-marked-circle-outline' mode='contained' style={styles.showAnsweredButton} onPress={() => navigation.navigate("MyAnswered", {myAnsweredPosts})}
+          icon='checkbox-marked-circle-outline' mode='contained' style={styles.showAnsweredButton} onPress={() => navigation.navigate("MyAnswered", {id: id})}
           disabled={myAnsweredPosts.length === 0}
         >
           <Text

@@ -2,10 +2,10 @@ import React, { useEffect, useState, useCallback } from 'react';
 import {
   View, FlatList, StyleSheet, ActivityIndicator, RefreshControl,
 } from 'react-native';
-import { useDispatch} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import {BigHead} from 'react-native-bigheads'
 import { List, Chip, Text, Card , Menu, Provider, Button, useTheme} from 'react-native-paper';
-import { initializeForumAnswered} from '../reducers/forumReducer';
+import { initializeForumAnswered, activePost} from '../reducers/forumReducer';
 import NoPostsYet from './NoPostsYet'
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {timeSince} from './ForumDisplayAll'
@@ -115,7 +115,10 @@ const Item = ({ item, onPress}) => (
 );
 
 const MyAnswered = ({navigation, route}) => {
-  const myAnsweredPosts = route.params.myAnsweredPosts
+  
+  const id = route.params.id
+  const answered = useSelector((state) => state.forum.answered);
+  const myAnsweredPosts = answered.filter((p) => p.user?.id === id).sort((a, b) => new Date(b.date) - new Date(a.date));
   const dispatch = useDispatch();
   const theme = useTheme()
   const [isLoading, setIsLoading] = useState(true);
@@ -155,6 +158,7 @@ const MyAnswered = ({navigation, route}) => {
       <Item
         item={item}
         onPress={() => {
+          dispatch(activePost(item))
           navigation.navigate('SinglePostDisplay', {
             post: item,
           });

@@ -4,7 +4,7 @@ import {View, TextInput, StyleSheet, Keyboard, ScrollView, ToastAndroid, Activit
 import {Button, Surface, Text, useTheme} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
-import { addComment, shouldRefresh} from '../reducers/forumReducer';
+import { addComment} from '../reducers/forumReducer';
 
 const AddComment = ({navigation, route}) => {
   const { postId} = route.params;
@@ -25,7 +25,6 @@ const AddComment = ({navigation, route}) => {
     }else {
       try {
         dispatch(addComment(comment, postToModifyId));
-        dispatch(shouldRefresh())
         setTimeout(() => {
           navigation.navigate('SinglePostDisplay', {
             postId,

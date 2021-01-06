@@ -5,11 +5,15 @@ import {Button, Surface, Text, useTheme} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
 import { addComment} from '../reducers/forumReducer';
+import {addPoints, levelUp} from '../reducers/activeUserReducer'
+import {shouldLevelUp} from '../helperFunctions'
 
 const AddComment = ({navigation}) => {
   const theme = useTheme()
   const post = useSelector(state => state.forum.activePost)
   const user = useSelector(state => state.activeUser.user)
+  const userPoints = useSelector(state => state.activeUser.userPoints);
+  const userLevel = useSelector(state => state.activeUser.userLevel);
   const dispatch = useDispatch()
   const loading = useSelector(state => state.forum.loading)
   const [comment, setComment] = useState('')
@@ -24,6 +28,10 @@ const AddComment = ({navigation}) => {
     }else {
       try {
         dispatch(addComment(comment, postToModify));
+        dispatch(addPoints(user._id, 1))
+      if(shouldLevelUp(userPoints, userLevel, 1)){
+        dispatch(levelUp(user._id))
+      }
         setTimeout(() => {
           navigation.navigate('SinglePostDisplay');
         }, 2000);

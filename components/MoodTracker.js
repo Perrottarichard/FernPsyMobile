@@ -4,9 +4,10 @@ import {View, ScrollView, Dimensions, ToastAndroid, StyleSheet} from 'react-nati
 import {Text, useTheme, Button, RadioButton} from 'react-native-paper'
 import Slider from '@react-native-community/slider'
 import {LineChart, PieChart} from 'react-native-chart-kit'
-import {addMood} from '../reducers/activeUserReducer'
+import {addMood, addPoints, levelUp} from '../reducers/activeUserReducer'
 import { DateTime } from 'luxon'
 import DataGraphic from '../assets/undraw_visual_data_b1wx.svg'
+import {shouldLevelUp} from '../helperFunctions'
 
 const moodsDaily = (moods) => {
   let tempMoods = [...moods]
@@ -80,10 +81,12 @@ const MoodTracker = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const user = useSelector(state => state.activeUser.user);
+  const userPoints = useSelector(state => state.activeUser.userPoints);
+  const userLevel = useSelector(state => state.activeUser.userLevel);
   let moodsForChart = user.moods
   const [moodValue, setMoodValue] = useState(3)
 
-  //for line display 'This week'
+  //for line chart display 'This week'
   const [displayType, setDisplayType] = useState('All')
   const [timesToShow, setTimesToShow] = useState(daysThisWeek(moodsForChart)) 
 
@@ -93,7 +96,7 @@ const MoodTracker = () => {
 
   const [dataToShow, setDataToShow] = useState(dailyM())
 
-  //for pie display 'All'
+  //for pie chart display 'All'
   getPieData(moodsForChart)
 
   const chosenType = (type) => {
@@ -112,6 +115,10 @@ const MoodTracker = () => {
     let today = DateTime.local();
     if(moodsForChart.length === 0){
       dispatch(addMood(moodValue))
+      dispatch(addPoints(user._id, 1))
+      if(shouldLevelUp(userPoints, userLevel, 1)){
+        dispatch(levelUp(user._id))
+      }
       let moodDataCopy = [...dataToShow, moodValue]
       if(moodDataCopy.length <= 7){
         setDataToShow(moodDataCopy)
@@ -128,20 +135,27 @@ const MoodTracker = () => {
     }else{
         let getDayNumber = DateTime.fromISO(moodsForChart[moodsForChart.length - 1].date).day
         if(today.day === getDayNumber){
-      ToastAndroid.show('You already added your mood today', ToastAndroid.SHORT)
-      }else{
+        ToastAndroid.show('You already added your mood today', ToastAndroid.SHORT)
+        }else{
         dispatch(addMood(moodValue))
+        dispatch(addPoints(user._id, 1))
+        
+        if(shouldLevelUp(userPoints, userLevel, 1)){
+        dispatch(levelUp(user._id))
+        }
+
         let moodDataCopy = [...dataToShow, moodValue]
-      if(moodDataCopy.length <= 7){
+        if(moodDataCopy.length <= 7){
         setDataToShow(moodDataCopy)
-      }else{
+        }else{
         setDataToShow(moodDataCopy.slice(moodDataCopy.length - 7))
-      }
-      let newDayFormatted = `${today.day}/${today.month}`
-      let weekDisplayCopy = [...timesToShow, newDayFormatted]
-      if(weekDisplayCopy.length <= 7){
+        }
+
+        let newDayFormatted = `${today.day}/${today.month}`
+        let weekDisplayCopy = [...timesToShow, newDayFormatted]
+        if(weekDisplayCopy.length <= 7){
         setTimesToShow(weekDisplayCopy)
-      }else{
+        }else{
         setTimesToShow(weekDisplayCopy.slice(weekDisplayCopy.length - 7))
       }
     }

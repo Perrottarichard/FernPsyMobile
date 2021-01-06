@@ -6,7 +6,8 @@ import {RadioButton, Text, Card, TextInput, Button, Divider} from 'react-native-
 import {BigHead} from 'react-native-bigheads'
 import {updateUserAvatar} from '../reducers/activeUserReducer'
 import {ExpandingDot} from 'react-native-animated-pagination-dots'
-
+import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
+ 
 const accessoryButtons = [
   {name: "ไม่มี", value: "none"},
   {name: "ตุ้มหู", value: "hoopEarrings"}, 
@@ -138,88 +139,105 @@ const mouthButtons = [
 
 const DATA = [
   {
-    type: 'accessory',
-    buttons: accessoryButtons,
-    title: 'เครื่องประดับ'
-  },
-  {
-    type: 'hat',
-    buttons: hatButtons,
-    title: 'hat'
-  },
-  {
-    type: 'lipColor',
-    buttons: lipColorButtons,
-    title: 'lipColor'
-  },
-  {
-    type: 'hatColor',
-    buttons: hatColorButtons,
-    title: 'hatColor'
+    type: 'body',
+    buttons: bodyButtons,
+    title: 'รูปร่าง',
+    level: 1
   },
   {
     type: 'bgColor',
     buttons: bgColorButtons,
-    title: 'สีพื้นหลัง'
-  },
-  {
-    type: 'body',
-    buttons: bodyButtons,
-    title: 'รูปร่าง'
-  },
-  {
-    type: 'clothing',
-    buttons: clothingButtons,
-    title: 'เสื้อผ้า'
-  },
-  {
-    type: 'graphic',
-    buttons: graphicButtons,
-    title: 'ลายเสื้อ'
-  },
-  {
-    type: 'clothingColor',
-    buttons: clothingColorButtons,
-    title: 'สีเสื้อผ้า'
-  },
-  {
-    type: 'mouth',
-    buttons: mouthButtons,
-    title: 'ปาก'
-  },
-  {
-    type: 'skinTone',
-    buttons: skinToneButtons,
-    title: 'สีผิว'
-  },
-  {
-    type: 'eyes',
-    buttons: eyesButtons,
-    title: 'ตา'
+    title: 'สีพื้นหลัง',
+    level: 1
   },
   {
     type: 'eyebrows',
     buttons: eyebrowsButtons,
-    title: 'คิ้ว'
+    title: 'คิ้ว',
+    level: 1
+  },
+  {
+    type: 'lipColor',
+    buttons: lipColorButtons,
+    title: 'lipColor',
+    level: 1
+  },
+  {
+    type: 'skinTone',
+    buttons: skinToneButtons,
+    title: 'สีผิว',
+    level: 1
   },
   {
     type: 'facialHair',
     buttons: facialHairButtons,
-    title: 'หนวด'
+    title: 'หนวด',
+    level: 1
   },
   {
     type: 'hair',
     buttons: hairButtons,
-    title: 'ทรงผม'
+    title: 'ทรงผม',
+    level: 1
   },
   {
     type: 'hairColor',
     buttons: hairColorButtons,
-    title: 'สีผม'
-  }
+    title: 'สีผม',
+    level: 1
+  },
+  {
+    type: 'clothingColor',
+    buttons: clothingColorButtons,
+    title: 'สีเสื้อผ้า',
+    level: 1
+  },
+  {
+    type: 'mouth',
+    buttons: mouthButtons,
+    title: 'ปาก',
+    level: 2
+  },
+  {
+    type: 'eyes',
+    buttons: eyesButtons,
+    title: 'ตา',
+    level: 2
+  },
+  {
+    type: 'clothing',
+    buttons: clothingButtons,
+    title: 'เสื้อผ้า',
+    level: 3
+  },
+  {
+    type: 'graphic',
+    buttons: graphicButtons,
+    title: 'ลายเสื้อ',
+    level: 3
+  },
+  {
+    type: 'accessory',
+    buttons: accessoryButtons,
+    title: 'เครื่องประดับ',
+    level: 3
+  },
+  {
+    type: 'hat',
+    buttons: hatButtons,
+    title: 'hat',
+    level: 4
+  },
+  {
+    type: 'hatColor',
+    buttons: hatColorButtons,
+    title: 'hatColor',
+    level: 4
+  },
+
 ]
 
-const Item = ({item, handleValueChange, index, avatarPropsLocal}) => (
+const Item = ({item, handleValueChange, index, avatarPropsLocal, userLevel}) => (
   <Card
     style={styles.surface}
   >
@@ -230,20 +248,30 @@ const Item = ({item, handleValueChange, index, avatarPropsLocal}) => (
     </Text>
     <Divider
       style={{margin: 3}}/>
-    <RadioButton.Group
-      onValueChange={newValue => handleValueChange(item.type, newValue, index)}
-      value={avatarPropsLocal[item.type]}
+    {userLevel >= item.level ?
+      <RadioButton.Group
+        onValueChange={newValue => handleValueChange(item.type, newValue, index)}
+        value={avatarPropsLocal[item.type]}
     >
-      {item.buttons.map(b => (
-        <Card.Content
-          key={b.value} style={styles.innerChoices}
+        {item.buttons.map(b => (
+          <Card.Content
+            key={b.value} style={styles.innerChoices}
         >
-          <RadioButton.Item
-            label={b.name} value={b.value} style={styles.radioButtonItems} labelStyle={{fontSize: 14}}
+            <RadioButton.Item
+              label={b.name} value={b.value} style={styles.radioButtonItems} labelStyle={{fontSize: 14}}
           />
-        </Card.Content>
+          </Card.Content>
             ))}
-    </RadioButton.Group>
+      </RadioButton.Group>
+    : 
+      <View
+        style={{justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
+        <Micon
+          name='lock' size={90} color='gray'/>
+        <Text>
+          Level: {item.level}
+        </Text>
+      </View>}
   </Card>
 )
 const ITEM_HEIGHT = Dimensions.get('screen').width
@@ -251,6 +279,7 @@ const ITEM_HEIGHT = Dimensions.get('screen').width
 const AvatarPreview = ({navigation}) => {
 
   const user = useSelector(state => state.activeUser.user)
+  const userLevel = useSelector(state => state.activeUser.userLevel)
   const {avatarProps} = user
   const {avatarName} = user
   const [name, setName] = useState(avatarName || 'anonymous')
@@ -311,6 +340,7 @@ const AvatarPreview = ({navigation}) => {
         hairColor: avatarPropsLocal.hairColor,
         skinTone: avatarPropsLocal.skinTone,
         mouth: avatarPropsLocal.mouth,
+
       }
       const avatarName = name
       try {
@@ -386,6 +416,7 @@ const AvatarPreview = ({navigation}) => {
           index={index}
           avatarPropsLocal={avatarPropsLocal}
           handleValueChange={handleValueChange}
+          userLevel={userLevel}
         />
       </View>
     );
@@ -421,7 +452,7 @@ const AvatarPreview = ({navigation}) => {
         <BigHead
           accessory={avatarPropsLocal.accessory}
           bgColor={avatarPropsLocal.bgColor}
-          bgShape="squircle"
+          bgShape={avatarPropsLocal.bgShape}
           body={avatarPropsLocal.body}
           clothing={avatarPropsLocal.clothing}
           clothingColor={avatarPropsLocal.clothingColor}
@@ -431,10 +462,10 @@ const AvatarPreview = ({navigation}) => {
           graphic={avatarPropsLocal.graphic}
           hair={avatarPropsLocal.hair}
           hairColor={avatarPropsLocal.hairColor}
-          hat="none"
-          hatColor="green"
+          hat={avatarPropsLocal.hat}
+          hatColor={avatarPropsLocal.hatColor}
           lashes
-          lipColor="pink"
+          lipColor={avatarPropsLocal.lipColor}
           mouth={avatarPropsLocal.mouth}
           showBackground
           size={140}

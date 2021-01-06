@@ -9,6 +9,7 @@ const MyQuestionsOrMoodNavigate = () => {
 
   return (
     <Tab.Navigator
+      swipeEnabled={false}
       tabBarOptions={{
         tabStyle: {
           height: 38, 

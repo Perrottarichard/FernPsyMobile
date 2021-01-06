@@ -42,7 +42,7 @@ const App = () => {
   const getLoggedUser = useCallback(async () => {
     const loggedUserJSON = await AsyncStorage.getItem('loggedForumUser');
     if (loggedUserJSON) {
-      const existingUser = JSON.parse(loggedUserJSON);
+      const existingUser = await JSON.parse(loggedUserJSON);
       console.log(existingUser)
       dispatch(setUser(existingUser));
       forumService.setToken(existingUser.token);

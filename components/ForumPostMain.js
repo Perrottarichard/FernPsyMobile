@@ -7,11 +7,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import {Picker} from '@react-native-picker/picker'
 import { addQuestion } from '../reducers/forumReducer';
 import PostGraphic from '../assets/undraw_add_post_64nu.svg';
+import {addPoints, levelUp} from '../reducers/activeUserReducer'
+import {shouldLevelUp} from '../helperFunctions'
 
 const ForumPostMain = (props) => {
   const { navigation } = props;
   const theme = useTheme();
-  const activeUser = useSelector((state) => state.activeUser);
+  const user = useSelector((state) => state.activeUser.user);
+  const userPoints = useSelector(state => state.activeUser.userPoints)
+  const userLevel = useSelector(state => state.activeUser.userLevel)
   const [isLoading, setIsLoading] = useState(false);
   const [question, setQuestion] = useState('');
   const [title, setTitle] = useState('');
@@ -40,12 +44,12 @@ const ForumPostMain = (props) => {
       ToastAndroid.show('คุณต้องเลือก 1 tag', ToastAndroid.SHORT);
       // กรุณาเลือกแท็กสองหัวข้อค่ะ
       // 'Please select 2 tags'
-    } else if (!activeUser) {
+    } else if (!user) {
       ToastAndroid.show('กรุณาล็อคอินก่อนโพสคำถามค่ะ', ToastAndroid.SHORT);
       // กรุณาล็อคอินก่อนโพสคำถามค่ะ
       // 'You must be logged in to post to the forum'
       navigation.navigate('LoginForm');
-    } else if (activeUser.username === 'Fern-Admin' || activeUser.username === 'Richard-Admin') {
+    } else if (user.username === 'Fern-Admin' || user.username === 'Richard-Admin') {
       ToastAndroid.show('Why are you trying to ask yourself a question?', ToastAndroid.SHORT);
     } else {
       const postToAdd = {
@@ -59,6 +63,10 @@ const ForumPostMain = (props) => {
       try {
         setIsLoading(true);
         dispatch(addQuestion(postToAdd));
+        dispatch(addPoints(user._id, 3))
+        if(shouldLevelUp(userPoints, userLevel, 3)){
+          dispatch(levelUp(user._id))
+        }
         setTitle('');
         setQuestion('');
         setSelectedTags([]);

@@ -16,6 +16,14 @@ const accessoryButtons = [
   {name: "หน้ากากอนามัย", value: "faceMask"}
 ]
 
+const hatButtons = [
+  {name: 'none', value: 'none'},
+  {name: 'beanie', value: 'beanie'},
+  {name: 'party', value: 'party'},
+  {name: 'turban', value: 'turban'},
+  {name: 'hijab', value: 'hijab'}
+]
+
 const bgColorButtons = [
   {name: "ฟ้า", value: "blue"}, 
   {name: "เขียว", value: "green"},
@@ -45,6 +53,21 @@ const clothingColorButtons = [
   {name: "เขียว", value: "green"},
   {name: "แดง", value: "red"},
   {name: "ดำ", value:"black"},
+]
+const hatColorButtons = [
+  {name: "ขาว", value: "white"}, 
+  {name: "ฟ้า", value: "blue"},
+  {name: "เขียว", value: "green"},
+  {name: "แดง", value: "red"},
+  {name: "ดำ", value:"black"},
+]
+
+const lipColorButtons = [
+  {name: "purple", value: "purple"}, 
+  {name: "pink", value: "pink"},
+  {name: "เขียว", value: "green"},
+  {name: "แดง", value: "red"},
+  {name: "turqoise", value:"turqoise"},
 ]
 
 const eyebrowsButtons = [
@@ -118,6 +141,21 @@ const DATA = [
     type: 'accessory',
     buttons: accessoryButtons,
     title: 'เครื่องประดับ'
+  },
+  {
+    type: 'hat',
+    buttons: hatButtons,
+    title: 'hat'
+  },
+  {
+    type: 'lipColor',
+    buttons: lipColorButtons,
+    title: 'lipColor'
+  },
+  {
+    type: 'hatColor',
+    buttons: hatColorButtons,
+    title: 'hatColor'
   },
   {
     type: 'bgColor',
@@ -233,6 +271,12 @@ const AvatarPreview = ({navigation}) => {
       hairColor:avatarProps.hairColor ? avatarProps.hairColor :'brown',
       skinTone:avatarProps.skinTone ? avatarProps.skinTone :'brown',
       mouth:avatarProps.mouth ? avatarProps.mouth : 'lips',
+      hat: avatarProps.hat ? avatarProps.hat : 'none',
+      hatColor: avatarProps.hatColor ? avatarProps.hatColor : 'green',
+      lipColor: avatarProps.lipColor ? avatarProps.lipColor : 'pink',
+      showBackground: true,
+      bgShape: 'squircle',
+      lashes: true
   })
 
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -248,12 +292,12 @@ const AvatarPreview = ({navigation}) => {
     }else{
       const id = user._id
       const avatarProps = {
-        hat: 'none',
-        hatColor: 'blue',
-        lashes: true,
-        lipColor: 'pink',
-        showBackground: true,
-        bgShape: 'squircle',
+        hat: avatarPropsLocal.hat,
+        hatColor: avatarPropsLocal.hatColor,
+        lashes: avatarPropsLocal.lashes,
+        lipColor: avatarPropsLocal.lipColor,
+        showBackground: avatarPropsLocal.showBackground,
+        bgShape: avatarPropsLocal.bgShape,
         accessory: avatarPropsLocal.accessory,
         bgColor: avatarPropsLocal.bgColor,
         body: avatarPropsLocal.body,
@@ -319,6 +363,16 @@ const AvatarPreview = ({navigation}) => {
         break;
       case 'skinTone':
         setAvatarPropsLocal({...avatarPropsLocal,skinTone: newValue});
+        break;
+      case 'hat':
+        setAvatarPropsLocal({...avatarPropsLocal, hat: newValue});
+        break;
+      case 'hatColor':
+        setAvatarPropsLocal({...avatarPropsLocal, hatColor: newValue});
+        break;
+      case 'lipColor':
+        setAvatarPropsLocal({...avatarPropsLocal, lipColor: newValue});
+        break;
       }
   }
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {View, TextInput, StyleSheet, Keyboard, ScrollView, ToastAndroid, ActivityIndicator} from 'react-native'
@@ -7,6 +8,8 @@ import Ficon from 'react-native-vector-icons/FontAwesome5'
 import { addComment} from '../reducers/forumReducer';
 import {addPoints, levelUp} from '../reducers/activeUserReducer'
 import {shouldLevelUp} from '../helperFunctions'
+import LottieView from 'lottie-react-native'
+
 
 const AddComment = ({navigation}) => {
   const theme = useTheme()
@@ -17,6 +20,7 @@ const AddComment = ({navigation}) => {
   const dispatch = useDispatch()
   const loading = useSelector(state => state.forum.loading)
   const [comment, setComment] = useState('')
+  const [showLevelUpAnimation, setShowLevelUpAnimation] = useState(false)
 
   const submitComment = async () => {
     const postToModify = post;
@@ -27,10 +31,19 @@ const AddComment = ({navigation}) => {
       ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT);
     }else {
       try {
-        dispatch(addComment(comment, postToModify));
-        dispatch(addPoints(user._id, 1))
+    
       if(shouldLevelUp(userPoints, userLevel, 1)){
-        dispatch(levelUp(user._id))
+        setShowLevelUpAnimation(true)
+        setTimeout(() => {
+          setShowLevelUpAnimation(false)
+          dispatch(addComment(comment, postToModify));
+          dispatch(levelUp(user._id))
+          dispatch(addPoints(user._id, 1))
+        }, 2000);
+        
+      }else{
+        dispatch(addComment(comment, postToModify));
+          dispatch(addPoints(user._id, 1))
       }
         setTimeout(() => {
           navigation.navigate('SinglePostDisplay');
@@ -46,8 +59,20 @@ const AddComment = ({navigation}) => {
     <ScrollView
       style={styles.container}
     >
+
+      {showLevelUpAnimation ?
+        <React.Fragment>
+          <Text
+            style={{alignSelf: 'center', fontSize: 30}}>Level Up!</Text>
+          <LottieView
+            source={require('../assets/levelUpAnimation.json')}
+            autoPlay
+            loop={false}
+            style={{zIndex: 99}}/>
+        </React.Fragment>
+      : null}
       <View
-        style={styles.graphicView}
+        style={{...styles.graphicView, opacity: showLevelUpAnimation ? 0.1 : 1}}
       >
         <BigHead
           {...user.avatarProps} size={180}
@@ -55,14 +80,14 @@ const AddComment = ({navigation}) => {
       </View>
       <View>
         <Text
-          style={styles.leadIn}
+          style={{...styles.leadIn, opacity: showLevelUpAnimation ? 0.1 : 1}}
         >
           {`${user.avatarName} says...`}
         </Text>
       </View>
 
       <Surface
-        style={styles.surface}
+        style={{...styles.surface, opacity: showLevelUpAnimation ? 0.1 : 1}}
       >
         <Ficon
           name='quote-left' size={25} color='gray'
@@ -87,7 +112,7 @@ const AddComment = ({navigation}) => {
       </Surface>
       {!loading ? (
         <Button
-          style={styles.commentButton} icon='comment-plus' mode='contained' onPress={submitComment}
+          style={{...styles.commentButton, opacity: showLevelUpAnimation ? 0.1 : 1}} icon='comment-plus' mode='contained' onPress={submitComment}
         >
           <Text
             style={styles.commentButtonText}
@@ -97,7 +122,7 @@ const AddComment = ({navigation}) => {
         </Button>
       )
         : <ActivityIndicator
-            style={styles.spinner} color='pink'
+            style={{...styles.spinner, opacity: showLevelUpAnimation ? 0 : 1}} color='pink'
         />}
     </ScrollView>
   )

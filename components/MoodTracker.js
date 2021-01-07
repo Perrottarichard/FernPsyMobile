@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {View, ScrollView, Dimensions, ToastAndroid, StyleSheet} from 'react-native'
@@ -8,6 +9,8 @@ import {addMood, addPoints, levelUp} from '../reducers/activeUserReducer'
 import { DateTime } from 'luxon'
 import DataGraphic from '../assets/undraw_visual_data_b1wx.svg'
 import {shouldLevelUp} from '../helperFunctions'
+import LottieView from 'lottie-react-native'
+
 
 const moodsDaily = (moods) => {
   let tempMoods = [...moods]
@@ -85,6 +88,7 @@ const MoodTracker = () => {
   const userLevel = useSelector(state => state.activeUser.userLevel);
   let moodsForChart = user.moods
   const [moodValue, setMoodValue] = useState(3)
+  const [showLevelUpAnimation, setShowLevelUpAnimation] = useState(false)
 
   //for line chart display 'This week'
   const [displayType, setDisplayType] = useState('All')
@@ -118,7 +122,12 @@ const MoodTracker = () => {
       dispatch(addPoints(user._id, 1))
       if(shouldLevelUp(userPoints, userLevel, 1)){
         dispatch(levelUp(user._id))
-      }
+        setShowLevelUpAnimation(true)
+        setTimeout(() => {
+          setShowLevelUpAnimation(false)
+        }, 2500);
+        }
+
       let moodDataCopy = [...dataToShow, moodValue]
       if(moodDataCopy.length <= 7){
         setDataToShow(moodDataCopy)
@@ -142,6 +151,10 @@ const MoodTracker = () => {
         
         if(shouldLevelUp(userPoints, userLevel, 1)){
         dispatch(levelUp(user._id))
+        setShowLevelUpAnimation(true)
+        setTimeout(() => {
+          setShowLevelUpAnimation(false)
+        }, 2500);
         }
 
         let moodDataCopy = [...dataToShow, moodValue]
@@ -166,7 +179,7 @@ const MoodTracker = () => {
       <ScrollView
         contentContainerStyle={styles.container}>
         <View
-          style={styles.chartContainer}><Text
+          style={{...styles.chartContainer, opacity: showLevelUpAnimation ? 0.2 : 1}}><Text
             style={styles.noDataYetDailyText}>Not enough data yet</Text>
           <DataGraphic
             height={180} width={180}/>
@@ -182,16 +195,18 @@ const MoodTracker = () => {
               <View
                 style={styles.eachRadioButton}>
                 <Text
-                  style={styles.radioText}>This week</Text>
+                  style={styles.radioText}>All</Text>
                 <RadioButton
-                  value="This week" />
+                  value="All"
+                  color={theme.colors.primary} />
               </View>
               <View
                 style={styles.eachRadioButton}>
                 <Text
-                  style={styles.radioText}>All</Text>
+                  style={styles.radioText}>This week</Text>
                 <RadioButton
-                  value="All" />
+                  value="This week"
+                  color={theme.colors.primary} />
               </View>
             </View>
           </RadioButton.Group>
@@ -236,8 +251,20 @@ const MoodTracker = () => {
   return(
     <ScrollView
       contentContainerStyle={styles.container}>
+      {showLevelUpAnimation ?
+        <React.Fragment>
+          <Text
+            style={{alignSelf: 'center', fontSize: 30}}>Level Up!</Text>
+          <LottieView
+            source={require('../assets/levelUpAnimation.json')}
+            autoPlay
+            loop={false}
+            style={{zIndex: 99}}/>
+        </React.Fragment>
+      : null}
       <View
-        style={styles.chartContainer}>
+        style={{...styles.chartContainer, opacity: showLevelUpAnimation ? 0.1 : 1}}>
+        
         {displayType === 'This week' ?
           <LineChart
             data={{
@@ -308,7 +335,7 @@ const MoodTracker = () => {
 
       </View>
       <View
-        style={styles.radioContainer}>
+        style={{...styles.radioContainer, opacity: showLevelUpAnimation ? 0.1 : 1}}>
         <RadioButton.Group
           onValueChange={newValue => chosenType(newValue)} 
           value={displayType}
@@ -318,34 +345,34 @@ const MoodTracker = () => {
             <View
               style={styles.eachRadioButton}>
               <Text
-                style={styles.radioText}>This week</Text>
-              <RadioButton
-                color={theme.colors.primary}
-                value="This week" />
-            </View>
-            <View
-              style={styles.eachRadioButton}>
-              <Text
                 style={styles.radioText}>All</Text>
               <RadioButton
                 color={theme.colors.primary}
                 value="All" />
             </View>
+            <View
+              style={styles.eachRadioButton}>
+              <Text
+                style={styles.radioText}>This week</Text>
+              <RadioButton
+                color={theme.colors.primary}
+                value="This week" />
+            </View>
           </View>
         </RadioButton.Group>
       </View>
       <View
-        style={styles.howDoYouFeel}>
+        style={{...styles.howDoYouFeel, opacity: showLevelUpAnimation ? 0.1 : 1}}>
         <Text
           style={styles.howDoYouFeelText}>How do you feel today?</Text>
       </View>
       <View
-        style={{...styles.moodValueContainer, borderColor: theme.colors.onSurface}}>
+        style={{...styles.moodValueContainer, borderColor: theme.colors.onSurface, opacity: showLevelUpAnimation ? 0.1 : 1}}>
         <Text
           style={styles.moodValueText}>{moodValue}</Text>
       </View>
       <View
-        style={styles.sliderContainer}>
+        style={{...styles.sliderContainer, opacity: showLevelUpAnimation ? 0.1 : 1}}>
         <Slider
         // eslint-disable-next-line react-native/no-inline-styles
           style={{width: 300, height: 40, alignSelf: 'center'}}

@@ -8,13 +8,26 @@ import { store, persistor } from './store';
 import App from './App';
 const colorMode = Appearance.getColorScheme()
 
-let theme;
-if(colorMode === 'light'){
-  theme = {...DefaultTheme}
+const levelColor = (level) => {
+if(level === 1){
+  return '#f76077'
+}else if(level === 2){
+  return '#7da3b2'
+}else if(level === 3){
+  return '#77dd77'
+}else if(level === 4){
+  return '#ff6961'
 }else{
-  theme = {...DarkTheme}
+  return '#917394'
+}
 }
 
+let theme;
+if(colorMode === 'light'){
+  theme = {...DefaultTheme, level: levelColor}
+}else{
+  theme = {...DarkTheme, level: levelColor}
+}
 const AppWrapper = () => (
   <Provider
     store={store}

@@ -71,6 +71,7 @@ const Item = ({ item, onPress}) => (
       titleEllipsizeMode='tail'
       onPress={onPress}
       style={styles.listItemStyle}
+      disabled={true}
     />
     <View
       style={styles.bottomTags}
@@ -113,7 +114,7 @@ const Item = ({ item, onPress}) => (
   </Card>
 );
 
-const MyPending = ({navigation, route}) => {
+const MyPending = ({route}) => {
   const myPendingPosts = route.params.myPendingPosts
   const dispatch = useDispatch();
   const theme = useTheme()
@@ -153,11 +154,6 @@ const MyPending = ({navigation, route}) => {
     return (
       <Item
         item={item}
-        onPress={() => {
-          navigation.navigate('SinglePostDisplay', {
-            post: item,
-          });
-        }}
       />
     );
   };

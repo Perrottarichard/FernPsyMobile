@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   View,  ScrollView, RefreshControl, StyleSheet,
 } from 'react-native';
-import {Button, Text} from 'react-native-paper'
+import {Button, Text, useTheme, Chip} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import { initializeForumPending, initializeForumAnswered, getAllArticles } from '../reducers/forumReducer';
 import Logout from './Logout'
+import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
+import {getLevelTitle} from '../helperFunctions'
 
 const wait = (timeout) => new Promise((resolve) => {
   setTimeout(resolve, timeout);
@@ -14,6 +16,7 @@ const wait = (timeout) => new Promise((resolve) => {
 
 const MyQuestions = ({navigation}) => {
   const dispatch = useDispatch();
+  const theme = useTheme()
   const [refreshing, setRefreshing] = useState(false);
   const user = useSelector((state) => state.activeUser.user);
   const userPoints = useSelector((state) => state.activeUser?.userPoints)
@@ -84,8 +87,15 @@ const MyQuestions = ({navigation}) => {
         style={styles.statsContainer}>
         <Text
           style={styles.pointsText}>Points: {userPoints}</Text>
-        <Text
-          style={styles.levelText}>Level: {userLevel}</Text>
+        <Chip
+          mode='flat'
+          style={{backgroundColor: theme.level(userLevel)}}>
+          <Micon
+            name='trophy-award'
+            size={20}
+            color={'white'}/>
+          <Text
+            style={styles.levelText}>{getLevelTitle(userLevel)}</Text></Chip>
       </View>
       <View
         style={styles.answerPendingContainer}
@@ -135,10 +145,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   pointsText: {
-    fontSize: 20
+    fontSize: 16
   },
   levelText: {
-    fontSize: 20
+    fontSize: 16
   },
   answerPendingContainer: {
     flex: 1,

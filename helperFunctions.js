@@ -15,3 +15,17 @@ if(levelNow === 1 && total >= 10){
   return false;
 }
 }
+
+export const getLevelTitle = (userLevel) => {
+  if(userLevel === 1) {
+    return 'Noob'
+  }else if(userLevel === 2) {
+    return 'NoobTwo'
+  }else if(userLevel === 3) {
+    return 'Intermediate'
+  }else if (userLevel === 4) {
+    return 'Pro'
+  }else if (userLevel === 5) {
+    return 'VIP'
+  }
+}

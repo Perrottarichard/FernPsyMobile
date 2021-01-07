@@ -88,12 +88,14 @@ const SinglePostDisplay = ({user, navigation, isLoading}) => {
     >
       {showHeartAnimation ?
         <LottieView
-          source={require('../assets/heartUpAnimation.json')} autoPlay
+          source={require('../assets/heartUpAnimation.json')}
+          autoPlay
+          loop={false}
           style={{zIndex: 99}}/>
       : null}
       {post && (
         <Surface
-          style={{...styles.cardStylePost, opacity: showHeartAnimation ? 0.3 : 1}} key={post._id}
+          style={{...styles.cardStylePost, opacity: showHeartAnimation ? 0.2 : 1}} key={post._id}
         >
           <List.Item
             title={post.title}

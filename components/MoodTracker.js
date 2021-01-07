@@ -2,7 +2,7 @@
 import React, {useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {View, ScrollView, Dimensions, ToastAndroid, StyleSheet} from 'react-native'
-import {Text, useTheme, Button, RadioButton} from 'react-native-paper'
+import {Text, useTheme, Button, RadioButton, Provider, Portal} from 'react-native-paper'
 import Slider from '@react-native-community/slider'
 import {LineChart, PieChart} from 'react-native-chart-kit'
 import {addMood, addPoints, levelUp} from '../reducers/activeUserReducer'
@@ -10,6 +10,7 @@ import { DateTime } from 'luxon'
 import DataGraphic from '../assets/undraw_visual_data_b1wx.svg'
 import {shouldLevelUp} from '../helperFunctions'
 import LottieView from 'lottie-react-native'
+import LevelUpAnimationModal from './LevelUpAnimationModal'
 
 
 const moodsDaily = (moods) => {
@@ -249,25 +250,20 @@ const MoodTracker = () => {
   }
 
   return(
-    <ScrollView
-      contentContainerStyle={styles.container}>
-      {showLevelUpAnimation ?
-        <React.Fragment>
-          <Text
-            style={{alignSelf: 'center', fontSize: 30}}>Level Up!</Text>
-          <LottieView
-            source={require('../assets/levelUpAnimation.json')}
-            autoPlay
-            loop={false}
-            style={{zIndex: 99}}/>
-        </React.Fragment>
+    <Provider>
+      <ScrollView
+        contentContainerStyle={styles.container}>
+        {showLevelUpAnimation ?
+          <Portal>
+            <LevelUpAnimationModal/>
+          </Portal>
       : null}
-      <View
-        style={{...styles.chartContainer, opacity: showLevelUpAnimation ? 0.1 : 1}}>
+        <View
+          style={{...styles.chartContainer, opacity: showLevelUpAnimation ? 0.1 : 1}}>
         
-        {displayType === 'This week' ?
-          <LineChart
-            data={{
+          {displayType === 'This week' ?
+            <LineChart
+              data={{
       labels: timesToShow,
       datasets: [
         {
@@ -275,11 +271,11 @@ const MoodTracker = () => {
         }
       ]
     }}
-            width={Dimensions.get("window").width}
-            height={220}
-            withInnerLines={false}
-            yLabelsOffset={8}
-            formatYLabel={(num) => {
+              width={Dimensions.get("window").width}
+              height={220}
+              withInnerLines={false}
+              yLabelsOffset={8}
+              formatYLabel={(num) => {
               if(num === '5.0'){
                 return 'Very Good'
               }else if(num === '4.0'){
@@ -294,8 +290,8 @@ const MoodTracker = () => {
                 return ''
               }
             }}
-            yAxisInterval={1}
-            chartConfig={{
+              yAxisInterval={1}
+              chartConfig={{
       backgroundColor: 'lightpink',
       backgroundGradientFrom: theme.colors.background,
       backgroundGradientTo: theme.colors.surface,
@@ -313,7 +309,7 @@ const MoodTracker = () => {
       }
     }}
           // eslint-disable-next-line react-native/no-inline-styles
-            style={{
+              style={{
       marginVertical: 8,
       borderRadius: 16
     }}
@@ -333,68 +329,69 @@ const MoodTracker = () => {
     absolute
 />}
 
-      </View>
-      <View
-        style={{...styles.radioContainer, opacity: showLevelUpAnimation ? 0.1 : 1}}>
-        <RadioButton.Group
-          onValueChange={newValue => chosenType(newValue)} 
-          value={displayType}
+        </View>
+        <View
+          style={{...styles.radioContainer, opacity: showLevelUpAnimation ? 0.1 : 1}}>
+          <RadioButton.Group
+            onValueChange={newValue => chosenType(newValue)} 
+            value={displayType}
           >
-          <View
-            style={styles.radioButtons}>
             <View
-              style={styles.eachRadioButton}>
-              <Text
-                style={styles.radioText}>All</Text>
-              <RadioButton
-                color={theme.colors.primary}
-                value="All" />
+              style={styles.radioButtons}>
+              <View
+                style={styles.eachRadioButton}>
+                <Text
+                  style={styles.radioText}>All</Text>
+                <RadioButton
+                  color={theme.colors.primary}
+                  value="All" />
+              </View>
+              <View
+                style={styles.eachRadioButton}>
+                <Text
+                  style={styles.radioText}>This week</Text>
+                <RadioButton
+                  color={theme.colors.primary}
+                  value="This week" />
+              </View>
             </View>
-            <View
-              style={styles.eachRadioButton}>
-              <Text
-                style={styles.radioText}>This week</Text>
-              <RadioButton
-                color={theme.colors.primary}
-                value="This week" />
-            </View>
-          </View>
-        </RadioButton.Group>
-      </View>
-      <View
-        style={{...styles.howDoYouFeel, opacity: showLevelUpAnimation ? 0.1 : 1}}>
-        <Text
-          style={styles.howDoYouFeelText}>How do you feel today?</Text>
-      </View>
-      <View
-        style={{...styles.moodValueContainer, borderColor: theme.colors.onSurface, opacity: showLevelUpAnimation ? 0.1 : 1}}>
-        <Text
-          style={styles.moodValueText}>{moodValue}</Text>
-      </View>
-      <View
-        style={{...styles.sliderContainer, opacity: showLevelUpAnimation ? 0.1 : 1}}>
-        <Slider
-        // eslint-disable-next-line react-native/no-inline-styles
-          style={{width: 300, height: 40, alignSelf: 'center'}}
-          minimumValue={1}
-          maximumValue={5}
-          step={1}
-          minimumTrackTintColor={'lightpink'}
-          maximumTrackTintColor={'lightgray'}
-          onValueChange={value => setMoodValue(value)}
-          thumbTintColor={theme.colors.accent}
-          value={3}
-      />
-        <Button
-          onPress={submitMood}
-          style={styles.sliderButton}>
+          </RadioButton.Group>
+        </View>
+        <View
+          style={{...styles.howDoYouFeel, opacity: showLevelUpAnimation ? 0.1 : 1}}>
           <Text
-            style={styles.sliderButtonText}>
-            Save
-          </Text>
-        </Button>
-      </View>
-    </ScrollView>
+            style={styles.howDoYouFeelText}>How do you feel today?</Text>
+        </View>
+        <View
+          style={{...styles.moodValueContainer, borderColor: theme.colors.onSurface, opacity: showLevelUpAnimation ? 0.1 : 1}}>
+          <Text
+            style={styles.moodValueText}>{moodValue}</Text>
+        </View>
+        <View
+          style={{...styles.sliderContainer, opacity: showLevelUpAnimation ? 0.1 : 1}}>
+          <Slider
+        // eslint-disable-next-line react-native/no-inline-styles
+            style={{width: 300, height: 40, alignSelf: 'center'}}
+            minimumValue={1}
+            maximumValue={5}
+            step={1}
+            minimumTrackTintColor={'lightpink'}
+            maximumTrackTintColor={'lightgray'}
+            onValueChange={value => setMoodValue(value)}
+            thumbTintColor={theme.colors.accent}
+            value={3}
+      />
+          <Button
+            onPress={submitMood}
+            style={styles.sliderButton}>
+            <Text
+              style={styles.sliderButtonText}>
+              Save
+            </Text>
+          </Button>
+        </View>
+      </ScrollView>
+    </Provider>
   )
 }
 

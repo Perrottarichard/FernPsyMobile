@@ -2,13 +2,13 @@
 import React, { useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {View, TextInput, StyleSheet, Keyboard, ScrollView, ToastAndroid, ActivityIndicator} from 'react-native'
-import {Button, Surface, Text, useTheme} from 'react-native-paper'
+import {Button, Surface, Text, useTheme, Portal, Provider} from 'react-native-paper'
 import {BigHead} from 'react-native-bigheads'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
 import { addComment} from '../reducers/forumReducer';
 import {addPoints, levelUp} from '../reducers/activeUserReducer'
 import {shouldLevelUp} from '../helperFunctions'
-import LottieView from 'lottie-react-native'
+import LevelUpAnimationModal from './LevelUpAnimationModal'
 
 
 const AddComment = ({navigation}) => {
@@ -31,23 +31,25 @@ const AddComment = ({navigation}) => {
       ToastAndroid.show('คุณลืมที่จะเขียนความคิดเห็น', ToastAndroid.SHORT);
     }else {
       try {
-    
+      
+      dispatch(addComment(comment, postToModify));
+
       if(shouldLevelUp(userPoints, userLevel, 1)){
         setShowLevelUpAnimation(true)
         setTimeout(() => {
           setShowLevelUpAnimation(false)
-          dispatch(addComment(comment, postToModify));
           dispatch(levelUp(user._id))
           dispatch(addPoints(user._id, 1))
-        }, 2000);
-        
-      }else{
-        dispatch(addComment(comment, postToModify));
-          dispatch(addPoints(user._id, 1))
-      }
+        }, 2500);
         setTimeout(() => {
           navigation.navigate('SinglePostDisplay');
-        }, 2000);
+        }, 2400);
+      }else{
+          dispatch(addPoints(user._id, 1))
+          setTimeout(() => {
+            navigation.navigate('SinglePostDisplay');
+          }, 2000);
+      }
       } catch (error) {
         console.log(error);
         ToastAndroid.show('กรุณาลองใหม่', ToastAndroid.SHORT);
@@ -56,75 +58,70 @@ const AddComment = ({navigation}) => {
   };
 
   return(
-    <ScrollView
-      style={styles.container}
+    <Provider>
+      <ScrollView
+        style={styles.container}
     >
-
-      {showLevelUpAnimation ?
-        <React.Fragment>
-          <Text
-            style={{alignSelf: 'center', fontSize: 30}}>Level Up!</Text>
-          <LottieView
-            source={require('../assets/levelUpAnimation.json')}
-            autoPlay
-            loop={false}
-            style={{zIndex: 99}}/>
-        </React.Fragment>
+        {showLevelUpAnimation ?
+          <Portal>
+            <LevelUpAnimationModal/>
+          </Portal>
       : null}
-      <View
-        style={{...styles.graphicView, opacity: showLevelUpAnimation ? 0.1 : 1}}
+        <View
+          style={{...styles.graphicView, opacity: showLevelUpAnimation ? 0.1 : 1}}
       >
-        <BigHead
-          {...user.avatarProps} size={180}
+          <BigHead
+            {...user.avatarProps} size={180}
         />
-      </View>
-      <View>
-        <Text
-          style={{...styles.leadIn, opacity: showLevelUpAnimation ? 0.1 : 1}}
-        >
-          {`${user.avatarName} says...`}
-        </Text>
-      </View>
-
-      <Surface
-        style={{...styles.surface, opacity: showLevelUpAnimation ? 0.1 : 1}}
-      >
-        <Ficon
-          name='quote-left' size={25} color='gray'
-        />
-        <TextInput
-          style={{...styles.textAreaComment, color: theme.colors.onSurface }}
-          multiline
-          autoFocus
-          textAlignVertical="center"
-          textAlign='center'
-          numberOfLines={2}
-          onChangeText={(c) => setComment(c)}
-          keyboardType="default"
-          returnKeyType="done"
-          onSubmitEditing={() => { Keyboard.dismiss(); }}
-          blurOnSubmit
-          value={comment}
-        />
-        <Ficon
-          name='quote-right' size={25} style={styles.rightQuote} color='gray'
-        />
-      </Surface>
-      {!loading ? (
-        <Button
-          style={{...styles.commentButton, opacity: showLevelUpAnimation ? 0.1 : 1}} icon='comment-plus' mode='contained' onPress={submitComment}
-        >
+        </View>
+        <View>
           <Text
-            style={styles.commentButtonText}
-          >
-            Submit
+            style={{...styles.leadIn, opacity: showLevelUpAnimation ? 0.1 : 1}}
+        >
+            {`${user.avatarName} says...`}
           </Text>
-        </Button>
+        </View>
+
+        <Surface
+          style={{...styles.surface, opacity: showLevelUpAnimation ? 0.1 : 1}}
+      >
+          <Ficon
+            name='quote-left' size={25} color='gray'
+        />
+          <TextInput
+            style={{...styles.textAreaComment, color: theme.colors.onSurface }}
+            multiline
+            autoFocus
+            textAlignVertical="center"
+            textAlign='center'
+            numberOfLines={2}
+            onChangeText={(c) => setComment(c)}
+            keyboardType="default"
+            returnKeyType="done"
+            onSubmitEditing={() => { Keyboard.dismiss(); }}
+            blurOnSubmit
+            value={comment}
+        />
+          <Ficon
+            name='quote-right' size={25} style={styles.rightQuote} color='gray'
+        />
+        </Surface>
+        {!loading ? (
+          <Button
+            style={{...styles.commentButton, opacity: showLevelUpAnimation ? 0.1 : 1}} icon='comment-plus' mode='contained' onPress={submitComment}
+        >
+            <Text
+              style={styles.commentButtonText}
+          >
+              Submit
+            </Text>
+          </Button>
       )
         : <ActivityIndicator
             style={{...styles.spinner, opacity: showLevelUpAnimation ? 0 : 1}} color='pink'
         />}
-    </ScrollView>
+      </ScrollView>
+    </Provider>
   )
 }
 

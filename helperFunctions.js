@@ -18,14 +18,14 @@ if(levelNow === 1 && total >= 10){
 
 export const getLevelTitle = (userLevel) => {
   if(userLevel === 1) {
-    return 'Noob'
+    return 'มือใหม่'
   }else if(userLevel === 2) {
-    return 'NoobTwo'
+    return 'รุ่นเล็ก'
   }else if(userLevel === 3) {
-    return 'Intermediate'
+    return 'รุ่นกลาง'
   }else if (userLevel === 4) {
-    return 'Pro'
+    return 'รุ่นโปร'
   }else if (userLevel === 5) {
-    return 'VIP'
+    return 'วีไอพี'
   }
 }

@@ -194,7 +194,7 @@ const MyAnswered = ({navigation, route}) => {
               mode='text'
               onPress={openMenu}
                     ><Text
-                      style={{color: theme.colors.accent}}>Filter: </Text><Text
+                      style={{color: theme.colors.accent}}>กรอง </Text><Text
                         > {selectedFilterTag}</Text></Button>}
           >
             <Menu.Item

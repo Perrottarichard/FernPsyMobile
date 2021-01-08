@@ -86,7 +86,7 @@ const MyQuestions = ({navigation}) => {
       <View
         style={styles.statsContainer}>
         <Text
-          style={styles.pointsText}>Points: {userPoints}</Text>
+          style={styles.pointsText}>แต้มของฉัน {userPoints}</Text>
         <Chip
           mode='flat'
           style={{backgroundColor: theme.level(userLevel)}}>

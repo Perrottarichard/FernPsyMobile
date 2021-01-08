@@ -46,7 +46,7 @@ const wait = (timeout) => new Promise((resolve) => {
 });
 
 const applyFilterByTag = (allAnsweredPosts, filter) => {
-  if(filter === 'none'){
+  if(filter === 'แสดงทั้งหมด'){
     return allAnsweredPosts;
   }
   return allAnsweredPosts.filter(f => f.tags.includes(filter))
@@ -58,7 +58,7 @@ const Item = ({ item, onPress}) => (
   >
     <List.Item
       title={item.title}
-      description={`...pending`}
+      description={"กำลังรอคำตอบ"}
       left={() => <BigHead
         {...item.user?.avatarProps} size={50}
                   />}
@@ -121,7 +121,7 @@ const MyPending = ({route}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   let myPendingFiltered = myPendingPosts;
-  const [selectedFilterTag, setSelectedFilterTag] = useState('none')
+  const [selectedFilterTag, setSelectedFilterTag] = useState('แสดงทั้งหมด')
   const [filterMenuVisible, setFilterMenuVisible] = useState(false)
 
   myPendingFiltered = applyFilterByTag(myPendingFiltered, selectedFilterTag)
@@ -185,11 +185,11 @@ const MyPending = ({route}) => {
               mode='text'
               onPress={openMenu}
                     ><Text
-                      style={{color: theme.colors.accent}}>Filter: </Text><Text
+                      style={{color: theme.colors.accent}}>กรอง </Text><Text
                         > {selectedFilterTag}</Text></Button>}
           >
             <Menu.Item
-              title='none' onPress={() => handleSetFilter('none')}
+              title='แสดงทั้งหมด' onPress={() => handleSetFilter('แสดงทั้งหมด')}
             />
             <Menu.Item
               title='ปัญหาเรื่องเพศ' value='ปัญหาเรื่องเพศ' onPress={() => handleSetFilter('ปัญหาเรื่องเพศ')}

@@ -24,7 +24,7 @@ function TabNav() {
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'หน้าหลัก',
           tabBarIcon: ({ color }) => (
             <Icon
               name="home" color={color} size={26}
@@ -36,7 +36,7 @@ function TabNav() {
         name="View Forum"
         component={ForumNavigate}
         options={{
-          tabBarLabel: 'Forum',
+          tabBarLabel: 'หน้ากระทู้',
           tabBarIcon: ({ color }) => (
             <Icon
               name="forum" color={color} size={26}
@@ -48,7 +48,7 @@ function TabNav() {
         name="Ask Fern"
         component={ForumPostMain}
         options={{
-          tabBarLabel: 'Ask Fern',
+          tabBarLabel: 'ตั้งคำถาม',
           tabBarIcon: ({ color }) => (
             <Icon
               name="post-add" color={color} size={26}
@@ -60,7 +60,7 @@ function TabNav() {
         name="Articles"
         component={ArticleNavigate}
         options={{
-          tabBarLabel: 'Articles',
+          tabBarLabel: 'บทความ',
           tabBarIcon: ({ color }) => (
             <Ficons
               name="book-reader" color={color} size={26}
@@ -72,7 +72,7 @@ function TabNav() {
         name="About"
         component={About}
         options={{
-          tabBarLabel: 'About',
+          tabBarLabel: 'ติดต่อเรา',
           tabBarIcon: ({ color }) => (
             <Icon
               name="info-outline" color={color} size={26}

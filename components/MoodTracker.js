@@ -9,7 +9,6 @@ import {addMood, addPoints, levelUp} from '../reducers/activeUserReducer'
 import { DateTime } from 'luxon'
 import DataGraphic from '../assets/undraw_visual_data_b1wx.svg'
 import {shouldLevelUp} from '../helperFunctions'
-import LottieView from 'lottie-react-native'
 import LevelUpAnimationModal from './LevelUpAnimationModal'
 
 
@@ -33,35 +32,35 @@ const getPieData = (moods) => {
 
   const pieDataArray = [
     {
-      name: "Very Good",
+      name: "ดีมาก",
       count: veryGoodMoodObjs,
       color: "#f5586f",
       legendFontColor: "gray",
       legendFontSize: 12 
     },
     {
-      name: "Good",
+      name: "ก็ดีนะ",
       count: goodMoodObjs,
       color: "#ff8592",
       legendFontColor: "gray",
       legendFontSize: 12 
     },
     {
-      name: "Normal",
+      name: "ปกติ",
       count: normalMoodObjs,
       color: "#FFB6C1",
       legendFontColor: "gray",
       legendFontSize: 12 
     },
     {
-      name: "Not Good",
+      name: "ไม่ดี",
       count: notGoodMoodObjs,
       color: "#c2a9ab",
       legendFontColor: "gray",
       legendFontSize: 12 
     },
     {
-      name: "Bad",
+      name: "แย่สุดๆ",
       count: badMoodObjs,
       color: "#42393a",
       legendFontColor: "gray",
@@ -145,7 +144,7 @@ const MoodTracker = () => {
     }else{
         let getDayNumber = DateTime.fromISO(moodsForChart[moodsForChart.length - 1].date).day
         if(today.day === getDayNumber){
-        ToastAndroid.show('You already added your mood today', ToastAndroid.SHORT)
+        ToastAndroid.show('วันนี้คุณบันทึกอารมณ์ไปแล้ว ไว้มาใหม่พรุ่งนี้นะ', ToastAndroid.LONG)
         }else{
         dispatch(addMood(moodValue))
         dispatch(addPoints(user._id, 1))
@@ -181,7 +180,7 @@ const MoodTracker = () => {
         contentContainerStyle={styles.container}>
         <View
           style={{...styles.chartContainer, opacity: showLevelUpAnimation ? 0.2 : 1}}><Text
-            style={styles.noDataYetDailyText}>Not enough data yet</Text>
+            style={styles.noDataYetDailyText}>บันทึกอารมณ์เพิ่มอีกหน่อยนะ</Text>
           <DataGraphic
             height={180} width={180}/>
         </View>
@@ -196,7 +195,7 @@ const MoodTracker = () => {
               <View
                 style={styles.eachRadioButton}>
                 <Text
-                  style={styles.radioText}>All</Text>
+                  style={styles.radioText}>แสดงทั้งหมด</Text>
                 <RadioButton
                   value="All"
                   color={theme.colors.primary} />
@@ -204,7 +203,7 @@ const MoodTracker = () => {
               <View
                 style={styles.eachRadioButton}>
                 <Text
-                  style={styles.radioText}>This week</Text>
+                  style={styles.radioText}>สัปดาห์นี้</Text>
                 <RadioButton
                   value="This week"
                   color={theme.colors.primary} />
@@ -215,7 +214,7 @@ const MoodTracker = () => {
         <View
           style={styles.howDoYouFeel}>
           <Text
-            style={styles.howDoYouFeelText}>How do you feel today?</Text>
+            style={styles.howDoYouFeelText}>วันนี้เป็นไงบ้าง บอกเราหน่อย</Text>
         </View>
         <View
           style={{...styles.moodValueContainer, borderColor: theme.colors.onSurface}}>
@@ -241,7 +240,7 @@ const MoodTracker = () => {
             style={styles.sliderButton}>
             <Text
               style={styles.sliderButtonText}>
-              Save
+              บันทึก
             </Text>
           </Button>
         </View>
@@ -277,15 +276,15 @@ const MoodTracker = () => {
               yLabelsOffset={8}
               formatYLabel={(num) => {
               if(num === '5.0'){
-                return 'Very Good'
+                return 'ดีมาก'
               }else if(num === '4.0'){
-                return 'Good'
+                return 'ก็ดีนะ'
               }else if (num === '3.0') {
-                return 'Normal'
+                return 'ปกติ'
               }else if(num === '2.0') {
-                return 'Not Good'
+                return 'ไม่ดี'
               }else if(num === '1.0'){
-                return 'Bad'
+                return 'แย่สุดๆ'
               }else{
                 return ''
               }
@@ -341,7 +340,7 @@ const MoodTracker = () => {
               <View
                 style={styles.eachRadioButton}>
                 <Text
-                  style={styles.radioText}>All</Text>
+                  style={styles.radioText}>แสดงทั้งหมด</Text>
                 <RadioButton
                   color={theme.colors.primary}
                   value="All" />
@@ -349,7 +348,7 @@ const MoodTracker = () => {
               <View
                 style={styles.eachRadioButton}>
                 <Text
-                  style={styles.radioText}>This week</Text>
+                  style={styles.radioText}>สัปดาห์นี้</Text>
                 <RadioButton
                   color={theme.colors.primary}
                   value="This week" />
@@ -360,7 +359,7 @@ const MoodTracker = () => {
         <View
           style={{...styles.howDoYouFeel, opacity: showLevelUpAnimation ? 0.1 : 1}}>
           <Text
-            style={styles.howDoYouFeelText}>How do you feel today?</Text>
+            style={styles.howDoYouFeelText}>วันนี้เป็นไงบ้าง บอกเราหน่อย</Text>
         </View>
         <View
           style={{...styles.moodValueContainer, borderColor: theme.colors.onSurface, opacity: showLevelUpAnimation ? 0.1 : 1}}>
@@ -386,7 +385,7 @@ const MoodTracker = () => {
             style={styles.sliderButton}>
             <Text
               style={styles.sliderButtonText}>
-              Save
+              บันทึก
             </Text>
           </Button>
         </View>

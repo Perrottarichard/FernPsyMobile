@@ -35,7 +35,6 @@ const LoginForm = (props) => {
         dispatch(setUser(user));
         forumService.setToken(user.token);
         dispatch(redirecting(false))
-        ToastAndroid.show(`ยินดีต้อนรับ คุณ ${user.email}`, ToastAndroid.SHORT);
       } catch (error) {
         console.log(error.message);
         if (error.message.includes('401')) {
@@ -69,7 +68,7 @@ const LoginForm = (props) => {
         style={styles.inputContainer}
       >
         <Input
-          keyboardType="email-address" autoCompleteType="username" onChangeText={(text) => setEmail(text)} placeholder="Email" leftIcon={{ type: 'material-community-icons', name: 'email', color: 'lightgray' }} inputStyle={{color: theme.colors.onBackground}}
+          keyboardType="email-address" autoCompleteType="email" onChangeText={(text) => setEmail(text)} placeholder="Email" leftIcon={{ type: 'material-community-icons', name: 'email', color: 'lightgray' }} inputStyle={{color: theme.colors.onBackground}}
         />
         <Input
           autoCompleteType="password" onChangeText={(text) => setPassword(text)} inputStyle={{color: theme.colors.onBackground}} placeholder="Password" secureTextEntry={hidePass} leftIcon={{ type: 'material-community-icons', name: 'lock-outline', color: 'lightgray' }} rightIcon={hidePass ? { type: 'font-awesome-5', name: 'eye-slash', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) } : { type: 'font-awesome-5', name: 'eye', color: 'lightgray', size: 20, onPress: () => setHidePass(!hidePass) }} 

@@ -14,7 +14,7 @@ const LevelUpAnimationModal = () => {
       <View
         style={{flex: 1, paddingTop: 90}}>
         <Text
-          style={{alignSelf: 'center', fontSize: 30}}>Level Up!
+          style={{alignSelf: 'center', fontSize: 30}}>ยินดีด้วยคุณได้เลื่อนขั้น!
         </Text>
       </View>
       <LottieView

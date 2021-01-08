@@ -13,8 +13,8 @@ const OnboardingScreen = ({setIsFirstLaunch}) => {
       {
         backgroundColor: '#fff',
         image: <Image
-          source={require('../assets/undraw_welcome_cats_thqn.png')}
-          style={{height: 240, width: '100%'}}
+          source={require('../assets/lg.png')}
+          style={{height: 210, width: 205}}
           />,
         title: 'Welcome to AskFern',
         subtitle: '',
@@ -23,10 +23,10 @@ const OnboardingScreen = ({setIsFirstLaunch}) => {
         backgroundColor: '#fff',
         image: <Image
           source={require('../assets/undraw_Add_files_re_v09g.png')}
-          style={{height: 240, width: '100%'}}
+          style={{height: 260, width: '100%'}}
           />,
-        title: 'Post Questions',
-        subtitle: '',
+        title: 'คำถามที่คุณอยากรู้',
+        subtitle: 'คุณสามารถเข้าสู่ระบบเพื่อถามสิ่งที่คุณอยากรู้จากแอดมินและผู้ใช้งานคนอื่นๆ',
       },
       {
         backgroundColor: '#fff',
@@ -34,8 +34,8 @@ const OnboardingScreen = ({setIsFirstLaunch}) => {
           source={require('../assets/undraw_public_discussion_btnw.png')}
           style={{height: 240, width: '100%'}}
           />,
-        title: 'Comment and reply to other posts',
-        subtitle: '',
+        title: 'แสดงความคิดเห็นของคุณ',
+        subtitle: 'คุณสามารถแสดงความคิดเห็นของคุณในโพสต์ของผู้ใช้งานคนอื่นๆ',
       },
       {
         backgroundColor: '#fff',
@@ -43,8 +43,8 @@ const OnboardingScreen = ({setIsFirstLaunch}) => {
           source={require('../assets/undraw_reading_0re1.png')}
           style={{height: 240, width: '100%'}}
           />,
-        title: 'Read articles',
-        subtitle: '',
+        title: 'บทความ',
+        subtitle: 'อ่านบทความสุขภาพจิตและการพัฒนาตนเองที่เขียนโดยแอดมิน',
       },
       {
         backgroundColor: '#fff',
@@ -52,8 +52,8 @@ const OnboardingScreen = ({setIsFirstLaunch}) => {
           source={require('../assets/undraw_Personal_goals_re_iow7.png')}
           style={{height: 240, width: '100%'}}
           />,
-        title: 'Track your daily mood',
-        subtitle: '',
+        title: 'เข้าใจอารมณ์ของคุณเอง',
+        subtitle: 'คุณสามารถบันทึกอารมณ์ตนเองในแต่ละวันเพื่อทำความเข้าใจอารมณ์ของคุณเอง',
       },
       {
         backgroundColor: '#fff',
@@ -61,8 +61,8 @@ const OnboardingScreen = ({setIsFirstLaunch}) => {
           source={require('../assets/undraw_superhero_kguv.png')}
           style={{height: 240, width: '100%'}}
           />,
-        title: 'Climb the ranks',
-        subtitle: 'Get points to level up and earn more customizations for your avatar',
+        title: 'สนุกกับการสะสมแต้ม',
+        subtitle: 'คุณจะได้รับแต้มทุกครั้งที่คุณมีส่วนร่วมในแอพ โดยแต้มสามารถแลกเป็นของตกแต่ง avatar ของคุณ',
       },
     ]}
     />

@@ -18,11 +18,11 @@ const accessoryButtons = [
 ]
 
 const hatButtons = [
-  {name: 'none', value: 'none'},
-  {name: 'beanie', value: 'beanie'},
-  {name: 'party', value: 'party'},
-  {name: 'turban', value: 'turban'},
-  {name: 'hijab', value: 'hijab'}
+  {name: 'ไม่สวมหมวก', value: 'none'},
+  {name: 'ไหมพรม', value: 'beanie'},
+  {name: 'ปาร์ตี้', value: 'party'},
+  {name: 'ผ้าโพกหัว', value: 'turban'},
+  {name: 'ฮิญาบ', value: 'hijab'}
 ]
 
 const bgColorButtons = [
@@ -64,11 +64,11 @@ const hatColorButtons = [
 ]
 
 const lipColorButtons = [
-  {name: "purple", value: "purple"}, 
-  {name: "pink", value: "pink"},
+  {name: "ม่วง", value: "purple"}, 
+  {name: "ชมพู", value: "pink"},
   {name: "เขียว", value: "green"},
   {name: "แดง", value: "red"},
-  {name: "turqoise", value:"turqoise"},
+  {name: "ฟ้า", value:"turqoise"},
 ]
 
 const eyebrowsButtons = [
@@ -159,7 +159,7 @@ const DATA = [
   {
     type: 'lipColor',
     buttons: lipColorButtons,
-    title: 'lipColor',
+    title: 'สีริมฝีปาก',
     level: 1
   },
   {
@@ -220,18 +220,18 @@ const DATA = [
     type: 'accessory',
     buttons: accessoryButtons,
     title: 'เครื่องประดับ',
-    level: 3
+    level: 4
   },
   {
     type: 'hat',
     buttons: hatButtons,
-    title: 'hat',
+    title: 'หมวก',
     level: 4
   },
   {
     type: 'hatColor',
     buttons: hatColorButtons,
-    title: 'hatColor',
+    title: 'สีของหมวก',
     level: 4
   },
 
@@ -317,7 +317,7 @@ const AvatarPreview = ({navigation}) => {
   }, [user])
   const submitUpdate = async () => {
     if(!name) {
-      ToastAndroid.show('Your avatar must have a name', ToastAndroid.SHORT)
+      ToastAndroid.show('ตั้งชื่อให้เราด้วยนะ', ToastAndroid.SHORT)
     }else{
       const id = user._id
       const avatarProps = {
@@ -486,7 +486,6 @@ const AvatarPreview = ({navigation}) => {
           pagingEnabled={true}
           decelerationRate={'normal'}
           scrollEventThrottle={10}
-          // onEndReached={() => ToastAndroid.show('Lookin Good! Don`t forget to save', ToastAndroid.SHORT)}
           renderItem={(item, index, initTypes) => renderItem(item, index, initTypes)}
           onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {x: scrollX}}}],

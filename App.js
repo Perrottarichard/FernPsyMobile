@@ -32,7 +32,7 @@ const App = () => {
   useEffect(() => {
     if(netInfo.isConnected === false && netTimer) {
       console.log('no internet')
-      ToastAndroid.show('No internet. Some features might not work', ToastAndroid.LONG)
+      ToastAndroid.show('บางส่วนอาจขัดข้องหากคุณไม่เชื่อมต่ออินเตอร์เน็ต', ToastAndroid.LONG)
     }
     }, [netInfo.isConnected, netTimer])
 
@@ -71,7 +71,7 @@ const App = () => {
   useEffect(() => {
     AsyncStorage.getItem('alreadyLaunched').then(value => {
       if(value === null){
-        // AsyncStorage.setItem('alreadyLaunched', 'true');
+        AsyncStorage.setItem('alreadyLaunched', 'true');
         setIsFirstLaunch(true)
       }else{
         setIsFirstLaunch(false)

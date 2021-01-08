@@ -23,9 +23,9 @@ const MyQuestionsOrMoodNavigate = () => {
           }
         }} >
       <Tab.Screen
-        name="Home" component={MyQuestionsNavigate} />
+        name="หน้าของฉัน" component={MyQuestionsNavigate} />
       <Tab.Screen
-        name="My Moods" component={MoodTracker}/>
+        name="บันทึกอารมณ์" component={MoodTracker}/>
     </Tab.Navigator>
   );
 }

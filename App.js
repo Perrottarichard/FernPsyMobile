@@ -12,7 +12,7 @@ import forumService from './services/forumService';
 import TabNav from './components/TabNav';
 import userService from './services/userService';
 import reactotron from './ReactotronConfig';
-import OnboardingNavigate from './components/OnboardingNavigate';
+import OnboardingScreen from './components/OnboardingScreen';
 
 LogBox.ignoreLogs(['Require cycles are allowed'])
 if(__DEV__) {
@@ -87,19 +87,15 @@ const App = () => {
     dispatch(getAllArticles());
   }, [dispatch]);
 
-  if(isFirstLaunch){
-    return(
-      <NavigationContainer>
-        <OnboardingNavigate/>
-      </NavigationContainer>
-    )
-  }
-
   return (
     <NavigationContainer
       theme={theme}
     >
-      <TabNav />
+      {isFirstLaunch ?
+        <OnboardingScreen
+          setIsFirstLaunch={setIsFirstLaunch}/>
+      :
+        <TabNav />}
     </NavigationContainer>
   );
 };

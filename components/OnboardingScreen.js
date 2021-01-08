@@ -3,12 +3,12 @@ import React from 'react'
 import {Image} from 'react-native'
 import Onboarding from 'react-native-onboarding-swiper'
 
-const OnboardingScreen = ({navigation}) => {
+const OnboardingScreen = ({setIsFirstLaunch}) => {
 
   return(
     <Onboarding
-      onSkip={() => navigation.replace('LoginForm')}
-      onDone={() => navigation.navigate('LoginForm')}
+      onSkip={() => setIsFirstLaunch(false)}
+      onDone={() => setIsFirstLaunch(false)}
       pages={[
       {
         backgroundColor: '#fff',

@@ -158,7 +158,6 @@ const ForumDisplayAll = ({navigation}) => {
 
   forumAnswered = applyFilterByTag(forumAnswered, selectedFilterTag)
   const DATA = forumAnswered.sort((a, b) => new Date(b.date) - new Date(a.date))
-
  
   const openMenu = () => setFilterMenuVisible(true);
 

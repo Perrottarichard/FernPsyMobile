@@ -3,9 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {useTheme} from 'react-native-paper'
-import {ToastAndroid, LogBox} from 'react-native';
+import {LogBox, ToastAndroid} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import {useNetInfo} from '@react-native-community/netinfo';
 import { initStats, setUser } from './reducers/activeUserReducer';
 import { initializeForumAnswered, getAllArticles } from './reducers/forumReducer';
 import forumService from './services/forumService';
@@ -13,6 +12,7 @@ import TabNav from './components/TabNav';
 import userService from './services/userService';
 import reactotron from './ReactotronConfig';
 import OnboardingScreen from './components/OnboardingScreen';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 LogBox.ignoreLogs(['Require cycles are allowed'])
 if(__DEV__) {
@@ -24,16 +24,18 @@ if(__DEV__) {
 const App = () => {
   const netInfo = useNetInfo();
   const [isFirstLaunch, setIsFirstLaunch] = useState(null)
+  const [netTimer, setNetTimer] = useState(false)
 
+  setTimeout(() => {
+    setNetTimer(true)
+  }, 3000);
+  useEffect(() => {
+    if(netInfo.isConnected === false && netTimer) {
+      console.log('no internet')
+      ToastAndroid.show('No internet. Some features might not work', ToastAndroid.LONG)
+    }
+    }, [netInfo.isConnected, netTimer])
 
-  useCallback(() => {
-  if(netInfo.isConnected === false) {
-    ToastAndroid.show('Looks like you`re not connected to the internet.  Some features might not work', ToastAndroid.LONG)
-  } else {
-    console.log('internet connected')
-  }
-  }, [netInfo.isConnected])
-  
   let user = useSelector(state => state.activeUser)
   if(user !== null){
     user = user.user;
@@ -78,12 +80,10 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    console.log('App initForumAnswered')
     dispatch(initializeForumAnswered());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log('App initArticles')
     dispatch(getAllArticles());
   }, [dispatch]);
 

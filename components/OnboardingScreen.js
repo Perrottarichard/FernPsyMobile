@@ -23,7 +23,7 @@ const OnboardingScreen = ({setIsFirstLaunch}) => {
         backgroundColor: '#fff',
         image: <Image
           source={require('../assets/undraw_Add_files_re_v09g.png')}
-          style={{height: 260, width: '100%'}}
+          style={{height: 220, width: 200}}
           />,
         title: 'คำถามที่คุณอยากรู้',
         subtitle: 'คุณสามารถเข้าสู่ระบบเพื่อถามสิ่งที่คุณอยากรู้จากแอดมินและผู้ใช้งานคนอื่นๆ',
@@ -32,7 +32,7 @@ const OnboardingScreen = ({setIsFirstLaunch}) => {
         backgroundColor: '#fff',
         image: <Image
           source={require('../assets/undraw_public_discussion_btnw.png')}
-          style={{height: 240, width: '100%'}}
+          style={{height: 180, width: 200}}
           />,
         title: 'แสดงความคิดเห็นของคุณ',
         subtitle: 'คุณสามารถแสดงความคิดเห็นของคุณในโพสต์ของผู้ใช้งานคนอื่นๆ',
@@ -41,7 +41,7 @@ const OnboardingScreen = ({setIsFirstLaunch}) => {
         backgroundColor: '#fff',
         image: <Image
           source={require('../assets/undraw_reading_0re1.png')}
-          style={{height: 240, width: '100%'}}
+          style={{height: 180, width: 200}}
           />,
         title: 'บทความ',
         subtitle: 'อ่านบทความสุขภาพจิตและการพัฒนาตนเองที่เขียนโดยแอดมิน',
@@ -50,7 +50,7 @@ const OnboardingScreen = ({setIsFirstLaunch}) => {
         backgroundColor: '#fff',
         image: <Image
           source={require('../assets/undraw_Personal_goals_re_iow7.png')}
-          style={{height: 240, width: '100%'}}
+          style={{height: 180, width: 200}}
           />,
         title: 'เข้าใจอารมณ์ของคุณเอง',
         subtitle: 'คุณสามารถบันทึกอารมณ์ตนเองในแต่ละวันเพื่อทำความเข้าใจอารมณ์ของคุณเอง',
@@ -59,7 +59,7 @@ const OnboardingScreen = ({setIsFirstLaunch}) => {
         backgroundColor: '#fff',
         image: <Image
           source={require('../assets/undraw_superhero_kguv.png')}
-          style={{height: 240, width: '100%'}}
+          style={{height: 180, width: 200}}
           />,
         title: 'สนุกกับการสะสมแต้ม',
         subtitle: 'คุณจะได้รับแต้มทุกครั้งที่คุณมีส่วนร่วมในแอพ โดยแต้มสามารถแลกเป็นของตกแต่ง avatar ของคุณ',

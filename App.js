@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {useTheme} from 'react-native-paper'
 import {ToastAndroid, LogBox} from 'react-native';
@@ -12,6 +12,7 @@ import forumService from './services/forumService';
 import TabNav from './components/TabNav';
 import userService from './services/userService';
 import reactotron from './ReactotronConfig';
+import OnboardingNavigate from './components/OnboardingNavigate';
 
 LogBox.ignoreLogs(['Require cycles are allowed'])
 if(__DEV__) {
@@ -22,6 +23,8 @@ if(__DEV__) {
 
 const App = () => {
   const netInfo = useNetInfo();
+  const [isFirstLaunch, setIsFirstLaunch] = useState(null)
+
 
   useCallback(() => {
   if(netInfo.isConnected === false) {
@@ -64,6 +67,17 @@ const App = () => {
   }, [dispatch, getLoggedUser, user]);
 
   useEffect(() => {
+    AsyncStorage.getItem('alreadyLaunched').then(value => {
+      if(value === null){
+        // AsyncStorage.setItem('alreadyLaunched', 'true');
+        setIsFirstLaunch(true)
+      }else{
+        setIsFirstLaunch(false)
+      }
+    })
+  }, []);
+
+  useEffect(() => {
     console.log('App initForumAnswered')
     dispatch(initializeForumAnswered());
   }, [dispatch]);
@@ -72,6 +86,14 @@ const App = () => {
     console.log('App initArticles')
     dispatch(getAllArticles());
   }, [dispatch]);
+
+  if(isFirstLaunch){
+    return(
+      <NavigationContainer>
+        <OnboardingNavigate/>
+      </NavigationContainer>
+    )
+  }
 
   return (
     <NavigationContainer

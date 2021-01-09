@@ -87,7 +87,7 @@ const LoginForm = (props) => {
               <Text
                 style={styles.loginButtonText}
               >
-                เข้าสู่ระบบ
+                ลงชื่อเข้าใช้งาน
               </Text>
             </Button>
           )}
@@ -97,7 +97,7 @@ const LoginForm = (props) => {
           <Text
             style={styles.openRegText}
           >
-            สมัครตอนนี้
+            สมัครฟรี
           </Text>
         </Button>
       </View>

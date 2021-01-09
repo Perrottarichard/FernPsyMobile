@@ -80,6 +80,33 @@ const daysThisWeek = (moods) => {
   }
 }
 
+const moodValueToWords = (moodValue) => {
+  if(moodValue === 1) {
+    return 'แย่สุดๆ'
+  }else if(moodValue === 2){
+    return "ไม่ดี"
+  }else if(moodValue === 3){
+    return "ปกติ"
+  }else if (moodValue === 4){
+    return "ก็ดีนะ"
+  }else{
+    return "ดีมาก"
+  }
+}
+const moodValueColor = (moodValue) => {
+  if(moodValue === 1) {
+    return '#42393a'
+  }else if(moodValue === 2){
+    return "#c2a9ab"
+  }else if(moodValue === 3){
+    return "#FFB6C1"
+  }else if (moodValue === 4){
+    return "#ff8592"
+  }else{
+    return "#f5586f"
+  }
+}
+
 const MoodTracker = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -214,12 +241,12 @@ const MoodTracker = () => {
         <View
           style={styles.howDoYouFeel}>
           <Text
-            style={styles.howDoYouFeelText}>วันนี้เป็นไงบ้าง บอกเราหน่อย</Text>
+            style={styles.howDoYouFeelText}>วันนี้เป็นไงบ้าง? บอกเราหน่อย</Text>
         </View>
         <View
           style={{...styles.moodValueContainer, borderColor: theme.colors.onSurface}}>
           <Text
-            style={styles.moodValueText}>{moodValue}</Text>
+            style={{...styles.moodValueText, color: moodValueColor(moodValue)}}>{moodValueToWords(moodValue)}</Text>
         </View>
         <View
           style={styles.sliderContainer}>
@@ -359,12 +386,12 @@ const MoodTracker = () => {
         <View
           style={{...styles.howDoYouFeel, opacity: showLevelUpAnimation ? 0.1 : 1}}>
           <Text
-            style={styles.howDoYouFeelText}>วันนี้เป็นไงบ้าง บอกเราหน่อย</Text>
+            style={styles.howDoYouFeelText}>วันนี้เป็นไงบ้าง? บอกเราหน่อย</Text>
         </View>
         <View
           style={{...styles.moodValueContainer, borderColor: theme.colors.onSurface, opacity: showLevelUpAnimation ? 0.1 : 1}}>
           <Text
-            style={styles.moodValueText}>{moodValue}</Text>
+            style={{...styles.moodValueText, color: moodValueColor(moodValue)}}>{moodValueToWords(moodValue)}</Text>
         </View>
         <View
           style={{...styles.sliderContainer, opacity: showLevelUpAnimation ? 0.1 : 1}}>
@@ -409,11 +436,12 @@ const styles = StyleSheet.create({
   },
   radioContainer: {
     flex: 0.6,
-    width: '100%'
+    width: '100%',
   },
   radioButtons: {
     flexDirection: 'row',
-    alignItems: 'stretch', 
+    alignItems: 'stretch',
+    marginLeft: 30, 
     justifyContent: 'center',
   },
   eachRadioButton: {
@@ -437,19 +465,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 10,
     marginTop: 20,
-    width: 70,
+    width: 100,
     height: 90,
-    borderStyle: 'solid',
-    borderWidth: 1,
     padding: 5,
-    borderRadius: 10,
   },
   moodValueText: {
-    fontSize: 28,
+    paddingTop: 5,
+    fontSize: 20,
   },
   sliderContainer: {
     flex: 1.5,
-    marginTop: 20,
   },
   sliderButton: {
       alignSelf: 'center',

@@ -10,30 +10,16 @@ import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
  
 const accessoryButtons = [
   {name: "ไม่มี", value: "none"},
-  {name: "ตุ้มหู", value: "hoopEarrings"}, 
   {name: "แว่นตาทรงกลม", value: "roundGlasses"},
   {name: "แว่นตาจิ๋ว", value: "tinyGlasses"},
   {name: "แว่นตาดำ", value:"shades"},
-  {name: "หน้ากากอนามัย", value: "faceMask"}
 ]
 
 const hatButtons = [
   {name: 'ไม่สวมหมวก', value: 'none'},
   {name: 'ไหมพรม', value: 'beanie'},
-  {name: 'ปาร์ตี้', value: 'party'},
   {name: 'ผ้าโพกหัว', value: 'turban'},
-  {name: 'ฮิญาบ', value: 'hijab'}
 ]
-
-const bgColorButtons = [
-  {name: "ฟ้า", value: "blue"}, 
-  {name: "เขียว", value: "green"},
-  {name: "แดง", value: "red"},
-  {name: "ส้ม", value: "orange"},
-  {name: "เหลือง", value:"yellow"},
-  {name: "ชมพู", value: "pink"}
-]
-
 const bodyButtons = [
   {name: "มีหน้าอก", value: "breasts"},
   {name: "ไม่มีหน้าอก", value: "chest"}
@@ -42,8 +28,8 @@ const bodyButtons = [
 const clothingButtons = [
   {name: "เสื้อเชิ้ต", value: "shirt"}, 
   {name: "ไม่ใส่เสื้อ", value: "naked"},
-  {name: "เสื้อยีนส์", value: "denimJacket"},
-  {name: "เสื้อมีหมวก", value: "hoodie"},
+  {name: "vneck", value: "vneck"},
+  {name: "dressShirt", value: "dressShirt"},
   {name: "เสื้อแขนกุด", value:"tankTop"},
   {name: "เดรส", value: "dress"}
 ]
@@ -81,24 +67,17 @@ const eyebrowsButtons = [
 
 const eyesButtons = [
   {name: "ปกติ", value: "normal"}, 
-  {name: "รูปดาว", value: "stars"},
+  {name: "dizzy", value: "dizzy"},
   {name: "มีความสุข", value: "happy"},
   {name: "หรี่ตา", value: "squint"},
   {name: "หลับตาข้างเดียว", value:"wink"},
-  {name: "น่ารัก", value: "cute"},
+  {name: "simple", value: "simple"},
 ]
 
 const facialHairButtons = [
   {name: "ไม่มี", value: "none"}, 
   {name: "หนวดหรอมแหรม", value: "stubble"},
   {name: "หนวดเครา", value: "mediumBeard"},
-  {name: "เคราแพะ", value: "goatee"},
-]
-
-const graphicButtons = [
-  {name: "ไม่มี", value: "none"}, 
-  {name: "โดนัท", value: "donut"},
-  {name: "สายรุ้ง", value: "rainbow"},
 ]
 
 const hairButtons = [
@@ -134,7 +113,7 @@ const mouthButtons = [
   {name: "ยิ้มยิงฟัน", value: "grin"},
   {name: "เศร้า", value: "sad"},
   {name: "ยิ้มกว้าง", value:"open"},
-  {name: "แลบลิ้น", value: "piercedTongue"},
+  {name: "tongue", value: "tongue"},
 ]
 
 const DATA = [
@@ -142,12 +121,6 @@ const DATA = [
     type: 'body',
     buttons: bodyButtons,
     title: 'รูปร่าง',
-    level: 1
-  },
-  {
-    type: 'bgColor',
-    buttons: bgColorButtons,
-    title: 'สีพื้นหลัง',
     level: 1
   },
   {
@@ -208,12 +181,6 @@ const DATA = [
     type: 'clothing',
     buttons: clothingButtons,
     title: 'เสื้อผ้า',
-    level: 3
-  },
-  {
-    type: 'graphic',
-    buttons: graphicButtons,
-    title: 'ลายเสื้อ',
     level: 3
   },
   {
@@ -304,7 +271,7 @@ const AvatarPreview = ({navigation}) => {
       hatColor: avatarProps.hatColor ? avatarProps.hatColor : 'green',
       lipColor: avatarProps.lipColor ? avatarProps.lipColor : 'pink',
       showBackground: true,
-      bgShape: 'squircle',
+      bgShape: 'circle',
       lashes: true
   })
 

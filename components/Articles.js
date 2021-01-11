@@ -1,11 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { View, FlatList, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {DateTime} from 'luxon';
-import { upView } from '../reducers/forumReducer';
+import { getAllArticles, upView } from '../reducers/forumReducer';
 
 const prettyDate = (dateString) => {
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -59,6 +59,11 @@ const Articles = ({navigation}) => {
   //get articles
   const DATA = useSelector(state => state.forum.articles)
   const dispatch = useDispatch()
+  useEffect(() => {
+    if(!DATA){
+      dispatch(getAllArticles())
+    }
+  },[DATA, dispatch])
 
   const renderItem = ({item}) => (
     <Item 

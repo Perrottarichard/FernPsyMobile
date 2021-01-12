@@ -96,7 +96,7 @@ const Item = ({ item, onPress}) => (
       title={item.title}
       description={`โพสต์ของ ${item.user?.avatarName} ${timeSince(item.date)} ที่ผ่านมา`}
       left={() => <BigHead
-        {...item.user?.avatarProps} size={50}
+        {...item.user?.avatarProps} size={50} bgColor='blue' bgShape='circle'
                   />}
       titleStyle={styles.headTitle}
       descriptionStyle={styles.descriptionStyle}

@@ -75,7 +75,7 @@ const Item = ({ item, onPress, visibleMenu, openMenu, closeMenu, replies, flag})
           </View>
         )}
         left={() => <BigHead
-          {...item.user.avatarProps} size={38} style={styles.commentBigHead}
+          {...item.user.avatarProps} size={38} style={styles.commentBigHead} bgColor='blue' bgShape='circle'
         />}
         titleStyle={styles.commentHeadTitle}
         descriptionStyle={styles.commentDescriptionStyle}
@@ -104,7 +104,7 @@ const Item = ({ item, onPress, visibleMenu, openMenu, closeMenu, replies, flag})
           title={`${r.user.avatarName}`}
           description={`ตอบ ${timeSince(r.date)} ที่ผ่านมา`}
           left={() => <BigHead
-            {...r.user.avatarProps} size={28} containerStyles={styles.bigHeadReplyContainer}
+            {...r.user.avatarProps} size={28} containerStyles={styles.bigHeadReplyContainer} bgColor='blue' bgShape='circle'
           />}
           titleStyle={styles.replyHeadTitle}
           descriptionStyle={styles.replyDescriptionStyle}

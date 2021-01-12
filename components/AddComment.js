@@ -71,7 +71,7 @@ const AddComment = ({navigation}) => {
           style={{...styles.graphicView, opacity: showLevelUpAnimation ? 0.1 : 1}}
       >
           <BigHead
-            {...user.avatarProps} size={180}
+            {...user.avatarProps} size={180} bgColor='blue' bgShape='circle'
         />
         </View>
         <View>

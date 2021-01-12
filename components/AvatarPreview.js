@@ -255,7 +255,6 @@ const AvatarPreview = ({navigation}) => {
 
   const [avatarPropsLocal, setAvatarPropsLocal] = useState({
     accessory: avatarProps.accessory ? avatarProps.accessory : 'none',
-      bgColor:avatarProps.bgColor ? avatarProps.bgColor : 'blue',
       body:avatarProps.body ? avatarProps.body :'breasts',
       clothing:avatarProps.clothing ? avatarProps.clothing :'shirt',
       clothingColor:avatarProps.clothingColor ? avatarProps.clothingColor :'white',
@@ -272,6 +271,7 @@ const AvatarPreview = ({navigation}) => {
       lipColor: avatarProps.lipColor ? avatarProps.lipColor : 'pink',
       showBackground: true,
       bgShape: 'circle',
+      bgColor: 'blue',
       lashes: true
   })
 
@@ -292,10 +292,7 @@ const AvatarPreview = ({navigation}) => {
         hatColor: avatarPropsLocal.hatColor,
         lashes: avatarPropsLocal.lashes,
         lipColor: avatarPropsLocal.lipColor,
-        showBackground: avatarPropsLocal.showBackground,
-        bgShape: avatarPropsLocal.bgShape,
         accessory: avatarPropsLocal.accessory,
-        bgColor: avatarPropsLocal.bgColor,
         body: avatarPropsLocal.body,
         clothing: avatarPropsLocal.clothing,
         clothingColor: avatarPropsLocal.clothingColor,
@@ -307,7 +304,6 @@ const AvatarPreview = ({navigation}) => {
         hairColor: avatarPropsLocal.hairColor,
         skinTone: avatarPropsLocal.skinTone,
         mouth: avatarPropsLocal.mouth,
-
       }
       const avatarName = name
       try {
@@ -324,9 +320,6 @@ const AvatarPreview = ({navigation}) => {
     switch(type) {
       case 'accessory':
         setAvatarPropsLocal({...avatarPropsLocal, accessory: newValue});
-        break;
-      case 'bgColor':
-        setAvatarPropsLocal({...avatarPropsLocal, bgColor: newValue});
         break;
       case 'body':
         setAvatarPropsLocal({...avatarPropsLocal, body: newValue});

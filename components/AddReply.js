@@ -45,7 +45,7 @@ const AddReply = ({navigation, route}) => {
         style={styles.graphicView}
       >
         <BigHead
-          {...user.avatarProps} size={180}
+          {...user.avatarProps} size={180} bgColor='blue' bgShape='circle'
         />
       </View>
       <View>

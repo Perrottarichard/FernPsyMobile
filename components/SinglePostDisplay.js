@@ -101,7 +101,7 @@ const SinglePostDisplay = ({user, navigation, isLoading}) => {
             title={post.title}
             description={post.answer !== null ? `โพสต์ของ ${post.user.avatarName} ${timeSince(post.date)} ที่ผ่านมา` : '...pending'}
             left={() => <BigHead
-              {...post.user.avatarProps} size={55}
+              {...post.user.avatarProps} size={55} bgColor='blue' bgShape='circle'
             />}
             titleStyle={styles.headTitle}
             descriptionStyle={styles.descriptionStyle}

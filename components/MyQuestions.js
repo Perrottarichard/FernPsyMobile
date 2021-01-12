@@ -62,7 +62,7 @@ const MyQuestions = ({navigation}) => {
         style={styles.editAvatarContainer}
       >
         <BigHead
-          {...avatarProps} size={160}
+          {...avatarProps} size={160} bgColor='blue' bgShape='circle'
         />
         <View>
           <Text

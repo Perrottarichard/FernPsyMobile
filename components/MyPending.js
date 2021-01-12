@@ -60,7 +60,7 @@ const Item = ({ item, onPress}) => (
       title={item.title}
       description={"กำลังรอคำตอบ"}
       left={() => <BigHead
-        {...item.user?.avatarProps} size={50}
+        {...item.user?.avatarProps} size={50} bgColor='blue' bgShape='circle'
                   />}
       titleStyle={styles.headTitle}
       descriptionStyle={styles.descriptionStyle}

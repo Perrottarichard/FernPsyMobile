@@ -26,10 +26,10 @@ const bodyButtons = [
 ]
 
 const clothingButtons = [
-  {name: "เสื้อเชิ้ต", value: "shirt"}, 
+  {name: "เสื้อยืด", value: "shirt"}, 
   {name: "ไม่ใส่เสื้อ", value: "naked"},
-  {name: "vneck", value: "vneck"},
-  {name: "dressShirt", value: "dressShirt"},
+  {name: "เสื้อคอวี", value: "vneck"},
+  {name: "เสื้อเชิ้ต", value: "dressShirt"},
   {name: "เสื้อแขนกุด", value:"tankTop"},
   {name: "เดรส", value: "dress"}
 ]
@@ -67,11 +67,11 @@ const eyebrowsButtons = [
 
 const eyesButtons = [
   {name: "ปกติ", value: "normal"}, 
-  {name: "dizzy", value: "dizzy"},
+  {name: "มึนหัว", value: "dizzy"},
   {name: "มีความสุข", value: "happy"},
   {name: "หรี่ตา", value: "squint"},
   {name: "หลับตาข้างเดียว", value:"wink"},
-  {name: "simple", value: "simple"},
+  {name: "จุด", value: "simple"},
 ]
 
 const facialHairButtons = [
@@ -113,7 +113,7 @@ const mouthButtons = [
   {name: "ยิ้มยิงฟัน", value: "grin"},
   {name: "เศร้า", value: "sad"},
   {name: "ยิ้มกว้าง", value:"open"},
-  {name: "tongue", value: "tongue"},
+  {name: "แลบลิ้น", value: "tongue"},
 ]
 
 const DATA = [

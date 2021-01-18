@@ -4,14 +4,14 @@ import {createSelector} from 'reselect'
 import {
    View, StyleSheet, ToastAndroid, Appearance
 } from 'react-native';
-import { List, Chip, Surface, Avatar, Text, DefaultTheme, DarkTheme} from 'react-native-paper';
+import { List, Chip, Surface, Avatar, Text, DefaultTheme, DarkTheme, Portal} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {BigHead} from 'react-native-bigheads'
 import { heart } from '../reducers/forumReducer';
 import {timeSince} from './ForumDisplayAll'
 import Loading from './Loading'
-import LottieView from 'lottie-react-native'
+import HeartUpAnimationModal from './HeartUpAnimationModal';
 
 const colorMode = Appearance.getColorScheme()
 
@@ -87,12 +87,9 @@ const SinglePostDisplay = ({user, navigation, isLoading}) => {
       style={colorMode === 'light' ? styles.container : styles.containerDark}
     >
       {showHeartAnimation ?
-        <LottieView
-          source={require('../assets/heartUpAnimation.json')}
-          autoPlay
-          loop={false}
-          style={{zIndex: 99}}/>
-      : null}
+        <Portal>
+          <HeartUpAnimationModal/>
+        </Portal> : null}
       {post && (
         <Surface
           style={{...styles.cardStylePost, opacity: showHeartAnimation ? 0.2 : 1}} key={post._id}

@@ -138,7 +138,6 @@ const MyPending = ({route}) => {
   }
 
   const onRefresh = useCallback(() => {
-    console.log('Callback Refresh init answered')
     setRefreshing(true);
     dispatch(initializemyPendingFiltered());
     wait(2000).then(() => setRefreshing(false));

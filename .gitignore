@@ -27,6 +27,7 @@ build/
 .idea
 .gradle
 local.properties
+gradle.properties
 *.iml
 listing.txt
 
@@ -61,3 +62,4 @@ buck-out/
 
 # scrapCode
 scrapCode.txt
+android/gradle.properties

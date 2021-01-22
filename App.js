@@ -48,7 +48,6 @@ const App = () => {
     const loggedUserJSON = await AsyncStorage.getItem('loggedForumUser');
     if (loggedUserJSON) {
       const existingUser = await JSON.parse(loggedUserJSON);
-      console.log(existingUser)
       dispatch(setUser(existingUser));
       forumService.setToken(existingUser.token);
       userService.setToken(existingUser.token);

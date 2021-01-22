@@ -141,7 +141,6 @@ const MyAnswered = ({navigation, route}) => {
   }
 
   const onRefresh = useCallback(() => {
-    console.log('Callback Refresh init answered')
     setRefreshing(true);
     dispatch(initializeForumAnswered());
     wait(2000).then(() => setRefreshing(false));

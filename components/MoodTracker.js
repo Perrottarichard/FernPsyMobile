@@ -71,6 +71,9 @@ const getPieData = (moods) => {
 };
 
 const daysThisWeek = (moods) => {
+  if(!moods){
+    return []
+  }
   let tempMoods = [...moods]
   let tempDates = tempMoods.map(m => `${DateTime.fromISO(m.date).day}/${DateTime.fromISO(m.date).month}`)
   if(tempDates.length <= 7){

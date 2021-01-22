@@ -84,7 +84,6 @@ const Item = ({ item, onPress, visibleMenu, openMenu, closeMenu, replies, flag})
         titleEllipsizeMode='tail'
         disabled
         style={styles.commentListItem}
-        onPress={() => console.log('pressed')}
       />
       <View
         style={styles.contentContainerView}
@@ -113,7 +112,6 @@ const Item = ({ item, onPress, visibleMenu, openMenu, closeMenu, replies, flag})
           titleEllipsizeMode='tail'
           disabled
           style={styles.replyListItem}
-          onPress={() => console.log('pressed')}
         />
 
         <View

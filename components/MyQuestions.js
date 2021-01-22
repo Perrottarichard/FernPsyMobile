@@ -9,6 +9,7 @@ import { initializeForumPending, initializeForumAnswered, getAllArticles } from 
 import Logout from './Logout'
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {getLevelTitle} from '../helperFunctions'
+import { initStats } from '../reducers/activeUserReducer';
 
 const wait = (timeout) => new Promise((resolve) => {
   setTimeout(resolve, timeout);
@@ -31,20 +32,21 @@ const MyQuestions = ({navigation}) => {
 
   useEffect(() => {
     if(answered.length === 0){
-      console.log('UF Answered MQ')
       dispatch(initializeForumAnswered());
     }
   }, [answered.length, dispatch]);
 
   useEffect(() => {
     if(pending.length === 0){
-      console.log('UF Pending MQ')
       dispatch(initializeForumPending());
     }
   }, [dispatch, pending.length]);
 
+  useEffect(() => {
+    dispatch(initStats(user._id))
+  },[dispatch, user._id])
+
   const onRefresh = useCallback(() => {
-    console.log('callback MQ init - pending, answered, articles')
     setRefreshing(true);
     dispatch(initializeForumAnswered());
     dispatch(initializeForumPending());

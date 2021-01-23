@@ -1,4 +1,4 @@
-# AskFern (web client)
+# AskFern (Android)
 
 This project is an anonymous forum for people to post questions and comments about sensitive social/psychological topics. Registration is required in order to post and comment, but anyone can view the forum.
 

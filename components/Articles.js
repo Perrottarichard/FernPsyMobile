@@ -13,7 +13,7 @@ const prettyDate = (dateString) => {
   return dateToChange;
 }
 
-//pre-define 3:4 aspect ratio for images  
+//pre-define 3:2 aspect ratio for images  
 const screenWidth = (Dimensions.get('screen').width);
 
 const screenHeight = Math.floor(screenWidth * 2/3);

@@ -7,6 +7,9 @@ This project is the Android app of a companion web app.
 The live web app is hosted here:
 https://askfern.app
 
+View the web client repository here:
+https://github.com/Perrottarichard/fern-psy
+
 View the server repository here:
 https://github.com/Perrottarichard/fern-psy-backend
 
